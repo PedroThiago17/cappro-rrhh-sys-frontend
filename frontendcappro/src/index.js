@@ -1,14 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Login from './components/Login';
+import Menu from './components/Menu/Menu';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0066CC'
+    },
+    secondary: {
+      main:"#FFFFFF"
+    },
+  }
+})
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <Menu/>
+  </ThemeProvider>
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
