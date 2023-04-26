@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex", 
       justifyContent: "center",
       height: "100vh",
+      fontFamily: "Montserrat, sans-serif",
     },
     titulo: {
       textAlign: "center", 
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
     divisionpantallas: {
       flex: 1,
+      boxShadow: theme.shadows[10],
     },
     contenedorboton: {
       display: 'flex',

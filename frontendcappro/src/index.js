@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/Login';
-import Menu from './components/Menu/Menu';
+import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -20,7 +20,7 @@ const theme = createTheme({
 
 root.render(
   <ThemeProvider theme={theme}>
-    <Menu/>
+    <Login/>
   </ThemeProvider>
   
 );
