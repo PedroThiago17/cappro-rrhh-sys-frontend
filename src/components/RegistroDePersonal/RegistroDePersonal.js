@@ -143,7 +143,7 @@ const RegistroPersonal = () => {
       </div>
       <div className={clsx(classes.contenedorFormulario)}>
         <form className={clsx(classes.formulario)}>
-          <h2 style={{}}>Registro de nuevo persona</h2>
+          <h2 style={{}}>Registro de nuevo person</h2>
         </form>
       </div>
     </div> 
