@@ -63,13 +63,13 @@ const useStyles = makeStyles((theme) => ({
   contenedorFormulario: {
     width: "100%",
     height: '100%',
-    marginLeft: '10%',
+    marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
     marginTop: 50,
   },
   formulario: {
-    marginLeft: '15%',
+    marginLeft: '6%',
     boxShadow: theme.shadows[6],
     width: "70%",
     height: '70%',
