@@ -9,6 +9,9 @@ on:
       - develop
   workflow_dispatch:
 
+env:
+  CI: ""
+
 jobs:
   build:
     runs-on: ubuntu-latest
