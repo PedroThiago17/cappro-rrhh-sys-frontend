@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
+import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, IconButton } from '@material-ui/core';
 import { ExpandLess, ExpandMore} from '@material-ui/icons';
 import clsx from 'clsx';
 
@@ -85,9 +85,9 @@ const MenuPrincipal = () => {
                 <p className={clsx(classes.titulo)} style={{textTransform: 'none', fontSize:10}}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
               </div>
             </div>
-          </Toolbar>
+          </Toolbar> 
         </AppBar>
-      </div>
+      </div>  
       <div className={clsx(classes.contenedorMenu)}>
         <List component="nav" className={classes.drawer} aria-label="menu">
           <ListItem style={{padding: 20}} button onClick={handleClick}>
