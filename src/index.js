@@ -24,10 +24,14 @@ const theme = createTheme({
 root.render(
   <ThemeProvider theme={theme}>
     <Login></Login>
+    
+    
     {/* <RegistroPersonal/>
     <MantenimientoDePersonal/>
+    <ReporteAsistencia></ReporteAsistencia>
+    <MantenimientoDePersonal/>
     <ReportePlanillas></ReportePlanillas>
-    <ReporteAsistencia></ReporteAsistencia> */}
+     */}
   </ThemeProvider>
   
 );
