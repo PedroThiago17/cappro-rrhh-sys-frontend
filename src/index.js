@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/Login';
-import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
 import RegistroPersonal from './components/RegistroDePersonal/RegistroPersonal';
+import ReportePlanillas from './components/ReportePlanillas/ReportePlanillas';
+import ReporteAsistencia from './components/ReporteAsistencia/ReporteAsistencia';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import MantenimientoDePersonal from './components/MantenimientoDePersonal/MantenimientoDePersonal';
 
@@ -22,7 +23,11 @@ const theme = createTheme({
 
 root.render(
   <ThemeProvider theme={theme}>
-    <RegistroPersonal/>
+    <Login></Login>
+    {/* <RegistroPersonal/>
+    <MantenimientoDePersonal/>
+    <ReportePlanillas></ReportePlanillas>
+    <ReporteAsistencia></ReporteAsistencia> */}
   </ThemeProvider>
   
 );
