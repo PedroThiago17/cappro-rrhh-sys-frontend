@@ -4,8 +4,9 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/Login';
 import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
-import RegistroPersonal from './components/RegistroDePersonal/RegistroDePersonal';
+import RegistroPersonal from './components/RegistroDePersonal/RegistroPersonal';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import MantenimientoDePersonal from './components/MantenimientoDePersonal/MantenimientoDePersonal';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
