@@ -192,7 +192,7 @@ const ReporteAsistencia = (props) => {
       </div>
       <div className={clsx(classes.contenedorFormulario, classes.tipoletra2, classes.colorTextoPrimario)}>
         <form className={clsx(classes.formulario)}>
-          <h2 style={{textTransform: 'uppercase',}}>consulta y reporte de planillas</h2>
+          <h2 style={{textTransform: 'uppercase',}}>reporte de asistencia</h2>
           <div style={{display: 'flex', paddingBottom: 20}}>
             <div className={clsx(classes.filtro)}>
               <p style={{textTransform: 'uppercase',}}>dni:</p>
