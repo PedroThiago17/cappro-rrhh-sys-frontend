@@ -13,7 +13,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Button } from '@material-ui/core';
-
+import { useNavigate } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex", 
@@ -102,6 +102,7 @@ const Login = () => {
           usuario: '',
           showPassword: false,
         });
+        const navigate = useNavigate();
 
         const handleChange = (prop) => (event) => {
           setValues({ ...values, [prop]: event.target.value });
@@ -116,8 +117,9 @@ const Login = () => {
         };
 
         const onSubmit = () => {
+          navigate('/menu');
           console.log(values)
-        }
+        };
     return (   
       <div className={clsx(classes.root)}>
           <div className={clsx(classes.divisionpantallas)} style = {{backgroundColor: "#0066CC"}}>

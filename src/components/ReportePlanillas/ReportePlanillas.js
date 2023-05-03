@@ -15,6 +15,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -133,6 +134,11 @@ const ReportePlanillas = (props) => {
   const accionPdf = () => {
     alert('Algún día funcionará');
   };
+  const navigate = useNavigate();
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
 
   return (
     <div className={clsx(classes.root)}>
@@ -163,13 +169,13 @@ const ReportePlanillas = (props) => {
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
                 <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
@@ -177,13 +183,13 @@ const ReportePlanillas = (props) => {
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>

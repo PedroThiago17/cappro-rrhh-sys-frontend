@@ -8,6 +8,8 @@ import ReportePlanillas from './components/ReportePlanillas/ReportePlanillas';
 import ReporteAsistencia from './components/ReporteAsistencia/ReporteAsistencia';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import MantenimientoDePersonal from './components/MantenimientoDePersonal/MantenimientoDePersonal';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
@@ -21,15 +23,42 @@ const theme = createTheme({
   }
 })
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Login />,
+  },
+  {
+    path: '/menu',
+    element: <MenuPrincipal />,
+  },
+  {
+    path: '/registropersonal',
+    element: <RegistroPersonal />,
+  },
+  {
+    path: '/mantenimientopersonal',
+    element: <MantenimientoDePersonal />,
+  },
+  {
+    path: '/reporteplanilla',
+    element: <ReportePlanillas />,
+  },
+  {
+    path: '/reporteasistencia',
+    element: <ReporteAsistencia />,
+  }
+])
+
 root.render(
   <ThemeProvider theme={theme}>
-    <Login></Login>
-    {/* <RegistroPersonal/>
-    <MantenimientoDePersonal/>
-    <ReportePlanillas></ReportePlanillas>
-    <ReporteAsistencia></ReporteAsistencia> */}
+    <RouterProvider router={router}/>
+      
+      {/* <RegistroPersonal/>
+      <MantenimientoDePersonal/>
+      <ReportePlanillas></ReportePlanillas>
+      <ReporteAsistencia></ReporteAsistencia> */}
   </ThemeProvider>
-  
 );
 
 // If you want to start measuring performance in your app, pass a function
