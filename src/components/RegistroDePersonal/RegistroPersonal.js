@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "98vh",
     margin: 0,
     fontFamily: "Montserrat, sans-serif"
   },
@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   contenedorFormulario: {
-    width: "100%",
-    height: "100%",
+    width: "130vh",
+    height: "80%",
     marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
@@ -75,11 +75,8 @@ const useStyles = makeStyles((theme) => ({
   formulario: {
     marginLeft: '6%',
     boxShadow: theme.shadows[6],
-    width: "70%",
-    height: '750px',
-    [theme.breakpoints.down('xl')]: {
-      height: '700px',
-    },
+    width: "150vh",
+    height: '90%',
   },
   formControl: {
     minWidth: 120,
@@ -178,7 +175,7 @@ const RegistroPersonal = () => {
       </div>
       <div className={clsx(classes.contenedorFormulario)}>
         <form className={clsx(classes.formulario)}>
-          <div className='form-container'>
+          <div className='mp-form-container'>
             <h2>REGISTRAR NUEVO PERSONAL</h2>
             <div className='blocks-container'>
               <div>

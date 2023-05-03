@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "98vh",
     margin: 0,
     fontFamily: "Montserrat, sans-serif"
   },
@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   contenedorFormulario: {
-    width: "100%",
-    height: "100%",
+    width: "130vh",
+    height: "80%",
     marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   formulario: {
     marginLeft: '6%',
     boxShadow: theme.shadows[6],
-    width: "70%",
+    width: "150vh",
     height: '90%',
   },
   formControl: {
