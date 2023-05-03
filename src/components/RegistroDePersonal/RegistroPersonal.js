@@ -108,13 +108,13 @@ const RegistroPersonal = () => {
     console.log(url);
   }
 
-  const sexoOptions = [' ', 'Masculino', 'Femenino', 'No especifica'];
-  const estadoCivilOptions = [' ', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
-  const puestoOptions = [' ', 'Supervisor', 'Personal'];
-  const supervisionOptions = [' ', 'Administrador', 'Supervisor'];
-  const modalidadHorariaOptions = [' ', 'Tiempo completo', 'Tiempo parcial'];
-  const fondoPensionesOptions = [' ', 'AFP', 'ONP'];
-  const AFPOptions = [' ', '1', '2'];
+  const sexoOptions = ['Seleccionar', 'Masculino', 'Femenino', 'No especifica'];
+  const estadoCivilOptions = ['Seleccionar', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
+  const puestoOptions = ['Seleccionar', 'Supervisor', 'Personal'];
+  const supervisionOptions = ['Seleccionar', 'Administrador', 'Supervisor'];
+  const modalidadHorariaOptions = ['Seleccionar', 'Tiempo completo', 'Tiempo parcial'];
+  const fondoPensionesOptions = ['Seleccionar', 'AFP', 'ONP'];
+  const AFPOptions = ['Seleccionar', 'Profuturo', 'AFP Integra', 'Prima AFP', 'AFP Habitat'];
 
   return (
     <div className={clsx(classes.root)}>
@@ -249,7 +249,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Carga horaria:'}></RegistroInput>
-                    <RegistroInput label={'AFP:'} type={'select'} options={sexoOptions}></RegistroInput>
+                    <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Pago por hora:'}></RegistroInput>

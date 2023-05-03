@@ -188,10 +188,10 @@ const MantenimientoDePersonal = () => {
             <h2>MANTENIMIENTO DE PERSONAL</h2>
             <div className='mp-form-content'>
               <div className='form-inputs'>
-                <RegistroInput label={'Dni:'}></RegistroInput>
+                <RegistroInput label={'DNI:'}></RegistroInput>
                 <RegistroInput label={'Nombres:'}></RegistroInput>
                 <RegistroInput label={'Apellidos:'}></RegistroInput>
-                <RegistroInput label={'Código modular:'}></RegistroInput>
+                <RegistroInput label={'Código Modular:'}></RegistroInput>
               </div>
               <div className='main-button-container'>
                 <button className='main-button'>Buscar</button>
@@ -199,10 +199,10 @@ const MantenimientoDePersonal = () => {
             </div>
             <div className='table-container'>
               <div className='table-header'>
-                <p>Dni</p>
+                <p>DNI</p>
                 <p>Nombres</p>
                 <p>Apellidos</p>
-                <p>Codigo modular</p>
+                <p>Codigo Modular</p>
                 <p>Acciones</p>
               </div>
               {
