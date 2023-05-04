@@ -16,6 +16,8 @@ import { Button } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { ClipLoader } from "react-spinners";
+import PageLoader from './Loading';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,7 +104,6 @@ const Login = () => {
         const classes = useStyles();
         const [values, setValues] = React.useState({
           showPassword: false,
-          isLoading: false,
         });
         const [usuario, setUsuario] = React.useState({
           correo: '',
@@ -111,6 +112,7 @@ const Login = () => {
         const [correo, setCorreo] = useState('');
         const [contrase, setContra] = useState('');
         const [error, setError] = useState('');
+        const [loading, setLoading] = useState(false);
         const navigate = useNavigate();
 
         const handleChange = (prop) => (event) => {
@@ -129,28 +131,32 @@ const Login = () => {
           event.preventDefault();
           // const contraEncrypted = "";
           // contra = encryptPassword(contra);
+          console.log(loading);     
           try{
+            
             if (!correo || !contrase){
               alert('Por favor, complete todos los campos');
               return;
             }
-            
+            setLoading(true);
             const contra = Buffer.from(contrase).toString("base64");
             // contraEncrypted = btoa(contra);
             // contra = encryptPassword(contra);
+            
             const response = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/login', null, {
               params: {
                 correo,
                 contra,
               }
-            });
-            useState.isLoading = true;
+            }); 
             navigate('/menu');
-            console.log(correo, contra);
+            setLoading(false);
+            console.log(correo, contra, loading);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')
             // alert(contra)
           }
+          
         };
     return (   
       <div className={clsx(classes.root)}>
@@ -222,15 +228,13 @@ const Login = () => {
                 color='primary' 
                 variant='contained'
                 type='submit'
-                >
+                disabled={loading}
+              >
                 Ingresar
-              </Button>
+              </Button>   
             </div>
-            {useState.isLoading === false ? (
-                   <div>Loading...</div>
-               ) : null 
-            }
-          </form>
+            {loading ? <PageLoader /> : null}
+          </form>        
       </div>    
     );
 }
