@@ -15,6 +15,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Button } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Buffer } from 'buffer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -107,7 +108,7 @@ const Login = () => {
           contra: '',
         });
         const [correo, setCorreo] = useState('');
-        const [contra, setContra] = useState('');
+        const [contrase, setContra] = useState('');
         const [error, setError] = useState('');
         const navigate = useNavigate();
 
@@ -125,12 +126,17 @@ const Login = () => {
 
         const handleSubmit = async (event) => {
           event.preventDefault();
+          // const contraEncrypted = "";
+          // contra = encryptPassword(contra);
           try{
-            if (!correo || !contra){
+            if (!correo || !contrase){
               alert('Por favor, complete todos los campos');
               return;
             }
             
+            const contra = Buffer.from(contrase).toString("base64");
+            // contraEncrypted = btoa(contra);
+            // contra = encryptPassword(contra);
             const response = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/login', null, {
               params: {
                 correo,
@@ -141,6 +147,7 @@ const Login = () => {
             console.log(correo, contra);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')
+            // alert(contra)
           }
         };
     return (   
@@ -185,7 +192,7 @@ const Login = () => {
                                   className={clsx(classes.tamanoLabel)}
                                   id="outlined-adornment-password"
                                   type={values.showPassword ? 'text' : 'password'}
-                                  value={contra}
+                                  value={contrase}
                                   //onChange={handleChange('contra')}
                                   onChange={(event) => setContra(event.target.value)}
                                   endAdornment={
