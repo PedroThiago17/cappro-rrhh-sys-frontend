@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import TextField from '@material-ui/core/TextField';
@@ -14,6 +14,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Button } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex", 
@@ -98,14 +100,19 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
         const classes = useStyles();
         const [values, setValues] = React.useState({
-          password: '',
-          usuario: '',
           showPassword: false,
         });
+        const [usuario, setUsuario] = React.useState({
+          correo: '',
+          contra: '',
+        });
+        const [correo, setCorreo] = useState('');
+        const [contra, setContra] = useState('');
+        const [error, setError] = useState('');
         const navigate = useNavigate();
 
         const handleChange = (prop) => (event) => {
-          setValues({ ...values, [prop]: event.target.value });
+          setUsuario({ ...usuario, [prop]: event.target.value });
         };
       
         const handleClickShowPassword = () => {
@@ -116,9 +123,25 @@ const Login = () => {
           event.preventDefault();
         };
 
-        const onSubmit = () => {
-          navigate('/menu');
-          console.log(values)
+        const handleSubmit = async (event) => {
+          event.preventDefault();
+          try{
+            if (!correo || !contra){
+              alert('Por favor, complete todos los campos');
+              return;
+            }
+            
+            const response = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/login', null, {
+              params: {
+                correo,
+                contra,
+              }
+            });
+            navigate('/menu');
+            console.log(correo, contra);
+          }catch (error){
+            alert('Correo electrónico o contraseña incorrectos.')
+          }
         };
     return (   
       <div className={clsx(classes.root)}>
@@ -131,7 +154,7 @@ const Login = () => {
                   <h3 className={clsx(classes.h3, classes.tipoletra1)}>de Recursos Humanos</h3>
               </div>   
           </div>
-          <form className={clsx(classes.color1, classes.divisionpantallas)}>
+          <form className={clsx(classes.color1, classes.divisionpantallas)} onSubmit={handleSubmit}>
             <div>
                 <h2 style = {{textAlign: 'center', marginTop: 300, fontSize: 50}} className={clsx(classes.tipoletra2)} >¡Bienvenido!</h2>
                 <div>
@@ -143,8 +166,9 @@ const Login = () => {
                             <OutlinedInput
                               className={clsx(classes.tamanoLabel)}
                               id="outlined-adornment-usuario"
-                              value={values.usuario}
-                              onChange={handleChange('usuario')}
+                              value={correo}
+                              //onChange={handleChange('correo')}
+                              onChange={(event) => setCorreo(event.target.value)}
                               //endAdornment={<InputAdornment position="end">Kg</InputAdornment>}
                               //aria-describedby="outlined-weight-helper-text"
                               labelWidth={0}
@@ -161,8 +185,9 @@ const Login = () => {
                                   className={clsx(classes.tamanoLabel)}
                                   id="outlined-adornment-password"
                                   type={values.showPassword ? 'text' : 'password'}
-                                  value={values.password}
-                                  onChange={handleChange('password')}
+                                  value={contra}
+                                  //onChange={handleChange('contra')}
+                                  onChange={(event) => setContra(event.target.value)}
                                   endAdornment={
                                   <InputAdornment position="end">
                                       <IconButton
@@ -187,7 +212,7 @@ const Login = () => {
                 className={clsx(classes.boton, classes.tipoletra2)} 
                 color='primary' 
                 variant='contained'
-                onClick={() => onSubmit()}
+                type='submit'
                 >
                 Ingresar
               </Button>
