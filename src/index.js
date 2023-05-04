@@ -52,7 +52,6 @@ const router = createBrowserRouter([
 
 root.render(
   <ThemeProvider theme={theme}>
-<<<<<<< HEAD
     <Login></Login>
     
     
@@ -62,14 +61,6 @@ root.render(
     <MantenimientoDePersonal/>
     <ReportePlanillas></ReportePlanillas>
      */}
-=======
-    <RouterProvider router={router}/>
-      
-      {/* <RegistroPersonal/>
-      <MantenimientoDePersonal/>
-      <ReportePlanillas></ReportePlanillas>
-      <ReporteAsistencia></ReporteAsistencia> */}
->>>>>>> 4b1c8c25271b2e01b7232006a6d7010c713ef4a7
   </ThemeProvider>
 );
 
