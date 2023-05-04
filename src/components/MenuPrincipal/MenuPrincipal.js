@@ -4,6 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, IconButton } from '@material-ui/core';
 import { ExpandLess, ExpandMore} from '@material-ui/icons';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
+import MantenimientoDePersonal from '../MantenimientoDePersonal/MantenimientoDePersonal';
+import RegistroPersonal from '../RegistroDePersonal/RegistroPersonal';
+import ReportePlanillas from '../ReportePlanillas/ReportePlanillas';
+import ReporteAsistencia from '../ReporteAsistencia/ReporteAsistencia';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,10 +71,15 @@ const useStyles = makeStyles((theme) => ({
 const MenuPrincipal = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpen(!open);
   };
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
 
   return (
     <div className={clsx(classes.root)}>
@@ -99,13 +110,13 @@ const MenuPrincipal = () => {
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
                 <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
@@ -113,13 +124,13 @@ const MenuPrincipal = () => {
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>

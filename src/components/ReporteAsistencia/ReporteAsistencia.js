@@ -15,10 +15,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "98vh",
     margin:0,
     fontFamily: "Montserrat, sans-serif"
   },
@@ -65,8 +66,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700
   },
   contenedorFormulario: {
-    width: "100%",
-    height: '100%',
+    width: "150vh",
+    height: '80%',
     marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
@@ -74,9 +75,9 @@ const useStyles = makeStyles((theme) => ({
   formulario: {
     marginTop: 60,
     marginLeft: '4%',
-    //boxShadow: theme.shadows[6],
-    width: "75%",
-    height: '70%',
+    boxShadow: theme.shadows[6],
+    width: "152vh",
+    height: '95%',
   },
   filtro: {
     paddingTop: 30,
@@ -125,6 +126,8 @@ const ReporteAsistencia = (props) => {
     { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
     { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
   ]);
+  const navigate = useNavigate();
+
   const handleClick = () => {
     setOpen(!open);
   };
@@ -133,6 +136,10 @@ const ReporteAsistencia = (props) => {
     alert('Algún día funcionará');
   };
 
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
   return (
     <div className={clsx(classes.root)}>
       <div style={{height: '13%', margin: 0}}>
@@ -162,13 +169,13 @@ const ReporteAsistencia = (props) => {
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
                 <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
                   <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
@@ -176,13 +183,13 @@ const ReporteAsistencia = (props) => {
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>
@@ -192,8 +199,8 @@ const ReporteAsistencia = (props) => {
       </div>
       <div className={clsx(classes.contenedorFormulario, classes.tipoletra2, classes.colorTextoPrimario)}>
         <form className={clsx(classes.formulario)}>
-          <h2 style={{textTransform: 'uppercase',}}>reporte de asistencia</h2>
-          <div style={{display: 'flex', paddingBottom: 20}}>
+          <h2 style={{textTransform: 'uppercase', paddingTop: 50}}>reporte de asistencia</h2>
+          <div style={{display: 'flex', paddingBottom: 20, justifyContent: 'space-evenly', width: '90%'}}>
             <div className={clsx(classes.filtro)}>
               <p style={{textTransform: 'uppercase',}}>dni:</p>
               <FormControl style={{marginLeft: 37, justifyContent: 'center'}} variant="outlined">
@@ -242,17 +249,18 @@ const ReporteAsistencia = (props) => {
                 />
               </FormControl>
             </div>
+            <div style={{paddingTop:45}} className={clsx(classes.filtro)}>
+              <Button
+                className={clsx(classes.boton, classes.tipoletra2)} 
+                color='primary' 
+                variant='contained'
+                //onClick={() => onSubmit()}
+                onClick = {accionPdf}
+              >
+                Buscar
+              </Button>
+            </div>
           </div>
-          <Button
-              style={{float: 'right'}}
-              className={clsx(classes.boton, classes.tipoletra2)} 
-              color='primary' 
-              variant='contained'
-              //onClick={() => onSubmit()}
-              onClick = {accionPdf}
-            >
-              Buscar
-          </Button>
           <div className={clsx(classes.contenedorTabla)}>
             <TableContainer component={Paper}>
               <Table className={classes.tabla} aria-label="simple table">

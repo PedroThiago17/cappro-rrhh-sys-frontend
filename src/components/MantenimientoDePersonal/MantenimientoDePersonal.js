@@ -9,11 +9,12 @@ import './styles/mantenimientoPersonal.css'
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 import Visibility from '@material-ui/icons/Visibility';
+import { useNavigate } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "98vh",
     margin: 0,
     fontFamily: "Montserrat, sans-serif"
   },
@@ -66,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   contenedorFormulario: {
-    width: "100%",
-    height: "100%",
+    width: "130vh",
+    height: "80%",
     marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   formulario: {
     marginLeft: '6%',
     boxShadow: theme.shadows[6],
-    width: "70%",
+    width: "150vh",
     height: '90%',
   },
   formControl: {
@@ -105,7 +106,6 @@ const data = [
     </SvgIcon>
   );
 } */
-
 const MantenimientoDePersonal = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
@@ -119,6 +119,11 @@ const MantenimientoDePersonal = () => {
   const handleDelete = (id) => {
     setRows(rows.filter((row) => row.id !== id));
   };
+  const navigate = useNavigate();
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
 
   return (
     <div className={clsx(classes.root)}>
@@ -140,38 +145,38 @@ const MantenimientoDePersonal = () => {
       </div>
       <div className={clsx(classes.contenedorMenu)}>
         <List component="nav" className={classes.drawer} aria-label="menu">
-          <ListItem style={{ padding: 20 }} button onClick={handleClick}>
+          <ListItem style={{padding: 20}} button onClick={handleClick}>
             <ListItemIcon>
-              <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
+              <img style={{marginLeft:10, width: '56%',height: '56%'}} src = './images/Recurso4.png'/>
             </ListItemIcon>
-            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
+            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)}/>
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{ marginLeft: 20 }}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
+                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{ marginLeft: 20 }}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
+                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{ padding: 20 }} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{ padding: 20 }} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
           </ListItem>
@@ -183,10 +188,10 @@ const MantenimientoDePersonal = () => {
             <h2>MANTENIMIENTO DE PERSONAL</h2>
             <div className='mp-form-content'>
               <div className='form-inputs'>
-                <RegistroInput label={'Dni:'}></RegistroInput>
+                <RegistroInput label={'DNI:'}></RegistroInput>
                 <RegistroInput label={'Nombres:'}></RegistroInput>
                 <RegistroInput label={'Apellidos:'}></RegistroInput>
-                <RegistroInput label={'Código modular:'}></RegistroInput>
+                <RegistroInput label={'Código Modular:'}></RegistroInput>
               </div>
               <div className='main-button-container'>
                 <button className='main-button'>Buscar</button>
@@ -194,10 +199,10 @@ const MantenimientoDePersonal = () => {
             </div>
             <div className='table-container'>
               <div className='table-header'>
-                <p>Dni</p>
+                <p>DNI</p>
                 <p>Nombres</p>
                 <p>Apellidos</p>
-                <p>Codigo modular</p>
+                <p>Codigo Modular</p>
                 <p>Acciones</p>
               </div>
               {

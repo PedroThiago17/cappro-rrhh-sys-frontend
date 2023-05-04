@@ -6,10 +6,11 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import clsx from 'clsx';
 import RegistroInput from '../Comunes/RegistroInput'
 import './styles/registroPersonal.css'
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "98vh",
     margin: 0,
     fontFamily: "Montserrat, sans-serif"
   },
@@ -62,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   contenedorFormulario: {
-    width: "100%",
-    height: "100%",
+    width: "130vh",
+    height: "80%",
     marginLeft: '18%',
     position: 'absolute',
     textAlign: 'center',
@@ -74,11 +75,8 @@ const useStyles = makeStyles((theme) => ({
   formulario: {
     marginLeft: '6%',
     boxShadow: theme.shadows[6],
-    width: "70%",
-    height: '750px',
-    [theme.breakpoints.down('xl')]: {
-      height: '700px',
-    },
+    width: "150vh",
+    height: '90%',
   },
   formControl: {
     minWidth: 120,
@@ -104,14 +102,19 @@ const RegistroPersonal = () => {
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+  const navigate = useNavigate();
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
 
-  const sexoOptions = [' ', 'Masculino', 'Femenino', 'No especifica'];
-  const estadoCivilOptions = [' ', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
-  const puestoOptions = [' ', 'Supervisor', 'Personal'];
-  const supervisionOptions = [' ', 'Administrador', 'Supervisor'];
-  const modalidadHorariaOptions = [' ', 'Tiempo completo', 'Tiempo parcial'];
-  const fondoPensionesOptions = [' ', 'AFP', 'ONP'];
-  const AFPOptions = [' ', '1', '2'];
+  const sexoOptions = ['Seleccionar', 'Masculino', 'Femenino', 'No especifica'];
+  const estadoCivilOptions = ['Seleccionar', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
+  const puestoOptions = ['Seleccionar', 'Supervisor', 'Personal'];
+  const supervisionOptions = ['Seleccionar', 'Administrador', 'Supervisor'];
+  const modalidadHorariaOptions = ['Seleccionar', 'Tiempo completo', 'Tiempo parcial'];
+  const fondoPensionesOptions = ['Seleccionar', 'AFP', 'ONP'];
+  const AFPOptions = ['Seleccionar', 'Profuturo', 'AFP Integra', 'Prima AFP', 'AFP Habitat'];
 
   return (
     <div className={clsx(classes.root)}>
@@ -133,38 +136,38 @@ const RegistroPersonal = () => {
       </div>
       <div className={clsx(classes.contenedorMenu)}>
         <List component="nav" className={classes.drawer} aria-label="menu">
-          <ListItem style={{ padding: 20 }} button onClick={handleClick}>
+          <ListItem style={{padding: 20}} button onClick={handleClick}>
             <ListItemIcon>
-              <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
+              <img style={{marginLeft:10, width: '56%',height: '56%'}} src = './images/Recurso4.png'/>
             </ListItemIcon>
-            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
+            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)}/>
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{ marginLeft: 20 }}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
+                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{ marginLeft: 20 }}>
+              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
+                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{ padding: 20 }} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{ padding: 20 }} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
           </ListItem>
@@ -172,7 +175,7 @@ const RegistroPersonal = () => {
       </div>
       <div className={clsx(classes.contenedorFormulario)}>
         <form className={clsx(classes.formulario)}>
-          <div className='form-container'>
+          <div className='mp-form-container'>
             <h2>REGISTRAR NUEVO PERSONAL</h2>
             <div className='blocks-container'>
               <div>
@@ -246,7 +249,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Carga horaria:'}></RegistroInput>
-                    <RegistroInput label={'AFP:'} type={'select'} options={sexoOptions}></RegistroInput>
+                    <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Pago por hora:'}></RegistroInput>
