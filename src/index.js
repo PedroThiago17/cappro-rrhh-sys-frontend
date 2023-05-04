@@ -52,12 +52,15 @@ const router = createBrowserRouter([
 
 root.render(
   <ThemeProvider theme={theme}>
-    <RouterProvider router={router}/>
-      
-      {/* <RegistroPersonal/>
-      <MantenimientoDePersonal/>
-      <ReportePlanillas></ReportePlanillas>
-      <ReporteAsistencia></ReporteAsistencia> */}
+    <Login></Login>
+    
+    
+    {/* <RegistroPersonal/>
+    <MantenimientoDePersonal/>
+    <ReporteAsistencia></ReporteAsistencia>
+    <MantenimientoDePersonal/>
+    <ReportePlanillas></ReportePlanillas>
+     */}
   </ThemeProvider>
 );
 
