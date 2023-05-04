@@ -102,6 +102,7 @@ const Login = () => {
         const classes = useStyles();
         const [values, setValues] = React.useState({
           showPassword: false,
+          isLoading: false,
         });
         const [usuario, setUsuario] = React.useState({
           correo: '',
@@ -143,6 +144,7 @@ const Login = () => {
                 contra,
               }
             });
+            useState.isLoading = true;
             navigate('/menu');
             console.log(correo, contra);
           }catch (error){
@@ -224,6 +226,10 @@ const Login = () => {
                 Ingresar
               </Button>
             </div>
+            {useState.isLoading === false ? (
+                   <div>Loading...</div>
+               ) : null 
+            }
           </form>
       </div>    
     );
