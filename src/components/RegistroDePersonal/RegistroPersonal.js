@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
@@ -7,6 +7,40 @@ import clsx from 'clsx';
 import RegistroInput from '../Comunes/RegistroInput'
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
+
+
+const JUBILACION = 65;
+const VALOR_BD = 20;
+const PORCENTAJE = 0.09;
+const sexoOptions = ['Seleccionar', 'Masculino', 'Femenino', 'No especifica'];
+const estadoCivilOptions = ['Seleccionar', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
+const puestoOptions = ['Seleccionar', 'Supervisor', 'Personal'];
+const supervisionOptions = ['Seleccionar', 'Administrador', 'Supervisor'];
+const fondoPensionesOptions = ['Seleccionar', 'AFP', 'ONP'];
+const AFPOptions = ['Seleccionar', 'Profuturo', 'AFP Integra', 'Prima AFP', 'AFP Habitat'];
+const mhPersonal = ['Seleccionar', 'Tiempo completo', 'Tiempo parcial'];
+const mhSupervisor = ['Seleccionar', 'Tiempo completo'];
+
+
+const calcularEdad = (fechaNacimiento) => {
+  const hoy = new Date();
+  const nacimiento = new Date(fechaNacimiento);
+
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const mes = hoy.getMonth() - nacimiento.getMonth();
+
+  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+    edad--;
+  }
+  return edad;
+}
+
+const validateEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,29 +126,77 @@ const useStyles = makeStyles((theme) => ({
 const RegistroPersonal = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [age, setAge] = React.useState(0);
+  const [jubilacion, setJubilacion] = useState(0);
+  const [birthday, setBirthday] = useState('');
+  const [puesto, setPuesto] = useState('');
+  const [options, setOptions] = useState([]);
+  const [modalidadHoraria, setModalidadHoraria] = useState('');
+  const [fondoPensiones, setFondoPensiones] = useState({ tipo: '', porcentaje: 0 });
+  const [cargaHoraria, setCargaHoraria] = useState(0);
+  const [pagoBruto, setPagoBruto] = useState(0);
+  const [pagoNeto, setPagoNeto] = useState(0);
+  const [pagoHora, setPagoHora] = useState(0);
+  const [seguroSalud, setSeguroSalud] = useState(0);
+  const [descuentoPension, setDescuentoPension] = useState(0);
+  const [email, setEmail] = useState('');
+
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    console.log(value)
+    setEmail(value);
+  }
+
+
+  useEffect(() => {
+    if (puesto === 'Supervisor') {
+      setOptions(mhSupervisor)
+    } else {
+      setOptions(mhPersonal)
+    }
+  }, [puesto]);
+
+  useEffect(() => {
+    setPagoBruto(cargaHoraria * pagoHora)
+  }, [pagoHora, cargaHoraria])
+
+  useEffect(() => {
+    setSeguroSalud((pagoBruto * PORCENTAJE).toFixed(2))
+  }, [pagoBruto])
+
+
+  useEffect(() => {
+    setDescuentoPension((pagoBruto * fondoPensiones.porcentaje).toFixed(2))
+  }, [pagoBruto, fondoPensiones])
+
+  useEffect(() => {
+    setPagoNeto((pagoBruto - (Number(descuentoPension) + Number(seguroSalud))))
+  }, [pagoBruto, descuentoPension, seguroSalud])
+
 
   const handleClick = () => {
     setOpen(!open);
   };
 
-  const [age, setAge] = React.useState('');
+  const calcularJubilacion = () => {
+    const jubilacion = age > JUBILACION ? new Date().getFullYear() : (JUBILACION - age) + new Date().getFullYear();
+    return jubilacion;
+  }
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+
+  function handleBirthday(event) {
+    const nuevaFecha = event.target.value;
+    const edad = calcularEdad(nuevaFecha);
+    setAge(edad);
+    setBirthday(nuevaFecha)
+  }
+
   const navigate = useNavigate();
   const onSubmit = (url) => {
     navigate(url);
     console.log(url);
   }
-
-  const sexoOptions = ['Seleccionar', 'Masculino', 'Femenino', 'No especifica'];
-  const estadoCivilOptions = ['Seleccionar', 'Soltero', 'Casado', 'Viudo', 'Divorciado'];
-  const puestoOptions = ['Seleccionar', 'Supervisor', 'Personal'];
-  const supervisionOptions = ['Seleccionar', 'Administrador', 'Supervisor'];
-  const modalidadHorariaOptions = ['Seleccionar', 'Tiempo completo', 'Tiempo parcial'];
-  const fondoPensionesOptions = ['Seleccionar', 'AFP', 'ONP'];
-  const AFPOptions = ['Seleccionar', 'Profuturo', 'AFP Integra', 'Prima AFP', 'AFP Habitat'];
 
   return (
     <div className={clsx(classes.root)}>
@@ -136,38 +218,38 @@ const RegistroPersonal = () => {
       </div>
       <div className={clsx(classes.contenedorMenu)}>
         <List component="nav" className={classes.drawer} aria-label="menu">
-          <ListItem style={{padding: 20}} button onClick={handleClick}>
+          <ListItem style={{ padding: 20 }} button onClick={handleClick}>
             <ListItemIcon>
-              <img style={{marginLeft:10, width: '56%',height: '56%'}} src = './images/Recurso4.png'/>
+              <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
             </ListItemIcon>
-            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)}/>
+            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/registropersonal')}>
+              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
-                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
+                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
                 </ListItemIcon>
-                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
+                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
               </ListItem>
-              <ListItem button style={{marginLeft: 20}} onClick={() => onSubmit('/mantenimientopersonal')}>
+              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
-                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
+                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
                 </ListItemIcon>
-                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
+                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
           </ListItem>
@@ -191,16 +273,25 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Nombres:'}></RegistroInput>
-                    <RegistroInput label={'Edad:'}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Edad: </label>
+                      <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)} />
+                    </div>
                     <RegistroInput label={'Teléfono / Celular:'}></RegistroInput>
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Apellidos:'}></RegistroInput>
                     <RegistroInput label={'Sexo:'} type={'select'} options={sexoOptions}></RegistroInput>
-                    <RegistroInput label={'Correo Personal: '}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Correo personal: </label>
+                      <input type='email' name='email' maxLength={60} value={email} onChange={handleEmailChange} />
+                    </div>
                   </div>
                   <div className='form-block'>
-                    <RegistroInput label={'Fecha de nacimiento:'}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Fecha de nacimiento: </label>
+                      <input type='date' required id='fechaNacimiento' value={birthday} onChange={handleBirthday} />
+                    </div>
                     <RegistroInput label={'Estado civil:'} type='select' options={estadoCivilOptions}></RegistroInput>
                   </div>
                 </div>
@@ -221,8 +312,20 @@ const RegistroPersonal = () => {
                     <RegistroInput label={'Especialidad:'}></RegistroInput>
                   </div>
                   <div className='form-block'>
-                    <RegistroInput label={'Años de jubilación:'}></RegistroInput>
-                    <RegistroInput label={'Puesto:'} type={'select'} options={puestoOptions}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Año de jubilación: </label>
+                      <input type='number' readOnly required value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} />
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Puesto: </label>
+                      <select className='select-input' name="" id="" required onChange={(e) => setPuesto(e.target.value)}>
+                        {
+                          puestoOptions.map((op, index) => (
+                            <option key={index} value={op}> {op} </option>
+                          ))
+                        }
+                      </select>
+                    </div>
                   </div>
                   <div className='form-block'>
                     <RegistroInput label={'Formación profesional:'}></RegistroInput>
@@ -239,21 +342,74 @@ const RegistroPersonal = () => {
                 <div className='form-content'>
                   <div className='form-block'>
                     <RegistroInput label={'Código modular:'}></RegistroInput>
-                    <RegistroInput label={'Pago bruto:'}></RegistroInput>
-                    <RegistroInput label={'Descuento seguro de salud:'}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Pago bruto: </label>
+                      <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Descuento seguro de salud: </label>
+                      <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
+                    </div>
                   </div>
                   <div className='form-block'>
-                    <RegistroInput label={'Modalidad horaria:'} type={'select'} options={modalidadHorariaOptions}></RegistroInput>
-                    <RegistroInput label={'Fondo de pensiones:'} type={'select'} options={fondoPensionesOptions}></RegistroInput>
-                    <RegistroInput label={'Descuento de pensiones:'}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Modalidad horaria: </label>
+                      <select className='select-input' name="" id="" required onChange={(e) => {
+                        setModalidadHoraria(e.target.value)
+                        e.target.value === 'Tiempo completo' ? setCargaHoraria(VALOR_BD) : setCargaHoraria(0);
+                      }}>
+                        {
+                          options.map((op, index) => (
+                            <option key={index} value={op}> {op} </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Fondo de pensiones: </label>
+                      <select className='select-input' name="" id="" required onChange={(e) => {
+                        setFondoPensiones({
+                          tipo: e.target.value,
+                          porcentaje: e.target.value === 'AFP' ? 0.1 : 0.13
+                        })
+                      }}>
+                        {
+                          fondoPensionesOptions.map((op, index) => (
+                            <option key={index} value={op}> {op} </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Descuento de pensiones: </label>
+                      <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                    </div>                  </div>
+                  <div className='form-block'>
+                    <div className='input-container'>
+                      <label htmlFor=""> Carga horaria: </label>
+                      <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} onChange={e => {
+                        setCargaHoraria(e.target.value)
+                      }} />
+                    </div>
+
+                    {
+                      fondoPensiones.tipo === 'AFP' && <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
+                    }
                   </div>
                   <div className='form-block'>
-                    <RegistroInput label={'Carga horaria:'}></RegistroInput>
-                    <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
-                  </div>
-                  <div className='form-block'>
-                    <RegistroInput label={'Pago por hora:'}></RegistroInput>
-                    <RegistroInput label={'Pago neto:'}></RegistroInput>
+                    <div className='input-container'>
+                      <label htmlFor=""> Pago por hora: </label>
+                      <input type='number' id='pagoPorHora' value={pagoHora} min={0} onChange={(e) => {
+                        setPagoHora(e.target.value)
+                      }} />
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Pago neto: </label>
+                      <input type='number' id='pagoNeto' value={pagoNeto} min={0} onChange={(e) => {
+                        setPagoNeto(e.target.value)
+                      }} />
+
+                    </div>
                   </div>
                 </div>
               </div>
