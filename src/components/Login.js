@@ -150,13 +150,13 @@ const Login = () => {
               }
             }); 
             navigate('/menu');
-            setLoading(false);
+            
             console.log(correo, contra, loading);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')
             // alert(contra)
           }
-          
+          setLoading(false);
         };
     return (   
       <div className={clsx(classes.root)}>
