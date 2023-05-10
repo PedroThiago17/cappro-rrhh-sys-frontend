@@ -347,10 +347,14 @@ const RegistroPersonal = () => {
                       <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
                     </div>
                     <div className='input-container'>
-                      <label htmlFor=""> Descuento seguro de salud: </label>
-                      <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
+                      <label htmlFor=""> Pago neto: </label>
+                      <input type='number' id='pagoNeto' value={pagoNeto} min={0} onChange={(e) => {
+                        setPagoNeto(e.target.value)
+                      }} />
+
                     </div>
                   </div>
+                  
                   <div className='form-block'>
                     <div className='input-container'>
                       <label htmlFor=""> Modalidad horaria: </label>
@@ -364,6 +368,21 @@ const RegistroPersonal = () => {
                           ))
                         }
                       </select>
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Descuento seguro de salud: </label>
+                      <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
+                    </div>
+                    <div className='input-container'>
+                      <label htmlFor=""> Descuento de pensiones: </label>
+                      <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                    </div>                  </div>
+                  <div className='form-block'>
+                    <div className='input-container'>
+                      <label htmlFor=""> Carga horaria: </label>
+                      <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} onChange={e => {
+                        setCargaHoraria(e.target.value)
+                      }} />
                     </div>
                     <div className='input-container'>
                       <label htmlFor=""> Fondo de pensiones: </label>
@@ -380,21 +399,6 @@ const RegistroPersonal = () => {
                         }
                       </select>
                     </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Descuento de pensiones: </label>
-                      <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
-                    </div>                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Carga horaria: </label>
-                      <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} onChange={e => {
-                        setCargaHoraria(e.target.value)
-                      }} />
-                    </div>
-
-                    {
-                      fondoPensiones.tipo === 'AFP' && <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
-                    }
                   </div>
                   <div className='form-block'>
                     <div className='input-container'>
@@ -403,13 +407,9 @@ const RegistroPersonal = () => {
                         setPagoHora(e.target.value)
                       }} />
                     </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Pago neto: </label>
-                      <input type='number' id='pagoNeto' value={pagoNeto} min={0} onChange={(e) => {
-                        setPagoNeto(e.target.value)
-                      }} />
-
-                    </div>
+                    {
+                      fondoPensiones.tipo === 'AFP' && <RegistroInput label={'AFP:'} type={'select'} options={AFPOptions}></RegistroInput>
+                    }
                   </div>
                 </div>
               </div>
