@@ -10,6 +10,7 @@ import axios from 'axios'
 import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import PageLoader from '../Loading';
+import NavBar from '../MenuPrincipal/NavBar';
 
 const INITIAL_FONDO_PENSIONES = [
   {
@@ -438,61 +439,7 @@ const RegistroPersonal = () => {
 
   return (
     <div className={clsx(classes.root)}>
-      <div style={{ height: '13%', margin: 0 }}>
-        <AppBar position="relative" className={classes.appBar}>
-          <Toolbar>
-            <div className={clsx(classes.contenedorLogo)}>
-              <div style={{ width: '7%', height: '100%' }}>
-                <img className={clsx(classes.logo)} src='./images/Recurso1.png' />
-              </div>
-              <div style={{ justifyContent: 'center', marginLeft: 10, marginTop: 3 }}>
-                <h3 className={clsx(classes.titulo)} style={{ fontSize: 15 }}>escuela superior de arte dramático de trujillo</h3>
-                <h2 className={clsx(classes.titulo)} style={{ fontSize: 29, }}>virgilio rodriguez nache</h2>
-                <p className={clsx(classes.titulo)} style={{ textTransform: 'none', fontSize: 10 }}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
-              </div>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-      <div className={clsx(classes.contenedorMenu)}>
-        <List component="nav" className={classes.drawer} aria-label="menu">
-          <ListItem style={{ padding: 20 }} button onClick={handleClick}>
-            <ListItemIcon>
-              <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component='div' disablePadding>
-            <ListItem button onClick={() => onSubmit('/registropersonal')}>
-                <ListItemIcon>
-                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
-                </ListItemIcon>
-                <ListItemText disableTypography style={{marginLeft: 20}}className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
-              </ListItem>
-              <ListItem button onClick={() => onSubmit('/mantenimientopersonal')}>
-                <ListItemIcon>
-                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
-                </ListItemIcon>
-                <ListItemText disableTypography component='div' style={{marginLeft: 20}} className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
-              </ListItem>
-            </List>
-          </Collapse>
-          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
-            <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
-          </ListItem>
-          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
-            <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
-          </ListItem>
-        </List>
-      </div>
+      <NavBar />
       <div className={clsx(classes.contenedorFormulario)}>
         <form className={clsx(classes.formulario)} onSubmit={onRegistrarPersonal}>
           <div className='mp-form-container'>
