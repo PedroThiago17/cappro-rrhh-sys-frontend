@@ -465,17 +465,17 @@ const RegistroPersonal = () => {
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/registropersonal')}>
+            <ListItem button onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
+                <ListItemText disableTypography style={{marginLeft: 20}}className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/mantenimientopersonal')}>
+              <ListItem button onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
-                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
+                <ListItemText disableTypography component='div' style={{marginLeft: 20}} className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
               </ListItem>
             </List>
           </Collapse>
