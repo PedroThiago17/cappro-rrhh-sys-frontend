@@ -41,7 +41,7 @@ const RegistroInput = ({ label, type, options }) => {
         type === 'select' ?
           <>
             <label htmlFor=""> {label} </label>
-            <select className='select-input' name="" id="" required>
+            <select className='select-input' name="" id="" /* required */>
               {
                 options.map((op, index) => (
                   <option key={index} value=""> {op} </option>
@@ -57,7 +57,7 @@ const RegistroInput = ({ label, type, options }) => {
               <input
                 name='dni'
                 type='text'
-                required
+                /* required */
                 value={dni}
                 onChange={(e) => handleNumberChange(e, 8)} />
 
@@ -77,7 +77,7 @@ const RegistroInput = ({ label, type, options }) => {
               label === 'Teléfono / Celular:' ?
                 <>
                   <label htmlFor=""> {label} </label>
-                  <input name='telefono' type='text' required value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
+                  <input name='telefono' type='text' /* required */ value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
 
                 </>
                 :
@@ -85,7 +85,7 @@ const RegistroInput = ({ label, type, options }) => {
                   label === 'Fecha de Ingreso:' ?
                     <>
                       <label htmlFor=""> {label} </label>
-                      <input type='date' defaultValue={new Date().toISOString().substring(0, 10)} />
+                      <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
 
                     </>
 
@@ -103,7 +103,7 @@ const RegistroInput = ({ label, type, options }) => {
                       label === 'Años de experiencia:' ?
                         <>
                           <label htmlFor=""> {label} </label>
-                          <input type='number' required />
+                          <input type='number' /* required */ />
 
                         </>
 
@@ -112,7 +112,7 @@ const RegistroInput = ({ label, type, options }) => {
                         label === 'Código modular:' ?
                           <>
                             <label htmlFor=""> {label} </label>
-                            <input type='text' name='codigo_modular' value={codigoModular} required onChange={(e) => handleNumberChange(e, 9)} />
+                            <input type='text' name='codigo_modular' value={codigoModular} /* required */ onChange={(e) => handleNumberChange(e, 9)} />
                           </>
 
                           :
@@ -136,14 +136,14 @@ const RegistroInput = ({ label, type, options }) => {
                               label === 'Especialidad:' ?
                                 <>
                                   <label htmlFor=""> {label} </label>
-                                  <input type='text' maxLength='50' required />
+                                  <input type='text' maxLength='50' /* required */ />
                                 </>
 
                                 :
 
                                 <>
                                   <label htmlFor=""> {label} </label>
-                                  <input type='text' maxLength='60' required onChange={handleText} />
+                                  <input type='text' maxLength='60' /* required */ onChange={handleText} />
                                 </>
       }
 
