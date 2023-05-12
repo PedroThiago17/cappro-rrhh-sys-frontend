@@ -1,0 +1,111 @@
+.form-container {
+  padding: 10px 30px;
+  height: 100%;
+}
+.form-container h2 {
+  color: var(--page-color);
+  margin: 5px;
+}
+.blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.form-content {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 30px;
+  align-content: center;
+}
+.form-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.block-title {
+  text-align: start;
+  width: 15%;
+  color: var(--page-color);
+  font-weight: 600;
+}
+.block-title-container {
+  display: flex;
+  align-items: center;
+}
+.line {
+  background-color: var(--page-color);
+  width: 100%;
+  height: 2px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: start;
+  color: var(--page-color);
+  align-items: center;
+  gap: 10px;
+}
+.input-container label {
+  text-align: start;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  width: 40%;
+}
+.input-container input, .select-input {
+  border: 1px solid var(--page-color);
+  border-radius: 5px;
+  height: 20px;
+  width: 60%;
+  outline: none;
+}
+.select-input {
+  height: 30px;
+  color: var(--page-color);
+}
+
+.buttons-container {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.buttons-container div {
+  display: flex;
+  gap: 20px;
+}
+.main-button {
+  font-size: 16px;
+  background-color: var(--page-color);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input-container input {
+  color: var(--page-color);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield; /* otros navegadores */
+}
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+}
+.success-msg {
+  color: green;
+  font-size: 14px;
+}
+

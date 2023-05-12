@@ -1,9 +1,15 @@
 import React from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
+import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, IconButton } from '@material-ui/core';
 import { ExpandLess, ExpandMore} from '@material-ui/icons';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
+import MantenimientoDePersonal from '../MantenimientoDePersonal/MantenimientoDePersonal';
+import RegistroPersonal from '../RegistroDePersonal/RegistroPersonal';
+import ReportePlanillas from '../ReportePlanillas/ReportePlanillas';
+import ReporteAsistencia from '../ReporteAsistencia/ReporteAsistencia';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,10 +71,15 @@ const useStyles = makeStyles((theme) => ({
 const MenuPrincipal = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpen(!open);
   };
+  const onSubmit = (url) => {
+    navigate(url);
+    console.log(url);
+  }
 
   return (
     <div className={clsx(classes.root)}>
@@ -85,9 +96,9 @@ const MenuPrincipal = () => {
                 <p className={clsx(classes.titulo)} style={{textTransform: 'none', fontSize:10}}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
               </div>
             </div>
-          </Toolbar>
+          </Toolbar> 
         </AppBar>
-      </div>
+      </div>  
       <div className={clsx(classes.contenedorMenu)}>
         <List component="nav" className={classes.drawer} aria-label="menu">
           <ListItem style={{padding: 20}} button onClick={handleClick}>
@@ -99,27 +110,27 @@ const MenuPrincipal = () => {
           </ListItem>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component='div' disablePadding>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button onClick={() => onSubmit('/registropersonal')}>
                 <ListItemIcon>
-                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
+                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
+                <ListItemText disableTypography style={{marginLeft: 20}}className={clsx(classes.tipoletra1)} primary='Registro de Personal'/>
               </ListItem>
-              <ListItem button style={{marginLeft: 20}}>
+              <ListItem button onClick={() => onSubmit('/mantenimientopersonal')}>
                 <ListItemIcon>
-                  <img style={{marginLeft: 40}} src = './images/Recurso7.png'/>
+                  <img style={{marginLeft: 60}} src = './images/Recurso7.png'/>
                 </ListItemIcon>
-                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
+                <ListItemText disableTypography component='div' style={{marginLeft: 20}} className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal'/>
               </ListItem>
             </List>
           </Collapse>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso5.png'/>
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <ListItem style={{padding: 20}} button>
+          <ListItem style={{padding: 20}} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src = './images/Recurso6.png'/>
             </ListItemIcon>
