@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - develop
 env:
   CI: ""
 
@@ -35,7 +31,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
-    if: github.event_name == 'push' && github.event.action == 'closed'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
