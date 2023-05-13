@@ -687,18 +687,11 @@ const RegistroPersonal = () => {
                         </select>
                       </div>
                     }
-                    {
-                      errorMsg && <p className='error-msg'> {errorMsg} </p>
-
-                    }
-                    {
-                      successMsg && <p className='success-msg'> {successMsg} </p>
-                    }
+                    {loading ? <PageLoader/> : null}
                   </div>
                 </div>
               </div>
             </div>
-
             <div className='buttons-container'>
               <button className='main-button' disabled={loading}>Tomar fotos</button>
               <div>
@@ -706,8 +699,7 @@ const RegistroPersonal = () => {
                 <button className='main-button' disabled={loading}>Guardar</button>
               </div>
             </div>
-          </div>
-          {loading ? <PageLoader/> : null}
+          </div>     
         </form>
       </div>
     </div>
