@@ -300,7 +300,7 @@ const RegistroPersonal = () => {
       else {
 
         let idRol = 0
-        puesto === 'Supervisor' ? idRol = 1 : idRol = 2;
+        puesto === 'Supervisor' ? idRol = 2 : idRol = 3;
         setShowSupervision(true);
         const res = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getUsuariosSupervisores/${idRol}`);
         if (res) {
