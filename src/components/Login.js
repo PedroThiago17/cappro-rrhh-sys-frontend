@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { ClipLoader } from "react-spinners";
 import PageLoader from './Loading';
+import NavBar from './MenuPrincipal/NavBar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -109,6 +110,7 @@ const Login = () => {
           correo: '',
           contra: '',
         });
+        const [nombre, setNombre] = useState('');
         const [correo, setCorreo] = useState('');
         const [contrase, setContra] = useState('');
         const [error, setError] = useState('');
@@ -148,10 +150,15 @@ const Login = () => {
                 correo,
                 contra,
               }
-            }); 
-            navigate('/menu');
+            })
+              .then((response) => {
+                const nombreUsuario = response.data.datosPersonales.nombres; 
+                console.log(nombreUsuario);
+                <NavBar nombre={nombreUsuario}/>
+              }); 
             
-            console.log(correo, contra, loading);
+            navigate('/menu');  
+            console.log(correo, contra, loading, nombre);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')
             // alert(contra)
@@ -233,7 +240,7 @@ const Login = () => {
                 Ingresar
               </Button>   
             </div>
-            {loading ? <PageLoader /> : null}
+            {loading ? <PageLoader/> : null}
           </form>        
       </div>    
     );

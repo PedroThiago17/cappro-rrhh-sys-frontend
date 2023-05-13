@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const NavBar = () => {
+const NavBar = ({ datos }) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const navigate = useNavigate();
@@ -72,8 +72,9 @@ const NavBar = () => {
     };
     const onSubmit = (url) => {
         navigate(url);
-        console.log(url);
+        console.log(datos);
     }
+    
     return (
         <div>
             <div style={{height: '13vh', margin: 0}}>
@@ -89,10 +90,11 @@ const NavBar = () => {
                             <p className={clsx(classes.titulo)} style={{textTransform: 'none', fontSize:10}}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
                         </div>
                     </div>
-                    <div style={{marginLeft: '30%'}}>
+                    <div style={{marginLeft: '38%'}}>
                         <IconButton onClick={() => onSubmit('/')} edge="end">
-                            <img style={{height: 25}} src = './images/Recurso10.png'/>
+                            <img style={{height: 25, marginTop: 24}} src = './images/Recurso10.png'/>
                         </IconButton>
+                        <p>{datos}</p>
                     </div>
                 </Toolbar> 
                 </AppBar>
