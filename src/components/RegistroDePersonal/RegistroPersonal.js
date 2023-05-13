@@ -10,6 +10,7 @@ import axios from 'axios'
 import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import NavBar from '../MenuPrincipal/NavBar';
+import PageLoader from '../Loading';
 
 const INITIAL_FONDO_PENSIONES = [
   {
@@ -174,6 +175,7 @@ const RegistroPersonal = () => {
   const [supervisionOptions, setSupervisionOptions] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const onRegistrarPersonal = async (e) => {
     e.preventDefault();
@@ -211,16 +213,18 @@ const RegistroPersonal = () => {
 
     try {
       console.log('datos a enviar: ', body)
+      setLoading(true);
       const res = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/saveUsuario', body);
       if (res.data) {
-        setSuccessMsg('El usuario ha sido agregado correctamente')
+        alert('El usuario ha sido agregado correctamente')
         navigate('/mantenimientopersonal')
       }
       console.log('respuesta del servidor: ', res.data)
     } catch (error) {
       console.log({ error: error.response.data })
-      setErrorMsg(error.response.data);
+      alert(error.response.data);
     }
+    setLoading(false);
   }
 
   const handleNumberChange = (e, limit) => {
@@ -696,14 +700,14 @@ const RegistroPersonal = () => {
             </div>
 
             <div className='buttons-container'>
-              <button className='main-button'>Tomar fotos</button>
+              <button className='main-button' disabled={loading}>Tomar fotos</button>
               <div>
-                <button className='main-button'>Limpiar</button>
-                <button className='main-button'>Guardar</button>
+                <button className='main-button' disabled={loading}>Limpiar</button>
+                <button className='main-button' disabled={loading}>Guardar</button>
               </div>
             </div>
           </div>
-
+          {loading ? <PageLoader/> : null}
         </form>
       </div>
     </div>
