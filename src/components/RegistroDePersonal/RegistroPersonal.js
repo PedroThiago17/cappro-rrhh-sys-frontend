@@ -9,8 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
-import PageLoader from '../Loading';
-import NavBar from '../MenuPrincipal/NavBar';
 
 const INITIAL_FONDO_PENSIONES = [
   {
@@ -176,8 +174,6 @@ const RegistroPersonal = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  const [loading, setLoading] = useState(false);
-
   const onRegistrarPersonal = async (e) => {
     e.preventDefault();
     const body = {
@@ -214,19 +210,16 @@ const RegistroPersonal = () => {
 
     try {
       console.log('datos a enviar: ', body)
-      setLoading(true);
       const res = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/saveUsuario', body);
-      if(res.data) {
-        //setSuccessMsg('El usuario ha sido agregado correctamente')
-        alert('El usuario ha sido agregado correctamente');
+      if (res.data) {
+        setSuccessMsg('El usuario ha sido agregado correctamente')
+        navigate('/mantenimientopersonal')
       }
       console.log('respuesta del servidor: ', res.data)
     } catch (error) {
-      console.log({error: error.response.data})
-      //setErrorMsg(error.response.data);
-      alert(error.response.data);
+      console.log({ error: error.response.data })
+      setErrorMsg(error.response.data);
     }
-    setLoading(false);
   }
 
   const handleNumberChange = (e, limit) => {
@@ -296,21 +289,28 @@ const RegistroPersonal = () => {
 
   const onPuestoSelect = async (rolId, puesto) => {
     try {
+      console.log('rolid: ', rolId)
+      console.log('puesto: ', puesto)
       setPuesto({ nombreRol: puesto, idRol: rolId });
       if (puesto === 'Administrador') {
         setSupervision({ idUsuario: null, nombreCompleto: null });
         setShowSupervision(false);
       }
       else {
-        const res = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getUsuariosSupervisores/${rolId}`);
+
+        let idRol = 0
+        puesto === 'Supervisor' ? idRol = 1 : idRol = 2;
+        setShowSupervision(true);
+        const res = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getUsuariosSupervisores/${idRol}`);
         if (res) {
           setSupervisionOptions(res.data)
-          setShowSupervision(true);
           setSupervision({ idUsuario: res.data[0].idUsuario, nombreCompleto: res.data[0].nombreCompleto })
         }
-      }
 
+      }
     } catch (error) {
+      setSupervisionOptions([])
+      console.log(error)
     }
   }
 
@@ -437,9 +437,72 @@ const RegistroPersonal = () => {
     }
   }, [errorMsg]);
 
+  useEffect(() => {
+    if (successMsg) {
+      const timeoutId = setTimeout(() => {
+        setSuccessMsg(null);
+      }, 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [successMsg]);
+
   return (
     <div className={clsx(classes.root)}>
-      <NavBar />
+      <div style={{ height: '13%', margin: 0 }}>
+        <AppBar position="relative" className={classes.appBar}>
+          <Toolbar>
+            <div className={clsx(classes.contenedorLogo)}>
+              <div style={{ width: '7%', height: '100%' }}>
+                <img className={clsx(classes.logo)} src='./images/Recurso1.png' />
+              </div>
+              <div style={{ justifyContent: 'center', marginLeft: 10, marginTop: 3 }}>
+                <h3 className={clsx(classes.titulo)} style={{ fontSize: 15 }}>escuela superior de arte dramático de trujillo</h3>
+                <h2 className={clsx(classes.titulo)} style={{ fontSize: 29, }}>virgilio rodriguez nache</h2>
+                <p className={clsx(classes.titulo)} style={{ textTransform: 'none', fontSize: 10 }}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
+              </div>
+            </div>
+          </Toolbar>
+        </AppBar>
+      </div>
+      <div className={clsx(classes.contenedorMenu)}>
+        <List component="nav" className={classes.drawer} aria-label="menu">
+          <ListItem style={{ padding: 20 }} button onClick={handleClick}>
+            <ListItemIcon>
+              <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component='div' disablePadding>
+              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/registropersonal')}>
+                <ListItemIcon>
+                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                </ListItemIcon>
+                <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
+              </ListItem>
+              <ListItem button style={{ marginLeft: 20 }} onClick={() => onSubmit('/mantenimientopersonal')}>
+                <ListItemIcon>
+                  <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                </ListItemIcon>
+                <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
+              </ListItem>
+            </List>
+          </Collapse>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
+          </ListItem>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
+          </ListItem>
+        </List>
+      </div>
       <div className={clsx(classes.contenedorFormulario)}>
         <form className={clsx(classes.formulario)} onSubmit={onRegistrarPersonal}>
           <div className='mp-form-container'>
@@ -540,7 +603,7 @@ const RegistroPersonal = () => {
                       <input name='experiencia' type='number' required  value={experiencia} max={30} onChange={(e) => setExperiencia(e.target.value > 30 ? 30 : e.target.value)} />
                     </div>
                     <div className='input-container'>
-                      <label>Especialidad</label>
+                      <label>Especialidad:</label>
                       <input name='especialidad' type='text' required  value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
                     </div>
                   </div>
@@ -598,11 +661,8 @@ const RegistroPersonal = () => {
                       <input type='number' readOnly required  value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
                     </div>
                     <div className='input-container'>
-                      <label htmlFor=""> Pago neto: </label>
-                      <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
-                        setPagoNeto(e.target.value)
-                      }} />
-
+                      <label htmlFor=""> Descuento de pensiones: </label>
+                      <input type='number' readOnly required  value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
                     </div>
                   </div>
                   <div className='form-block'>
@@ -634,8 +694,10 @@ const RegistroPersonal = () => {
                       <input type='number' readOnly required  value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
                     </div>
                     <div className='input-container'>
-                      <label htmlFor=""> Descuento de pensiones: </label>
-                      <input type='number' readOnly required  value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                      <label htmlFor=""> Pago neto: </label>
+                      <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
+                        setPagoNeto(e.target.value)
+                      }} />
                     </div>
                   </div>
                   <div className='form-block'>
@@ -674,24 +736,23 @@ const RegistroPersonal = () => {
                         </select>
                       </div>
                     }
-                    {/* {
+                    {
                       errorMsg && <p className='error-msg'> {errorMsg} </p>
-                      
+
                     }
                     {
                       successMsg && <p className='success-msg'> {successMsg} </p>
-                    } */}
-                    {loading ? <PageLoader /> : null}
+                    }
                   </div>
                 </div>
               </div>
             </div>
 
             <div className='buttons-container'>
-              <button className='main-button' disabled={loading}>Tomar fotos</button>
+              <button className='main-button'>Tomar fotos</button>
               <div>
-                <button className='main-button' disabled={loading}>Limpiar</button>
-                <button className='main-button' disabled={loading}>Guardar</button>
+                <button className='main-button'>Limpiar</button>
+                <button className='main-button'>Guardar</button>
               </div>
             </div>
           </div>
