@@ -1,0 +1,4 @@
+const USUARIOLOGEADO = {
+    nombre: '',
+    apellidos: '',
+}

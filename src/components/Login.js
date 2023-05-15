@@ -19,6 +19,7 @@ import { Buffer } from 'buffer';
 import { ClipLoader } from "react-spinners";
 import PageLoader from './Loading';
 import NavBar from './MenuPrincipal/NavBar';
+import USUARIOLOGEADO from '../Global/Globals'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -152,9 +153,8 @@ const Login = () => {
               }
             })
               .then((response) => {
-                const nombreUsuario = response.data.datosPersonales.nombres; 
-                console.log(nombreUsuario);
-                <NavBar nombre={nombreUsuario}/>
+                USUARIOLOGEADO.nombre = response.data.datosPersonales.nombres; 
+                USUARIOLOGEADO.apellidos = response.data.datosPersonales.apellidos; 
               }); 
             
             navigate('/menu');  

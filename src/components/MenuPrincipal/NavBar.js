@@ -5,6 +5,7 @@ import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, 
 import { ExpandLess, ExpandMore} from '@material-ui/icons';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import USUARIOLOGEADO from '../../Global/Globals'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,11 +91,14 @@ const NavBar = ({ datos }) => {
                             <p className={clsx(classes.titulo)} style={{textTransform: 'none', fontSize:10}}>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
                         </div>
                     </div>
-                    <div style={{marginLeft: '38%'}}>
+                    <div style={{marginLeft: '30%', display: 'flex'}}>
+                      <div style={{textAlign: 'center', paddingTop: 30}} className={clsx(classes.tipoletra1)}>
+                        <p style={{textTransform: 'uppercase',margin: 0}}>bienvenido</p>
+                        <p style={{margin: 0}}>{USUARIOLOGEADO.nombre} {USUARIOLOGEADO.apellidos}</p>
+                      </div>
                         <IconButton onClick={() => onSubmit('/')} edge="end">
                             <img style={{height: 25, marginTop: 24}} src = './images/Recurso10.png'/>
-                        </IconButton>
-                        <p>{datos}</p>
+                        </IconButton>  
                     </div>
                 </Toolbar> 
                 </AppBar>
