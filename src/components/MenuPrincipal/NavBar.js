@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const NavBar = ({ datos }) => {
+const NavBar = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const navigate = useNavigate();
@@ -73,7 +73,6 @@ const NavBar = ({ datos }) => {
     };
     const onSubmit = (url) => {
         navigate(url);
-        console.log(datos);
     }
     
     return (

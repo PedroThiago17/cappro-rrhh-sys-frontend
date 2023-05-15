@@ -13,13 +13,14 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Button } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import { ClipLoader } from "react-spinners";
 import PageLoader from './Loading';
 import NavBar from './MenuPrincipal/NavBar';
-import USUARIOLOGEADO from '../Global/Globals'
+import USUARIOLOGEADO from '../Global/Globals';
+import VALIDAR from '../Global/Validar'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
   
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
         const classes = useStyles();
         const [values, setValues] = React.useState({
           showPassword: false,
@@ -134,13 +135,13 @@ const Login = () => {
           event.preventDefault();
           // const contraEncrypted = "";
           // contra = encryptPassword(contra);
-          console.log(loading);     
+             
           try{
             
             if (!correo || !contrase){
               alert('Por favor, complete todos los campos');
               return;
-            }
+             }
             setLoading(true);
             const contra = Buffer.from(contrase).toString("base64");
             // contraEncrypted = btoa(contra);
@@ -156,8 +157,10 @@ const Login = () => {
                 USUARIOLOGEADO.nombre = response.data.datosPersonales.nombres; 
                 USUARIOLOGEADO.apellidos = response.data.datosPersonales.apellidos; 
               }); 
-            
-            navigate('/menu');  
+            //setIsAuthenticated(true);
+            navigate('/menu');
+            //console.log(setIsAuthenticated());  
+            //navigate('/menu');  
             console.log(correo, contra, loading, nombre);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')

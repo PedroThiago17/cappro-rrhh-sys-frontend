@@ -8,8 +8,10 @@ import ReportePlanillas from './components/ReportePlanillas/ReportePlanillas';
 import ReporteAsistencia from './components/ReporteAsistencia/ReporteAsistencia';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import MantenimientoDePersonal from './components/MantenimientoDePersonal/MantenimientoDePersonal';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, BrowserRouter } from 'react-router-dom';
 import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
+import App from './App';
+import LocalRoutes from './Router/LocalRoutes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
@@ -23,37 +25,40 @@ const theme = createTheme({
   }
 })
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Login />,
-  },
-  {
-    path: '/menu',
-    element: <MenuPrincipal />,
-  },
-  {
-    path: '/registropersonal',
-    element: <RegistroPersonal />,
-  },
-  {
-    path: '/mantenimientopersonal',
-    element: <MantenimientoDePersonal />,
-  },
-  {
-    path: '/reporteplanilla',
-    element: <ReportePlanillas />,
-  },
-  {
-    path: '/reporteasistencia',
-    element: <ReporteAsistencia />,
-  }
-])
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <Login />,
+//   },
+//   {
+//     path: '/menu',
+//     element: <MenuPrincipal />,
+//   },
+//   {
+//     path: '/registropersonal',
+//     element: <RegistroPersonal />,
+//   },
+//   {
+//     path: '/mantenimientopersonal',
+//     element: <MantenimientoDePersonal />,
+//   },
+//   {
+//     path: '/reporteplanilla',
+//     element: <ReportePlanillas />,
+//   },
+//   {
+//     path: '/reporteasistencia',
+//     element: <ReporteAsistencia />,
+//   }
+// ])
 
 root.render(
   <ThemeProvider theme={theme}>
-    <RouterProvider router={router}/>
-      
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+    
+
       {/* <RegistroPersonal/>
       <MantenimientoDePersonal/>
       <ReportePlanillas></ReportePlanillas>
