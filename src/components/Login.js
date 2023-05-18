@@ -161,7 +161,7 @@ const Login = ({ setIsAuthenticated }) => {
             navigate('/menu');
             //console.log(setIsAuthenticated());  
             //navigate('/menu');  
-            console.log(correo, contra, loading, nombre);
+            //console.log(correo, contra, loading, nombre);
           }catch (error){
             alert('Correo electrónico o contraseña incorrectos.')
             // alert(contra)

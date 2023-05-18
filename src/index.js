@@ -2,16 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Login from './components/Login';
-import RegistroPersonal from './components/RegistroDePersonal/RegistroPersonal';
-import ReportePlanillas from './components/ReportePlanillas/ReportePlanillas';
-import ReporteAsistencia from './components/ReporteAsistencia/ReporteAsistencia';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
-import MantenimientoDePersonal from './components/MantenimientoDePersonal/MantenimientoDePersonal';
-import { RouterProvider, createBrowserRouter, BrowserRouter } from 'react-router-dom';
-import MenuPrincipal from './components/MenuPrincipal/MenuPrincipal';
-import App from './App';
-import LocalRoutes from './Router/LocalRoutes';
+import { BrowserRouter } from 'react-router-dom';
+import Login from './components/Login';
+import LocalRoutes from './Router/LocalRoutes'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const theme = createTheme({
@@ -55,7 +49,7 @@ const theme = createTheme({
 root.render(
   <ThemeProvider theme={theme}>
     <BrowserRouter>
-      <App/>
+      <LocalRoutes/>
     </BrowserRouter>
     
 
