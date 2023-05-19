@@ -154,6 +154,7 @@ const Login = ({ setIsAuthenticated }) => {
               }
             })
               .then((response) => {
+                window.localStorage.setItem('userId', response.data.idUsuario);
                 USUARIOLOGEADO.nombre = response.data.datosPersonales.nombres; 
                 USUARIOLOGEADO.apellidos = response.data.datosPersonales.apellidos; 
               }); 

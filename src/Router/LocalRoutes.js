@@ -7,12 +7,14 @@ import ReportePlanillas from "../components/ReportePlanillas/ReportePlanillas";
 import ReporteAsistencia from "../components/ReporteAsistencia/ReporteAsistencia";
 import { ProtectedRoute } from "./ProtectedRoute"
 import React, { useState } from 'react';
+import ActivateUser from "../components/ActivateUser";
 
 const LocalRoutes = () => {
     return (
         <Routes>
             <Route index element ={<Login />}/>
             <Route path="/" element={<Login />} />
+            <Route path="/activacionUsuario/:emailb64" element={<ActivateUser />} />
             <Route path="/menu" element={
                 <ProtectedRoute>
                     <MenuPrincipal/>

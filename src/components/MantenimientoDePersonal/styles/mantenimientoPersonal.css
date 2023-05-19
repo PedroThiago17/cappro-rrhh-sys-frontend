@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 20px 30px;
+  height: 100%;
 }
 .mp-form-container h2 {
   color: var(--page-color);
@@ -27,16 +28,22 @@
   gap: 20px;
 }
 
-.table-container {
-  border-top-rigaat-radius: 5px;
-  border-top-left-radius: 5px;
+.table-content-container {
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
   border-right: 1px solid var(--page-color);
   border-left: 1px solid var(--page-color);
-  overflow: auto;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+.table-container {
+  height: 50%;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
 }
 
 .table-header {
+  height: 15%;
   background-color: var(--page-color);
   color: white;
   display: grid;
@@ -53,4 +60,10 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+}
+
+@media (min-width:2000px) {
+  .table-container {
+    height: 60%;
+  }
 }

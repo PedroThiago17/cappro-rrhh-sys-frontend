@@ -82,10 +82,19 @@ const RegistroInput = ({ label, type, options }) => {
                 </>
                 :
 
-                  label === 'Fecha de Ingreso:' ?
+                label === 'Fecha de Ingreso:' ?
+                  <>
+                    <label htmlFor=""> {label} </label>
+                    <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
+
+                  </>
+
+                  :
+
+                  label === 'Años de experiencia:' ?
                     <>
                       <label htmlFor=""> {label} </label>
-                      <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
+                      <input name='experiencia' type='text' value={experiencia} onChange={(e) => handleNumberChange(e, 2)} />
 
                     </>
 
@@ -94,57 +103,48 @@ const RegistroInput = ({ label, type, options }) => {
                     label === 'Años de experiencia:' ?
                       <>
                         <label htmlFor=""> {label} </label>
-                        <input name='experiencia' type='text' value={experiencia} onChange={(e) => handleNumberChange(e, 2)} />
+                        <input type='number' /* required */ />
 
                       </>
 
                       :
 
-                      label === 'Años de experiencia:' ?
+                      label === 'Código modular:' ?
                         <>
                           <label htmlFor=""> {label} </label>
-                          <input type='number' /* required */ />
-
+                          <input type='text' name='codigo_modular' value={codigoModular} /* required */ onChange={(e) => handleNumberChange(e, 9)} />
                         </>
 
                         :
 
-                        label === 'Código modular:' ?
+                        label === 'Pago neto:' ?
                           <>
                             <label htmlFor=""> {label} </label>
-                            <input type='text' name='codigo_modular' value={codigoModular} /* required */ onChange={(e) => handleNumberChange(e, 9)} />
+                            <input type='number' step="any" onChange={handleText} value={pago} min={0} />
                           </>
 
                           :
 
-                           label === 'Pago neto:' ?
+                          label === 'Lugar de nacimiento:' ?
                             <>
                               <label htmlFor=""> {label} </label>
-                              <input type='number' step="any" onChange={handleText} value={pago} min={0} />
+                              <input type='text' maxLength='50' />
                             </>
 
                             :
 
-                            label === 'Lugar de nacimiento:' ?
+                            label === 'Especialidad:' ?
                               <>
                                 <label htmlFor=""> {label} </label>
-                                <input type='text' maxLength='50' />
+                                <input type='text' maxLength='50' /* required */ />
                               </>
 
                               :
 
-                              label === 'Especialidad:' ?
-                                <>
-                                  <label htmlFor=""> {label} </label>
-                                  <input type='text' maxLength='50' /* required */ />
-                                </>
-
-                                :
-
-                                <>
-                                  <label htmlFor=""> {label} </label>
-                                  <input type='text' maxLength='60' /* required */ onChange={handleText} />
-                                </>
+                              <>
+                                <label htmlFor=""> {label} </label>
+                                <input type='text' maxLength='60' /* required */ onChange={handleText} />
+                              </>
       }
 
     </div>
