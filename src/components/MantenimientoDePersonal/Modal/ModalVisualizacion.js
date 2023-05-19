@@ -8,6 +8,7 @@ import axios from 'axios';
 import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../../constants/constants';
 import { calcularEdad } from '../../../utils/utils';
 import PageLoader from '../../Loading';
+import USUARIOEDITAR from '../../../Global/UsuarioEditas';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -337,6 +338,7 @@ const ModalVisualizacion = () => {
         <form onSubmit={onRegistrarPersonal}>
             <div className='mp-form-container'>
             <h2>REGISTRAR NUEVO PERSONAL</h2>
+            <p>{ USUARIOEDITAR.idUsuario }</p>
             <div className='blocks-container'>
                 <div>
                 <div className='block-title-container'>
