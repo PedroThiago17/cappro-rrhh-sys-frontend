@@ -223,7 +223,7 @@ const MantenimientoDePersonal = () => {
     setDniSeleccionado(aux);
    
     RetornarIdUsuario();
-    setModal(!modal);
+    
   }
 
   const RetornarIdUsuario = async (event) => {
@@ -257,6 +257,7 @@ const MantenimientoDePersonal = () => {
     USUARIOEDITAR.idDomModalidad = elementoEncontrado.datosPlanilla.idDomModalidad
     USUARIOEDITAR.cargaHoraria = elementoEncontrado.datosPlanilla.cargaHoraria
     USUARIOEDITAR.pagoHora = elementoEncontrado.datosPlanilla.pagoHora
+    setModal(!modal);
    }
 
   return (

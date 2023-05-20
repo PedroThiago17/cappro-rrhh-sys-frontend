@@ -200,6 +200,7 @@ const ModalVisualizacion = () => {
         idUsuarioSup: supervision.idUsuario
     }
 
+    
     try {
         console.log('datos a enviar: ', body)
         setLoading(true);
@@ -217,7 +218,7 @@ const ModalVisualizacion = () => {
     }
 
     useEffect(() => {
-        setPagoBruto(cargaHoraria * pagoHora)
+        setPagoBruto(USUARIOEDITAR.cargaHoraria * USUARIOEDITAR.pagoHora)
       }, [pagoHora, cargaHoraria])
     
       useEffect(() => {
@@ -318,12 +319,12 @@ const ModalVisualizacion = () => {
     })
     }
 
-    const onFondoPensionesSelect = async (pension) => {
-    const getCurrentPension = fondoPensionesList.find(e => e.valCadDominio === pension)
-    if (pension === 'ONP') {
+    const onFondoPensionesSelect = async () => {
+    const getCurrentPension = fondoPensionesList.find(e => e.valCadDominio === USUARIOEDITAR.idDomFondpPen)
+    if (getCurrentPension.valCadDominio === 'ONP') {
         const porcentaje = getCurrentPension.valDecDominio / 100;
         setFondoPension({
-        valCadDominio: pension,
+        valCadDominio: getCurrentPension.valCadDominio,
         valDecDominio: porcentaje,
         idDominio: getCurrentPension.idDominio,
         idDomAfp: null
@@ -334,7 +335,7 @@ const ModalVisualizacion = () => {
         setAfpOptions(res.data);
         setFondoPension({
         valDecDominio: res.data[0].valDecDominio / 100,
-        valCadDominio: pension,
+        valCadDominio: getCurrentPension.valCadDominio,
         idDominio: getCurrentPension.idDominio,
         idDomAfp: res.data[0].idDominio
         })
@@ -358,7 +359,7 @@ const ModalVisualizacion = () => {
         <div >
         <form>
             <div className='mp-form-container'>
-            <h2>REGISTRAR NUEVO PERSONAL</h2>
+            <h2>DATOS DEL USUARIO</h2>
             <div className='blocks-container'>
                 <div>
                 <div className='block-title-container'>
@@ -370,6 +371,7 @@ const ModalVisualizacion = () => {
                     <div className='input-container'>
                         <label htmlFor="">DNI</label>
                         <input name='dni' type='number' readOnly  value={USUARIOEDITAR.dni} onChange={(e) => handleNumberChange(e, 8)} />
+                        
                     </div>
                     <div className='input-container'>
                         <label htmlFor="">Lugar de nacimiento:</label>
@@ -387,7 +389,7 @@ const ModalVisualizacion = () => {
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Edad: </label>
-                        <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)}/>
+                        <input type='number' id='edad' readOnly value='26' onChange={(e) => setAge(e.target.value)}/>
                     </div>
                     <div className='input-container'>
                         <label htmlFor="">Teléfono / Celular:</label>
@@ -462,7 +464,8 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Año de jubilación: </label>
-                        <input type='number' readOnly required  value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)}/>
+                        <input type='number' readOnly required  value='2062'/>
+                        {/* {age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} */}
                     </div>
                     <div className='input-container'>
                       <label htmlFor=""> Puesto: </label>
@@ -508,13 +511,14 @@ const ModalVisualizacion = () => {
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Descuento de pensiones: </label>
-                        <input type='number' readOnly   value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                        <input type='number' readOnly   value='292.50' onChange={(e) => setDescuentoPension(e.target.value)} />
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                       <label htmlFor=""> Modalidad horaria: </label>
-                      {
+                      <input value='Tiempo Completo'></input>
+                      {/* {
                         !showSupervision ?
                           <input type='text' readOnly required  value={modalidadHoraria.valCadDominio} onChange={(e) => setModalidadHoraria(e.target.value)} />
                           :
@@ -532,7 +536,7 @@ const ModalVisualizacion = () => {
                               ))
                             }
                           </select>
-                      }
+                      } */}
                     </div>
 
                     <div className='input-container'>
@@ -553,13 +557,14 @@ const ModalVisualizacion = () => {
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Fondo de pensiones: </label>
-                        <select className='select-input' readOnly  onChange={(e) => { onFondoPensionesSelect(e.target.value) }}>
+                        {/* <select className='select-input' readOnly  onChange={(e) => { onFondoPensionesSelect(e.target.value) }}>
                         {
                             fondoPensionesList.map((op, index) => (
                             <option key={index}> {op.valCadDominio} </option>
                             ))
                         }
-                        </select>
+                        </select> */}
+                        <input value = 'ONP'></input>
                     </div>
                     </div>
                     <div className='form-block'>
