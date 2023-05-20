@@ -221,19 +221,42 @@ const MantenimientoDePersonal = () => {
   const abrirCerrarModal =(dni)=>{
     const aux = dni;
     setDniSeleccionado(aux);
-    console.log(dniSeleccionado);
+   
     RetornarIdUsuario();
     setModal(!modal);
   }
 
   const RetornarIdUsuario = async (event) => {
     // const data = useEffect()
-    console.log(dniSeleccionado)
     setIdBuscado(0);
     const userId = window.localStorage.getItem('userId').toString();
     const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
     const elementoEncontrado = data.find( usuario => usuario.datosPersonales.dni === dniSeleccionado);
     USUARIOEDITAR.idUsuario = elementoEncontrado.idUsuario;
+    USUARIOEDITAR.correo = elementoEncontrado.correo
+    USUARIOEDITAR.nombres = elementoEncontrado.datosPersonales.nombres
+    USUARIOEDITAR.apellidos = elementoEncontrado.datosPersonales.apellidos
+    USUARIOEDITAR.dni = elementoEncontrado.datosPersonales.dni
+    console.log('Dato: ',USUARIOEDITAR.dni)
+    USUARIOEDITAR.lnacimiento = elementoEncontrado.datosPersonales.lnacimiento
+    USUARIOEDITAR.direccion = elementoEncontrado.datosPersonales.direccion
+    USUARIOEDITAR.edad = elementoEncontrado.datosPersonales.edad
+    USUARIOEDITAR.telefono = elementoEncontrado.datosPersonales.telefono
+    USUARIOEDITAR.sexo = elementoEncontrado.datosPersonales.sexo
+    USUARIOEDITAR.fnacimiento = elementoEncontrado.datosPersonales.fnacimiento
+    USUARIOEDITAR.estadoCivil = elementoEncontrado.datosPersonales.estadoCivil
+    USUARIOEDITAR.fingreso = elementoEncontrado.datosLaborales.fingreso
+    USUARIOEDITAR.universidad = elementoEncontrado.datosLaborales.universidad
+    USUARIOEDITAR.aniosExpe = elementoEncontrado.datosLaborales.aniosExpe
+    USUARIOEDITAR.especialidad = elementoEncontrado.datosLaborales.especialidad
+    USUARIOEDITAR.rol = elementoEncontrado.rol
+  
+    USUARIOEDITAR.formacion = elementoEncontrado.datosLaborales.formacion
+    USUARIOEDITAR.idUsuarioSup = elementoEncontrado.idUsuarioSup
+    USUARIOEDITAR.codModular = elementoEncontrado.datosPlanilla.codModular
+    USUARIOEDITAR.idDomModalidad = elementoEncontrado.datosPlanilla.idDomModalidad
+    USUARIOEDITAR.cargaHoraria = elementoEncontrado.datosPlanilla.cargaHoraria
+    USUARIOEDITAR.pagoHora = elementoEncontrado.datosPlanilla.pagoHora
    }
 
   return (
@@ -269,7 +292,7 @@ const MantenimientoDePersonal = () => {
               <div className='table-content-container'>
                 {
                   foundUsers.length != 0 ?
-                    foundUsers.map(({ datosPersonales, datosPlanilla }, index) => (
+                    foundUsers.map(({ datosPersonales, datosPlanilla, datosLaborales }, index) => (
                       <div key={index} className='table-content'>
                         <p>{datosPersonales.dni}</p>
                         <p>{datosPersonales.nombres}</p>
@@ -283,7 +306,7 @@ const MantenimientoDePersonal = () => {
                       </div>
                     ))
                     :
-                    users.map(({ datosPersonales, datosPlanilla }, index) => (
+                    users.map(({ datosPersonales, datosPlanilla, datosLaborales }, index) => (
                       <div key={index} className='table-content'>
                         <p>{datosPersonales.dni}</p>
                         <p>{datosPersonales.nombres}</p>

@@ -117,6 +117,7 @@ const ModalVisualizacion = () => {
     setModal(!modal);
     }
 
+
     const INITIAL_FONDO_PENSIONES = [
     {
         valCadDominio: '',
@@ -215,6 +216,26 @@ const ModalVisualizacion = () => {
     setLoading(false);
     }
 
+    useEffect(() => {
+        setPagoBruto(cargaHoraria * pagoHora)
+      }, [pagoHora, cargaHoraria])
+    
+      useEffect(() => {
+        setCargaHoraria(modalidadHoraria.valCadDominio === 'Tiempo Parcial' ? VALOR_TIEMPO_PARCIAL : VALOR_TIEMPO_COMPLETO)
+      }, [modalidadHoraria])
+    
+      useEffect(() => {
+        setSeguroSalud((pagoBruto * PORCENTAJE).toFixed(2))
+      }, [pagoBruto])
+    
+    
+      useEffect(() => {
+        setDescuentoPension((pagoBruto * fondoPension.valDecDominio).toFixed(2))
+      }, [pagoBruto, fondoPension])
+    
+      useEffect(() => {
+        setPagoNeto((pagoBruto - (Number(descuentoPension) + Number(seguroSalud))).toFixed(2))
+      }, [pagoBruto, descuentoPension, seguroSalud])
 
     const handleNumberChange = (e, limit) => {
     const value = e.target.value;
@@ -335,10 +356,9 @@ const ModalVisualizacion = () => {
     return(
     <div className={classes.modalVisual}>
         <div >
-        <form onSubmit={onRegistrarPersonal}>
+        <form>
             <div className='mp-form-container'>
             <h2>REGISTRAR NUEVO PERSONAL</h2>
-            <p>{ USUARIOEDITAR.idUsuario }</p>
             <div className='blocks-container'>
                 <div>
                 <div className='block-title-container'>
@@ -349,62 +369,62 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor="">DNI</label>
-                        <input name='dni' type='number' readOnly  value={dni} onChange={(e) => handleNumberChange(e, 8)} />
+                        <input name='dni' type='number' readOnly  value={USUARIOEDITAR.dni} onChange={(e) => handleNumberChange(e, 8)} />
                     </div>
                     <div className='input-container'>
                         <label htmlFor="">Lugar de nacimiento:</label>
-                        <input name='lnacimiento' type='text' readOnly  value={lnacimiento} maxLength={50} onChange={(e) => setlNacimiento(e.target.value)} />
+                        <input name='lnacimiento' type='text' readOnly  value={USUARIOEDITAR.lnacimiento}/>
                     </div>
                     <div className='input-container'>
                         <label>Dirección:</label>
-                        <input name='direccion' type='text' readOnly value={direccion} maxLength={100} onChange={(e) => setDireccion(e.target.value)} />
+                        <input name='direccion' type='text' readOnly value={USUARIOEDITAR.direccion} />
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label>Nombres:</label>
-                        <input name='nombres' type='text' readOnly value={nombres} maxLength={60} onChange={(e) => setNombres(e.target.value)} />
+                        <input name='nombres' type='text' readOnly value={USUARIOEDITAR.nombres} />
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Edad: </label>
-                        <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)} />
+                        <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)}/>
                     </div>
                     <div className='input-container'>
                         <label htmlFor="">Teléfono / Celular:</label>
-                        <input name='telefono' type='text' readOnly  value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
+                        <input name='telefono' type='text' readOnly  value={USUARIOEDITAR.telefono}/>
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label>Apellidos:</label>
-                        <input name='apellidos' type='text' readOnly  value={apellidos} maxLength={60} onChange={(e) => setApellidos(e.target.value)} />
+                        <input name='apellidos' type='text' readOnly  value={USUARIOEDITAR.apellidos} />
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Sexo: </label>
-                        <select className='select-input' readOnly onChange={(e) => setSexo(e.target.value)}>
+                        <select className='select-input' disabled value={USUARIOEDITAR.sexo} onChange={(e) => setSexo(e.target.value)}>
                         {
                             sexoOptions.map((op, index) => (
-                            <option id={index} key={index} value={op}> {op} </option>
+                            <option id={index} key={index} value={USUARIOEDITAR.sexo}> {USUARIOEDITAR.sexo} </option>
                             ))
                         }
                         </select>
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Correo personal: </label>
-                        <input type='email' name='email' readOnly maxLength={60} value={email} onChange={handleEmailChange} />
+                        <input type='email' name='email' readOnly maxLength={60} value={USUARIOEDITAR.correo}/>
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Fecha de nacimiento: </label>
-                        <input type='date' id='fechaNacimiento' readOnly value={birthday} min="1948-01-01" onChange={handleBirthday} />
+                        <input type='date' id='fechaNacimiento' readOnly value={USUARIOEDITAR.fnacimiento}/>
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Estado civil: </label>
-                        <select className='select-input' readOnly onChange={(e) => setEstadoCivil(e.target.value)}>
+                        <select className='select-input' disabled value={USUARIOEDITAR.estadoCivil} >
                         {
                             estadoCivilOptions.map((op, index) => (
-                            <option id={index} readOnly key={index} value={op}> {op} </option>
+                            <option id={index} readOnly key={index} value={USUARIOEDITAR.estadoCivil}> {USUARIOEDITAR.estadoCivil} </option>
                             ))
                         }
                         </select>
@@ -422,43 +442,37 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Fecha de Ingreso: </label>
-                        <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
+                        <input type='date' readOnly value={USUARIOEDITAR.fingreso} />
                     </div>
                     <div className='input-container'>
                         <label>Universidad/ Institución:</label>
-                        <input name='universidad' type='text' readOnly  value={universidad} maxLength={60} onChange={(e) => setUniversidad(e.target.value)} />
+                        <input name='universidad' type='text' readOnly  value={USUARIOEDITAR.universidad}/>
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor="">Años de experiencia:</label>
-                        <input name='experiencia' type='number' readOnly  value={experiencia} max={30} onChange={(e) => setExperiencia(e.target.value > 30 ? 30 : e.target.value)} />
+                        <input name='experiencia' type='number' readOnly  value={USUARIOEDITAR.aniosExpe} />
                     </div>
                     <div className='input-container'>
                         <label>Especialidad:</label>
-                        <input name='especialidad' type='text' readOnly value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
+                        <input name='especialidad' type='text' readOnly value={USUARIOEDITAR.especialidad} />
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Año de jubilación: </label>
-                        <input type='number' readOnly required  value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} />
+                        <input type='number' readOnly required  value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)}/>
                     </div>
                     <div className='input-container'>
-                        <label htmlFor=""> Puesto: </label>
-                        <select className='select-input' name="" id="" readOnly  onChange={(e) => onPuestoSelect(e.target.options[e.target.selectedIndex].id, e.target.value)}>
-                        {
-                            puestoOptions.map((op) => (
-                            <option id={op.idRol} key={op.idRol} value={op.nombreRol}> {op.nombreRol} </option>
-                            ))
-                        }
-                        </select>
+                      <label htmlFor=""> Puesto: </label>
+                      <input readOnly value={USUARIOEDITAR.rol}></input>
                     </div>
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
                         <label>Formación profesional:</label>
-                        <input name='formacion' type='text' readOnly  value={formacion} maxLength={60} onChange={(e) => setFormacion(e.target.value)} />
+                        <input name='formacion' type='text' readOnly  value={USUARIOEDITAR.formacion}/>
                     </div>
                     {
                         showSupervision &&
@@ -486,11 +500,11 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor="">Código modular:</label>
-                        <input name='codigoModular' type='text' readOnly  value={codigoModular} onChange={(e) => handleNumberChange(e, 20)} />
+                        <input name='codigoModular' type='text' readOnly value={USUARIOEDITAR.codModular}/>
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Pago bruto: </label>
-                        <input type='number' readOnly   value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                        <input type='number' readOnly   value={USUARIOEDITAR.cargaHoraria * USUARIOEDITAR.pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Descuento de pensiones: </label>
@@ -499,26 +513,26 @@ const ModalVisualizacion = () => {
                     </div>
                     <div className='form-block'>
                     <div className='input-container'>
-                        <label htmlFor=""> Modalidad horaria: </label>
-                        {
+                      <label htmlFor=""> Modalidad horaria: </label>
+                      {
                         !showSupervision ?
-                            <input type='text' readOnly  value={modalidadHoraria.valCadDominio} onChange={(e) => setModalidadHoraria(e.target.value)} />
-                            :
-                            <select className='select-input' name="" id="" required  onChange={(e) => {
+                          <input type='text' readOnly required  value={modalidadHoraria.valCadDominio} onChange={(e) => setModalidadHoraria(e.target.value)} />
+                          :
+                          <select className='select-input' name="" id="" required  onChange={(e) => {
                             console.log(e.target.value)
                             setModalidadHoraria({
-                                valCadDominio: e.target.value,
-                                idDominio: e.target.options[e.target.selectedIndex].id
+                              valCadDominio: e.target.value,
+                              idDominio: e.target.options[e.target.selectedIndex].id
                             })
                             e.target.value === 'Tiempo Completo' ? setCargaHoraria(VALOR_TIEMPO_COMPLETO) : setCargaHoraria(VALOR_TIEMPO_PARCIAL);
-                            }}>
+                          }}>
                             {
-                                options.map((op) => (
+                              options.map((op) => (
                                 <option id={op.idDominio} key={op.idDominio} value={op.valCadDominio}> {op.valCadDominio} </option>
-                                ))
+                              ))
                             }
-                            </select>
-                        }
+                          </select>
+                      }
                     </div>
 
                     <div className='input-container'>
@@ -535,7 +549,7 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Carga horaria: </label>
-                        <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} />
+                        <input type='number' id='cargaHoraria' readOnly value={USUARIOEDITAR.cargaHoraria} />
                     </div>
                     <div className='input-container'>
                         <label htmlFor=""> Fondo de pensiones: </label>
@@ -551,7 +565,7 @@ const ModalVisualizacion = () => {
                     <div className='form-block'>
                     <div className='input-container'>
                         <label htmlFor=""> Pago por hora: </label>
-                        <input type='number' id='pagoPorHora' readOnly step="any" min={0} max={60} value={pagoHora} onChange={(e) => {
+                        <input type='number' id='pagoPorHora' readOnly step="any" min={0} max={60} value={USUARIOEDITAR.pagoHora} onChange={(e) => {
                         setPagoHora(e.target.value > 60 ? 60 : e.target.value)
                         }} />
                     </div>
@@ -575,7 +589,7 @@ const ModalVisualizacion = () => {
             </div>
             <div className='buttons-container'>
                 <div>
-                <button className='main-button' disabled={loading} onClick={()=>abrirCerrarModal()} >Cerrar</button>
+                
                 </div>
             </div>
             </div>     
