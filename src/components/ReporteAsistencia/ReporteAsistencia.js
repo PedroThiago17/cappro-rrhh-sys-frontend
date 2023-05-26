@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse, TextField, Icon, IconButton } from '@material-ui/core';
-import { ExpandLess, ExpandMore} from '@material-ui/icons';
-import clsx from 'clsx';
-import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { Button } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import { useNavigate } from 'react-router-dom';
-import NavBar from '../MenuPrincipal/NavBar';
+import UserTable from '../Comunes/UserTable';
+import RegistroInput from '../Comunes/RegistroInput';
+import UserList from '../Comunes/UserList';
+import { raTableHeaders } from '../../constants/constants';
+import { useMediaQuery } from 'react-responsive';
+import axios from 'axios';
+import { raKeys } from '../../constants/constants';
+import AsistenciaTable from './AsistenciaTable';
+import AsistenciaList from './AsistenciaList';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "98vh",
-    margin:0,
+    margin: 0,
     fontFamily: "Montserrat, sans-serif"
   },
   contenedorLogo: {
@@ -30,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: '100%',
-    height: '100%', 
+    height: '100%',
   },
   titulo: {
-    margin:0, 
+    margin: 0,
     textTransform: 'uppercase',
     color: theme.palette.secondary.main,
     fontWeight: 500
@@ -57,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconoPrincipal: {
     width: '40%',
-    height: '40%', 
+    height: '40%',
     marginLeft: 15
   },
   tipoletra1: {
@@ -93,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     height: 30,
     width: 100,
-    fontFamily: "Montserrat, sans-serif", 
+    fontFamily: "Montserrat, sans-serif",
   },
   contenedorTabla: {
     paddingTop: 100,
@@ -101,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
   },
   tabla: {
-    minWidth: 650,  
+    minWidth: 650,
   },
   iconoAcciones: {
     width: '70%',
@@ -113,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   colorTextoPrimario: {
     color: theme.palette.primary.main,
   },
-  colorTextoSecundario:{
+  colorTextoSecundario: {
     color: theme.palette.secondary.main,
   },
 }));
@@ -121,124 +115,90 @@ const useStyles = makeStyles((theme) => ({
 const ReporteAsistencia = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const [datos, setDatos] = useState([
-    { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
-    { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
-    { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
-    { dni: 999999999, nombres: 'Nombres', apellidos: 'Apellidos', fecha: '01/12/22', tipo: 'E'},
-  ]);
-  const navigate = useNavigate();
+  const isTablet = useMediaQuery({ query: '(max-width: 640px)' })
+  const [notData, setNotData] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState(
+    {
+      dni: 0,
+      nombres: '',
+      apellidos: '',
+      codModular: 0
+    }
+  );
+  useEffect(() => {
+    const getUsers = async () => {
+      const userId = window.localStorage.getItem('userId').toString();
+      if (userId) {
+        try {
+          const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
+          if (data) {
+            setUsers(data)
+          } else {
+            setNotData(true)
+          }
+        } catch (error) {
+          console.log('error: ', error)
+        }
+      }
+    }
+    getUsers();
+  }, [])
+  const handleNumberChange = (e, limit) => {
+    const value = e.target.value;
+    const name = e.target.name;
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+    const newValue = value.replace(/[^0-9]/g, '').substring(0, limit);
 
-  const accionPdf = () => {
-    alert('Algún día funcionará');
-  };
-
-  const onSubmit = (url) => {
-    navigate(url);
-    console.log(url);
+    if (name === 'dni') {
+      if (newValue[0] === "0") {
+        return;
+      }
+      else {
+        setSearch({ dni: newValue })
+      }
+    }
   }
+
   return (
-    <div className={clsx(classes.root)}>
-      <NavBar />
-      <div className={clsx(classes.contenedorFormulario, classes.tipoletra2, classes.colorTextoPrimario)}>
-        <form className={clsx(classes.formulario)}>
-          <h2 style={{textTransform: 'uppercase', paddingTop: 50}}>reporte de asistencia</h2>
-          <div style={{display: 'flex', paddingBottom: 20, justifyContent: 'space-evenly', width: '90%'}}>
-            <div className={clsx(classes.filtro)}>
-              <p style={{textTransform: 'uppercase',}}>dni:</p>
-              <FormControl style={{marginLeft: 37, justifyContent: 'center'}} variant="outlined">
-                <OutlinedInput
-                  className={clsx(classes.textField)}
-                  id="outlined-adornment-usuario"
-                  //value={values.usuario}
-                  //onChange={handleChange('usuario')}
-                  labelWidth={0}
-                />
-              </FormControl>
+    <div className='module-container'>
+      <form className='module-form'>
+        <div className='mp-form-container'>
+          <h2 className='h2-title'>REPORTE DE ASISTENCIA</h2>
+          <div className='mp-form-content'>
+            <div className='form-inputs'>
+              <div className='input-container'>
+                <label>DNI</label>
+                <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
+              </div>
+              <RegistroInput label={'Nombres:'}></RegistroInput>
+              <RegistroInput label={'Apellidos:'}></RegistroInput>
+              <RegistroInput label={'Código Modular:'}></RegistroInput>
             </div>
-            <div className={clsx(classes.filtro)}>
-              <p>Nombre:</p>
-              <FormControl style={{marginLeft: 37, justifyContent: 'center'}} variant="outlined">
-                <OutlinedInput
-                  className={clsx(classes.textField)}
-                  id="outlined-adornment-usuario"
-                  //value={values.usuario}
-                  //onChange={handleChange('usuario')}
-                  labelWidth={0}
-                />
-              </FormControl>
-            </div>
-            <div className={clsx(classes.filtro)}>
-              <p>Apellido:</p>
-              <FormControl style={{marginLeft: 37, justifyContent: 'center'}} variant="outlined">
-                <OutlinedInput
-                  className={clsx(classes.textField)}
-                  id="outlined-adornment-usuario"
-                  //value={values.usuario}
-                  //onChange={handleChange('usuario')}
-                  labelWidth={0}
-                />
-              </FormControl>
-            </div>
-            <div style={{display: 'flex', height: '8%', marginLeft: 30, paddingTop: 25}}>
-              <p >Código modular:</p>
-              <FormControl style={{marginLeft: 30, justifyContent: 'center'}} variant="outlined">
-                <OutlinedInput
-                  className={clsx(classes.textField)}
-                  id="outlined-adornment-usuario"
-                  //value={values.usuario}
-                  //onChange={handleChange('usuario')}
-                  labelWidth={0}
-                />
-              </FormControl>
-            </div>
-            <div style={{paddingTop:45}} className={clsx(classes.filtro)}>
-              <Button
-                className={clsx(classes.boton, classes.tipoletra2)} 
-                color='primary' 
-                variant='contained'
-                //onClick={() => onSubmit()}
-                onClick = {accionPdf}
-              >
-                Buscar
-              </Button>
+            <div className='main-button-container'>
+              <button type='button' className='main-button' >Buscar</button>
+              <button type='button' className='main-button' >Limpiar</button>
             </div>
           </div>
-          <div className={clsx(classes.contenedorTabla)}>
-            <TableContainer component={Paper}>
-              <Table className={classes.tabla} aria-label="simple table">
-                <TableHead className={clsx(classes.headerTabla)}>
-                  <TableRow>
-                    <TableCell className={clsx(classes.colorTextoSecundario, classes.tipoletra2)} align="center">DNI</TableCell>
-                    <TableCell className={clsx(classes.colorTextoSecundario, classes.tipoletra2)} align="center">Nombres</TableCell>
-                    <TableCell className={clsx(classes.colorTextoSecundario, classes.tipoletra2)} align="center">Apellidos</TableCell>
-                    <TableCell className={clsx(classes.colorTextoSecundario, classes.tipoletra2)} align="center">Fecha</TableCell>
-                    <TableCell className={clsx(classes.colorTextoSecundario, classes.tipoletra2)} align="center">Tipo</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {datos.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell className={clsx(classes.colorTextoPrimario, classes.tipoletra2)} align='center' component="th" scope="row">
-                        {row.dni}
-                      </TableCell>
-                      <TableCell className={clsx(classes.colorTextoPrimario, classes.tipoletra2)} align="center">{row.nombres}</TableCell>
-                      <TableCell className={clsx(classes.colorTextoPrimario, classes.tipoletra2)} align="center">{row.apellidos}</TableCell>
-                      <TableCell className={clsx(classes.colorTextoPrimario, classes.tipoletra2)} align="center">{row.fecha}</TableCell>
-                      <TableCell className={clsx(classes.colorTextoPrimario, classes.tipoletra2)} align="center">{row.tipo}</TableCell>              
-                    </TableRow>
-                  ))} 
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div> 
-        </form>
-      </div>
-    </div> 
+          {
+            notData ? <p className='message'>No se encontraron resultados...</p> :
+              isTablet ?
+                <AsistenciaList
+                  foundUsers={[]}
+                  users={users}
+                  view='Reporte Asistencia'
+                >
+                </AsistenciaList>
+                :
+                <AsistenciaTable
+                  headers={raTableHeaders}
+                  foundUsers={[]}
+                  users={users} >
+                </AsistenciaTable>
+          }
+        </div>
+      </form>
+    </div>
   );
 }
 

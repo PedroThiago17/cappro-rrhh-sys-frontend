@@ -1,0 +1,143 @@
+.login-container {
+  height: 100%;
+  display: flex;
+  background-color: var(--page-color);
+}
+
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  color: var(--secondary-color);
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+.banner-container img {
+  width: 200px;
+  height: fit-content;
+}
+
+
+.login-form-container {
+  width: 60%;
+  height: 100%;
+  background-color: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--page-color);
+}
+
+.banner-h2 {
+  font-size: 40px;
+  font-weight: 600;
+}
+.banner-h1 {
+  font-size: 90px;
+  font-weight: 500;
+}
+
+.login-form-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.login-form-content h2 {
+  font-size: 70px;
+}
+.login-form-content p {
+  font-weight: 600;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.control-container {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.input-login {
+  width: 250px;
+}
+.banner-main {
+  width: 100%;
+}
+@media (max-width:1024px) {
+  .login-container {
+    flex-direction: column;
+  }
+  .login-form-container {
+    width: 100%;
+    padding: 5px;
+  }
+  .banner-container {
+    width: 100%;
+    padding: 5px;
+  }
+  .banner-h2 {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .banner-h1 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .login-form-content h2 {
+    font-size: 40px;
+  }
+  .banner-container img {
+    width: 100px;
+  }
+  .banner-footer {
+    display: none;
+  }
+  .banner-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .control-container {
+    flex-direction: column;
+    justify-content: start;
+    width: 100%;
+  }
+
+}
+/* @media (min-width: 641px) and (max-width: 768px) {
+  .banner-footer {
+    display: flex;
+  }
+} */
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .login-form-container {
+    width: 100%;
+    padding: 5px;
+  }
+  .banner-container {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .banner-h2 {
+    font-size: 30px;
+    font-weight: 600;
+  }
+  .banner-h1 {
+    font-size: 80px;
+  }
+  .login-form-content h2 {
+    font-size: 40px;
+  }
+  .banner-container img {
+    width: 100px;
+  }
+}

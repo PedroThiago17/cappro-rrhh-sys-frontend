@@ -7,36 +7,38 @@ import ReportePlanillas from "../components/ReportePlanillas/ReportePlanillas";
 import ReporteAsistencia from "../components/ReporteAsistencia/ReporteAsistencia";
 import { ProtectedRoute } from "./ProtectedRoute"
 import React, { useState } from 'react';
+import Blank from '../components/Blank/Blank'
 import ActivateUser from "../components/ActivateUser";
 
 const LocalRoutes = () => {
     return (
         <Routes>
-            <Route index element ={<Login />}/>
-            <Route path="/" element={<Login />} />
+            <Route index element={<Login />} />
             <Route path="/activacionUsuario/:emailb64" element={<ActivateUser />} />
-            <Route path="/menu" element={
-                <ProtectedRoute>
-                    <MenuPrincipal/>
-                </ProtectedRoute>}/>
-            <Route path="/registropersonal" element={
-                <ProtectedRoute>
-                    <RegistroPersonal/>
-                </ProtectedRoute>}/>
-            <Route path="/mantenimientopersonal" element={
-                <ProtectedRoute>
-                    <MantenimientoDePersonal/>
-                </ProtectedRoute>}/>
-            <Route path="/reporteplanilla" element={
-                <ProtectedRoute>
-                    <ReportePlanillas/>
-                </ProtectedRoute>}/>
-            <Route path="/reporteasistencia" element={
-                <ProtectedRoute>
-                    <ReporteAsistencia/>
-                </ProtectedRoute>}/>         
+            <Route element={<ProtectedRoute><MenuPrincipal /></ProtectedRoute>}>
+                <Route path="/menu" element={
+                    <ProtectedRoute>
+                        <Blank/>
+                    </ProtectedRoute>} />
+                <Route path="/registropersonal" element={
+                    <ProtectedRoute>
+                        <RegistroPersonal />
+                    </ProtectedRoute>} />
+                <Route path="/mantenimientopersonal" element={
+                    <ProtectedRoute>
+                        <MantenimientoDePersonal />
+                    </ProtectedRoute>} />
+                <Route path="/reporteplanilla" element={
+                    <ProtectedRoute>
+                        <ReportePlanillas />
+                    </ProtectedRoute>} />
+                <Route path="/reporteasistencia" element={
+                    <ProtectedRoute>
+                        <ReporteAsistencia />
+                    </ProtectedRoute>} />
+            </Route>
         </Routes>
-        
+
     );
 }
 export default LocalRoutes;

@@ -11,6 +11,7 @@ import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, es
 import { calcularEdad } from '../../utils/utils';
 import NavBar from '../MenuPrincipal/NavBar';
 import PageLoader from '../Loading';
+import UserModal from '../Modal/UserModal';
 
 const INITIAL_FONDO_PENSIONES = [
   {
@@ -177,6 +178,7 @@ const RegistroPersonal = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
+
   const onRegistrarPersonal = async (e) => {
     e.preventDefault();
     const body = {
@@ -212,14 +214,12 @@ const RegistroPersonal = () => {
     }
 
     try {
-      console.log('datos a enviar: ', body)
       setLoading(true);
       const res = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/saveUsuario', body);
       if (res.data) {
         alert('El usuario ha sido agregado correctamente')
         navigate('/mantenimientopersonal')
       }
-      console.log('respuesta del servidor: ', res.data)
     } catch (error) {
       console.log({ error: error.response.data })
       alert(error.response.data);
@@ -294,8 +294,6 @@ const RegistroPersonal = () => {
 
   const onPuestoSelect = async (rolId, puesto) => {
     try {
-      console.log('rolid: ', rolId)
-      console.log('puesto: ', puesto)
       setPuesto({ nombreRol: puesto, idRol: rolId });
       if (puesto === 'Administrador') {
         setSupervision({ idUsuario: null, nombreCompleto: null });
@@ -452,256 +450,253 @@ const RegistroPersonal = () => {
   }, [successMsg]);
 
   return (
-    <div className={clsx(classes.root)}>
-      <NavBar />
-      <div className={clsx(classes.contenedorFormulario)}>
-        <form className={clsx(classes.formulario)} onSubmit={onRegistrarPersonal}>
-          <div className='mp-form-container'>
-            <h2>REGISTRAR NUEVO PERSONAL</h2>
-            <div className='blocks-container'>
-              <div>
-                <div className='block-title-container'>
-                  <p className='block-title'>Datos personales</p>
-                  <div className='line'></div>
-                </div>
-                <div className='form-content'>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor="">DNI</label>
-                      <input name='dni' type='number' required  value={dni} onChange={(e) => handleNumberChange(e, 8)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor="">Lugar de nacimiento:</label>
-                      <input name='lnacimiento' type='text' required  value={lnacimiento} maxLength={50} onChange={(e) => setlNacimiento(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label>Dirección:</label>
-                      <input name='direccion' type='text' required  value={direccion} maxLength={100} onChange={(e) => setDireccion(e.target.value)} />
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label>Nombres:</label>
-                      <input name='nombres' type='text' required  value={nombres} maxLength={60} onChange={(e) => setNombres(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Edad: </label>
-                      <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor="">Teléfono / Celular:</label>
-                      <input name='telefono' type='text' required  value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label>Apellidos:</label>
-                      <input name='apellidos' type='text' required  value={apellidos} maxLength={60} onChange={(e) => setApellidos(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Sexo: </label>
-                      <select className='select-input'required  onChange={(e) => setSexo(e.target.value)}>
-                        {
-                          sexoOptions.map((op, index) => (
-                            <option id={index} key={index} value={op}> {op} </option>
-                          ))
-                        }
-                      </select>
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Correo personal: </label>
-                      <input type='email' name='email' maxLength={60} value={email} onChange={handleEmailChange} />
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Fecha de nacimiento: </label>
-                      <input type='date' id='fechaNacimiento' value={birthday} min="1948-01-01" onChange={handleBirthday} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Estado civil: </label>
-                      <select className='select-input'required  onChange={(e) => setEstadoCivil(e.target.value)}>
-                        {
-                          estadoCivilOptions.map((op, index) => (
-                            <option id={index} key={index} value={op}> {op} </option>
-                          ))
-                        }
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div>
-                <div className='block-title-container'>
-                  <p className='block-title'>Datos laborales</p>
-                  <div className='line'></div>
-                </div>
-                <div className='form-content'>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Fecha de Ingreso: </label>
-                      <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
-                    </div>
-                    <div className='input-container'>
-                      <label>Universidad/ Institución:</label>
-                      <input name='universidad' type='text' required  value={universidad} maxLength={60} onChange={(e) => setUniversidad(e.target.value)} />
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor="">Años de experiencia:</label>
-                      <input name='experiencia' type='number' required  value={experiencia} max={30} onChange={(e) => setExperiencia(e.target.value > 30 ? 30 : e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label>Especialidad:</label>
-                      <input name='especialidad' type='text' required  value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Año de jubilación: </label>
-                      <input type='number' readOnly required  value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Puesto: </label>
-                      <select className='select-input' name="" id="" required  onChange={(e) => onPuestoSelect(e.target.options[e.target.selectedIndex].id, e.target.value)}>
-                        {
-                          puestoOptions.map((op) => (
-                            <option id={op.idRol} key={op.idRol} value={op.nombreRol}> {op.nombreRol} </option>
-                          ))
-                        }
-                      </select>
-                    </div>
-                  </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label>Formación profesional:</label>
-                      <input name='formacion' type='text' required  value={formacion} maxLength={60} onChange={(e) => setFormacion(e.target.value)} />
-                    </div>
-                    {
-                      showSupervision &&
-                      <div className='input-container'>
-                        <label htmlFor=""> Supervision: </label>
-                        <select className='select-input' name="" id="" required  onChange={onSupervisionSelect}>
-                          {
-                            supervisionOptions.map((user) => (
-                              <option key={user.idUsuario} value={user.nombreCompleto}> {user.nombreCompleto} </option>
-                            ))
-                          }
-                        </select>
-                      </div>
-                    }
-                  </div>
-                </div>
+    <div className='registro-personal'>
+      <form className='registro-form' onSubmit={onRegistrarPersonal}>
+        <div className='mp-form-container'>
+          <h2 className='h2-title'>REGISTRAR NUEVO PERSONAL</h2>
+          <div className='blocks-container'>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+              <div className='block-title-container'>
+                <p className='block-title'>Datos personales</p>
+                <div className='line'></div>
               </div>
-
-              <div>
-                <div className='block-title-container'>
-                  <p className='block-title'>Datos de planilla</p>
-                  <div className='line'></div>
-                </div>
-                <div className='form-content'>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor="">Código modular:</label>
-                      <input name='codigoModular' type='text' required  value={codigoModular} onChange={(e) => handleNumberChange(e, 20)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Pago bruto: </label>
-                      <input type='number' readOnly required  value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Descuento de pensiones: </label>
-                      <input type='number' readOnly required  value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
-                    </div>
+              <div className='form-content'>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor="">DNI</label>
+                    <input name='dni' type='number' required value={dni} onChange={(e) => handleNumberChange(e, 8)} />
                   </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Modalidad horaria: </label>
+                  <div className='input-container'>
+                    <label htmlFor="">Lugar de nacimiento:</label>
+                    <input name='lnacimiento' type='text' required value={lnacimiento} maxLength={50} onChange={(e) => setlNacimiento(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Dirección:</label>
+                    <input name='direccion' type='text' required value={direccion} maxLength={100} onChange={(e) => setDireccion(e.target.value)} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label>Nombres:</label>
+                    <input name='nombres' type='text' required value={nombres} maxLength={60} onChange={(e) => setNombres(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Edad: </label>
+                    <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor="">Teléfono / Celular:</label>
+                    <input name='telefono' type='text' required value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label>Apellidos:</label>
+                    <input name='apellidos' type='text' required value={apellidos} maxLength={60} onChange={(e) => setApellidos(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Sexo: </label>
+                    <select className='select-input' required onChange={(e) => setSexo(e.target.value)}>
                       {
-                        !showSupervision ?
-                          <input type='text' readOnly required  value={modalidadHoraria.valCadDominio} onChange={(e) => setModalidadHoraria(e.target.value)} />
-                          :
-                          <select className='select-input' name="" id="" required  onChange={(e) => {
-                            console.log(e.target.value)
-                            setModalidadHoraria({
-                              valCadDominio: e.target.value,
-                              idDominio: e.target.options[e.target.selectedIndex].id
-                            })
-                            e.target.value === 'Tiempo Completo' ? setCargaHoraria(VALOR_TIEMPO_COMPLETO) : setCargaHoraria(VALOR_TIEMPO_PARCIAL);
-                          }}>
-                            {
-                              options.map((op) => (
-                                <option id={op.idDominio} key={op.idDominio} value={op.valCadDominio}> {op.valCadDominio} </option>
-                              ))
-                            }
-                          </select>
+                        sexoOptions.map((op, index) => (
+                          <option id={index} key={index} value={op}> {op} </option>
+                        ))
                       }
-                    </div>
-
-                    <div className='input-container'>
-                      <label htmlFor=""> Descuento seguro de salud: </label>
-                      <input type='number' readOnly required  value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Pago neto: </label>
-                      <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
-                        setPagoNeto(e.target.value)
-                      }} />
-                    </div>
+                    </select>
                   </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Carga horaria: </label>
-                      <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} />
-                    </div>
-                    <div className='input-container'>
-                      <label htmlFor=""> Fondo de pensiones: </label>
-                      <select className='select-input' required  onChange={(e) => { onFondoPensionesSelect(e.target.value) }}>
-                        {
-                          fondoPensionesList.map((op, index) => (
-                            <option key={index}> {op.valCadDominio} </option>
-                          ))
-                        }
-                      </select>
-                    </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Correo personal: </label>
+                    <input type='email' name='email' maxLength={60} value={email} onChange={handleEmailChange} />
                   </div>
-                  <div className='form-block'>
-                    <div className='input-container'>
-                      <label htmlFor=""> Pago por hora: </label>
-                      <input type='number' id='pagoPorHora' step="any" min={0} max={60} value={pagoHora} onChange={(e) => {
-                        setPagoHora(e.target.value > 60 ? 60 : e.target.value)
-                      }} />
-                    </div>
-                    {
-                      fondoPension.valCadDominio === 'AFP' &&
-                      <div className='input-container'>
-                        <label htmlFor=""> AFP: </label>
-                        <select className='select-input' required  onChange={(e) => { onAfpSelect(e.target.value) }}>
-                          {
-                            afpOptions.map((op) => (
-                              <option key={op.idDominio}> {op.valCadDominio} </option>
-                            ))
-                          }
-                        </select>
-                      </div>
-                    }
-                    {loading ? <PageLoader/> : null}
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Fecha de nacimiento: </label>
+                    <input type='date' id='fechaNacimiento' value={birthday} min="1948-01-01" onChange={handleBirthday} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Estado civil: </label>
+                    <select className='select-input' required onChange={(e) => setEstadoCivil(e.target.value)}>
+                      {
+                        estadoCivilOptions.map((op, index) => (
+                          <option id={index} key={index} value={op}> {op} </option>
+                        ))
+                      }
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
-            <div className='buttons-container'>
-              <button className='main-button' disabled={loading}>Tomar fotos</button>
-              <div>
-                <button className='main-button' disabled={loading}>Limpiar</button>
-                <button className='main-button' disabled={loading}>Guardar</button>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+              <div className='block-title-container'>
+                <p className='block-title'>Datos laborales</p>
+                <div className='line'></div>
+              </div>
+              <div className='form-content'>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Fecha de Ingreso: </label>
+                    <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Universidad/ Institución:</label>
+                    <input name='universidad' type='text' required value={universidad} maxLength={60} onChange={(e) => setUniversidad(e.target.value)} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor="">Años de experiencia:</label>
+                    <input name='experiencia' type='number' required value={experiencia} max={30} onChange={(e) => setExperiencia(e.target.value > 30 ? 30 : e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Especialidad:</label>
+                    <input name='especialidad' type='text' required value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Año de jubilación: </label>
+                    <input type='number' readOnly required value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Puesto: </label>
+                    <select className='select-input' name="" id="" required onChange={(e) => onPuestoSelect(e.target.options[e.target.selectedIndex].id, e.target.value)}>
+                      {
+                        puestoOptions.map((op) => (
+                          <option id={op.idRol} key={op.idRol} value={op.nombreRol}> {op.nombreRol} </option>
+                        ))
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label>Formación profesional:</label>
+                    <input name='formacion' type='text' required value={formacion} maxLength={60} onChange={(e) => setFormacion(e.target.value)} />
+                  </div>
+                  {
+                    showSupervision &&
+                    <div className='input-container'>
+                      <label htmlFor=""> Supervision: </label>
+                      <select className='select-input' name="" id="" required onChange={onSupervisionSelect}>
+                        {
+                          supervisionOptions.map((user) => (
+                            <option key={user.idUsuario} value={user.nombreCompleto}> {user.nombreCompleto} </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                  }
+                </div>
               </div>
             </div>
-          </div>     
-        </form>
-      </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+              <div className='block-title-container'>
+                <p className='block-title'>Datos de planilla</p>
+                <div className='line'></div>
+              </div>
+              <div className='form-content'>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor="">Código modular:</label>
+                    <input name='codigoModular' type='text' required value={codigoModular} onChange={(e) => handleNumberChange(e, 20)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago bruto: </label>
+                    <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Descuento de pensiones: </label>
+                    <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Modalidad horaria: </label>
+                    {
+                      !showSupervision ?
+                        <input type='text' readOnly required value={modalidadHoraria.valCadDominio} onChange={(e) => setModalidadHoraria(e.target.value)} />
+                        :
+                        <select className='select-input' name="" id="" required onChange={(e) => {
+                          setModalidadHoraria({
+                            valCadDominio: e.target.value,
+                            idDominio: e.target.options[e.target.selectedIndex].id
+                          })
+                          e.target.value === 'Tiempo Completo' ? setCargaHoraria(VALOR_TIEMPO_COMPLETO) : setCargaHoraria(VALOR_TIEMPO_PARCIAL);
+                        }}>
+                          {
+                            options.map((op) => (
+                              <option id={op.idDominio} key={op.idDominio} value={op.valCadDominio}> {op.valCadDominio} </option>
+                            ))
+                          }
+                        </select>
+                    }
+                  </div>
+
+                  <div className='input-container'>
+                    <label htmlFor=""> Descuento seguro de salud: </label>
+                    <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago neto: </label>
+                    <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
+                      setPagoNeto(e.target.value)
+                    }} />
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Carga horaria: </label>
+                    <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Fondo de pensiones: </label>
+                    <select className='select-input' required onChange={(e) => { onFondoPensionesSelect(e.target.value) }}>
+                      {
+                        fondoPensionesList.map((op, index) => (
+                          <option key={index}> {op.valCadDominio} </option>
+                        ))
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div className='form-block'>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago por hora: </label>
+                    <input type='number' id='pagoPorHora' step="any" min={0} max={60} value={pagoHora} onChange={(e) => {
+                      setPagoHora(e.target.value > 60 ? 60 : e.target.value)
+                    }} />
+                  </div>
+                  {
+                    fondoPension.valCadDominio === 'AFP' &&
+                    <div className='input-container'>
+                      <label htmlFor=""> AFP: </label>
+                      <select className='select-input' required onChange={(e) => { onAfpSelect(e.target.value) }}>
+                        {
+                          afpOptions.map((op) => (
+                            <option key={op.idDominio}> {op.valCadDominio} </option>
+                          ))
+                        }
+                      </select>
+                    </div>
+                  }
+                  {loading ? <PageLoader /> : null}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='buttons-container'>
+            <button className='main-button' disabled={loading}>Tomar fotos</button>
+            <div style={{display: 'flex', gap: '10px'}}>
+              <button className='main-button' disabled={loading}>Limpiar</button>
+              <button className='main-button' disabled={loading}>Guardar</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

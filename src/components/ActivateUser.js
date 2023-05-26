@@ -103,91 +103,93 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ActivateUser = ({ setIsAuthenticated }) => {
-  const { emailb64 } = useParams();
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    showPassword: false,
-  });
-  const [usuario, setUsuario] = React.useState({
-    correo: '',
-    contra: '',
-  });
-  const [correo, setCorreo] = useState('');
-  const [validatePassword, setValidatePassword] = useState('');
-  const [contrase, setContra] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+const Login = ({ setIsAuthenticated }) => {
+    const { emailb64 } = useParams();
+    const classes = useStyles();
+    const [values, setValues] = React.useState({
+      showPassword: false,
+    });
+    const [usuario, setUsuario] = React.useState({
+      correo: '',
+      contra: '',
+    });
+    const [correo, setCorreo] = useState('');
+    const [validatePassword, setValidatePassword] = useState('');
+    const [contrase, setContra] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      const decodedEmail = Buffer.from(emailb64, 'base64').toString('ascii')
+      setCorreo(decodedEmail);
+    }, [])
+  
+    const handleClickShowPassword1 = () => {
+      setValues({ ...values, showPassword: !values.showPassword });
+    };
 
-  useEffect(() => {
-    console.log('email: ', emailb64)
-    const decodedEmail = Buffer.from(emailb64, 'base64').toString('ascii')
-    console.log('decoded: ', decodedEmail)
-    setCorreo(decodedEmail);
-  }, [])
+    const handleClickShowPassword2 = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+      };
+  
+    const handleMouseDownPassword1 = (event) => {
+      event.preventDefault();
+    };
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-
-      if (!validatePassword || !contrase) {
-        alert('Por favor, complete todos los campos');
-        return;
+    const handleMouseDownPassword2 = (event) => {
+        event.preventDefault();
+      };
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+  
+      try {
+  
+        if (!validatePassword || !contrase) {
+          alert('Por favor, complete todos los campos');
+          return;
+        }
+        if (contrase != validatePassword) {
+          alert('Las contraseñas no coinciden');
+          return;
+        }
+        setLoading(true);
+  
+        const contra = Buffer.from(contrase).toString("base64");
+  
+  
+  
+        const res = await axios.put(`https://cappro-rrhh-sys.azurewebsites.net/usuario/activacionUsuarioNuevo?correo=${correo}&contraB64=${contra}`)
+        setLoading(false);
+        alert('La autenticación fue correcta.');
+        navigate('/');
+  
+      } catch (error) {
+        console.log({ message: error.data });
       }
-      if (contrase != validatePassword) {
-        alert('Las contraseñas no coinciden');
-        return;
-      }
-      setLoading(true);
-
-      const contra = Buffer.from(contrase).toString("base64");
-
-      console.log('datos enviados: ', {
-        correo,
-        contraB64: contra
-      })
-
-      const res = await axios.put(`https://cappro-rrhh-sys.azurewebsites.net/usuario/activacionUsuarioNuevo?correo=${correo}&contraB64=${contra}`)
-      console.log('response: ', res.data)
-      setLoading(false);
-      alert('La autenticación fue correcta.');
-      navigate('/');
-
-    } catch (error) {
-      console.log({ message: error.data });
-    }
-
-  };
+    };
   return (
-    <div className={clsx(classes.root)}>
-      <div className={clsx(classes.divisionpantallas)} style={{ backgroundColor: "#0066CC" }}>
-        <div className={clsx(classes.color2, classes.titulo)}>
-          <img className={clsx(classes.logo)} src='/images/Recurso1.png' />
-          <h2 style={{ textTransform: "uppercase", margin: 0 }} className={clsx(classes.tipoletra1)}>escuela superior de arte dramático de trujillo</h2>
-          <h1 className={clsx(classes.h1, classes.tipoletra1)}>virgilio rodriguez nache</h1>
-          <h3 className={clsx(classes.h3, classes.tipoletra1)}>Sistema de gestión</h3>
-          <h3 className={clsx(classes.h3, classes.tipoletra1)}>de Recursos Humanos</h3>
+    <div className='login-container'>
+      <div className='banner-container'>
+        <div className='banner-main'>
+          <img src='../images/Recurso1.png' />
+          <div>
+            <h2 className='banner-h2'>ESCUELA SUPERIOR DE ARTE DRAMÁTICO DE TRUJILLIO</h2>
+            <h1 className='banner-h1'>VIRGILIO RODRIGUEZ NACHE</h1>
+          </div>
+        </div>
+        <div className='banner-footer'>
+          <h3>Sistema de gestión de Recursos Humanos</h3>
         </div>
       </div>
-      <form className={clsx(classes.color1, classes.divisionpantallas)} onSubmit={handleSubmit}>
-        <div>
-          <h2 style={{ textAlign: 'center', marginTop: 300, fontSize: 50 }} className={clsx(classes.tipoletra2)} >Activa tu cuenta</h2>
-          <div>
-            <div className={clsx(classes.formulario)} style={{ marginBottom: 10 }}>
-              <img className={clsx(classes.icono)} src='/images/Recurso3.png' />
-              <p className={clsx(classes.tipoletra2)}>Contraseña:</p>
-              <FormControl style={{ marginLeft: 37 }} className={clsx(classes.margin, classes.textField)} variant="outlined">
+      <form onSubmit={handleSubmit} className='login-form-container'>
+        <div className='login-form-content'>
+          <h2 >Activa tu Cuenta</h2>
+          <div className='controls'>
+            <div className='control-container'>
+              <p >Contraseña:</p>
+              <FormControl className='input-login' variant="outlined">
                 <OutlinedInput
-                  className={clsx(classes.tamanoLabel)}
                   id="outlined-adornment-password1"
                   type={values.showPassword ? 'text' : 'password'}
                   value={validatePassword}
@@ -197,8 +199,8 @@ const ActivateUser = ({ setIsAuthenticated }) => {
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
+                        onClick={handleClickShowPassword1}
+                        onMouseDown={handleMouseDownPassword2}
                         color='primary'
                         edge="end"
                       >
@@ -209,22 +211,22 @@ const ActivateUser = ({ setIsAuthenticated }) => {
                 />
               </FormControl>
             </div>
-            <div className={clsx(classes.formulario)}>
-              <img className={clsx(classes.icono)} src='/images/Recurso3.png' />
-              <p className={clsx(classes.tipoletra2)}>Repita la contraseña:</p>
-              <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+            <div className='control-container'>
+              <p>Repita Contraseña:</p>
+              {/* <TextField style={{paddingLeft: 20}} id="standard-password-input" type="password" autoComplete="current-password"></TextField> */}
+              <FormControl style={{ width: '280px' }} variant="outlined">
                 <OutlinedInput
-                  className={clsx(classes.tamanoLabel)}
                   id="outlined-adornment-password2"
                   type={values.showPassword ? 'text' : 'password'}
                   value={contrase}
+                  //onChange={handleChange('contra')}
                   onChange={(event) => setContra(event.target.value)}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
+                        onClick={handleClickShowPassword2}
+                        onMouseDown={handleMouseDownPassword2}
                         color='primary'
                         edge="end"
                       >
@@ -254,4 +256,4 @@ const ActivateUser = ({ setIsAuthenticated }) => {
     </div>
   );
 }
-export default ActivateUser;
+export default Login;

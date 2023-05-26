@@ -19,48 +19,10 @@ const theme = createTheme({
   }
 })
 
-// const router = createBrowserRouter([
-//   {
-//     path: '/',
-//     element: <Login />,
-//   },
-//   {
-//     path: '/menu',
-//     element: <MenuPrincipal />,
-//   },
-//   {
-//     path: '/registropersonal',
-//     element: <RegistroPersonal />,
-//   },
-//   {
-//     path: '/mantenimientopersonal',
-//     element: <MantenimientoDePersonal />,
-//   },
-//   {
-//     path: '/reporteplanilla',
-//     element: <ReportePlanillas />,
-//   },
-//   {
-//     path: '/reporteasistencia',
-//     element: <ReporteAsistencia />,
-//   }
-// ])
-
 root.render(
   <ThemeProvider theme={theme}>
     <BrowserRouter>
       <LocalRoutes/>
     </BrowserRouter>
-    
-
-      {/* <RegistroPersonal/>
-      <MantenimientoDePersonal/>
-      <ReportePlanillas></ReportePlanillas>
-      <ReporteAsistencia></ReporteAsistencia> */}
   </ThemeProvider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

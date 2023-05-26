@@ -15,3 +15,14 @@ export const validateEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
+
+export function calcularAñoJubilacion(fechaNacimiento) {
+  const fechaActual = new Date();
+  const partesFecha = fechaNacimiento.split('-');
+  const añoNacimiento = parseInt(partesFecha[0]);
+  
+  const edad = fechaActual.getFullYear() - añoNacimiento;
+  const añoJubilacion = añoNacimiento + 65;
+  
+  return añoJubilacion;
+}

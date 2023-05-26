@@ -3,6 +3,7 @@ body {
   font-family: 'Krub', 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
 }
 
 code {
@@ -11,5 +12,82 @@ code {
 }
 
 * {
-  --page-color: #0066CC
+  --page-color: #0066CC;
+  --secondary-color: #FFFFFF;
+  --modulos-width: 250px;
+  --modulos-responsive-width: 60px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+}
+
+.h2-title {
+  text-align: center;
+  color: var(--page-color);
+}
+
+.module-container {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+.module-form {
+  height: 100%;
+  border: 1px solid black;
+  box-shadow: 1px 0px 5px 0 rgba(0, 0, 0, .5);
+}
+
+.mp-form-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 30px;
+}
+
+.form-inputs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+
+@media (min-width: 641px) and (max-width: 1280px) {
+  .form-inputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-inputs {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+.message {
+  color: var(--page-color);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .2);
+  color: black;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 500;
+  width: 100vw;
+  height: 100vh;
+
 }

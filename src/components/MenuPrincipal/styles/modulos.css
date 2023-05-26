@@ -1,0 +1,30 @@
+.modulos-container {
+  height: 100%;
+  width: var(--modulos-width);
+  color: var(--page-color);
+  border-right: 1px solid black;
+  box-shadow: -10px 0 10px -5px rgba(158, 80, 80, 0.5);
+}
+
+.modulos-container-responsive {
+  height: 100%;
+  width: var(--modulos-responsive-width);
+  color: var(--page-color);
+  border-right: 1px solid black;
+  box-shadow: -10px 0 10px -5px rgba(158, 80, 80, 0.5);
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  gap: 10px;
+}
+.option-responsive {
+  width: 35px;
+}
+.option-responsive img {
+  width: 100%;
+}

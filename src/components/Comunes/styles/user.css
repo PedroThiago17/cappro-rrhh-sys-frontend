@@ -1,0 +1,38 @@
+.user-list-container {
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  color: var(--page-color);
+}
+
+.user-item-container {
+  background-color: var(--secondary-color);
+  border: 1px solid var(--page-color);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.user-detail-container {
+  display: flex;
+  gap: 30px;
+  font-size: 13px;
+}
+.user-detail {
+  font-weight: 600;
+  display: block;
+  width: 100%;
+}
+.user-name {
+  width: 100px;
+}
+
+@media (max-width:400px) {
+  .user-item-container {
+    flex-direction: column;
+  }
+}
