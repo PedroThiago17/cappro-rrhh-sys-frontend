@@ -121,9 +121,6 @@ const ReportePlanillas = (props) => {
   const isTablet = useMediaQuery({ query: '(max-width: 640px)' })
   const [users, setUsers] = useState([]);
   const [notData, setNotData] = useState(false);
-
-
-
   const [search, setSearch] = useState(
     {
       dni: 0,
@@ -138,7 +135,7 @@ const ReportePlanillas = (props) => {
       if (userId) {
         try {
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
-          if (data) {
+          if (data.length != 0) {
             setUsers(data)
           } else {
             setNotData(true)
@@ -187,18 +184,20 @@ const ReportePlanillas = (props) => {
             </div>
           </div>
           {
-            notData ? <p className='message'>No se encontraron resultados...</p> :
+            
             isTablet ?
               <ReporteUserList
                 foundUsers={[]}
                 users={users}
                 view={'Reporte Planillas'}
+                notData = {notData}
               />
               :
               <ReporteTable
                 headers={rpTableHeaders}
                 foundUsers={[]}
-                users={users} >
+                users={users} 
+                notData ={notData}>
                 <div className='mp-buttons-container'>
                   <img src='./images/Recurso8.png' />
                 </div>

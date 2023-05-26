@@ -132,7 +132,7 @@ const ReporteAsistencia = (props) => {
       if (userId) {
         try {
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
-          if (data) {
+          if (data.length != 0) {
             setUsers(data)
           } else {
             setNotData(true)
@@ -181,19 +181,21 @@ const ReporteAsistencia = (props) => {
             </div>
           </div>
           {
-            notData ? <p className='message'>No se encontraron resultados...</p> :
+            
               isTablet ?
                 <AsistenciaList
                   foundUsers={[]}
                   users={users}
                   view='Reporte Asistencia'
+                  notData={notData}
                 >
                 </AsistenciaList>
                 :
                 <AsistenciaTable
                   headers={raTableHeaders}
                   foundUsers={[]}
-                  users={users} >
+                  users={users} 
+                  notData={notData}>
                 </AsistenciaTable>
           }
         </div>

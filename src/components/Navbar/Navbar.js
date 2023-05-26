@@ -6,7 +6,7 @@ import USUARIOLOGEADO  from '../../Global/Globals';
 const Navbar = () => {
   const navigate = useNavigate();
   const onSubmit = (url) => {
-    window.localStorage.clear('userId')
+    window.localStorage.clear('userId')    
     navigate(url);
   }
   return (

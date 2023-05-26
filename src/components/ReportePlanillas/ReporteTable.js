@@ -1,7 +1,7 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons'
 import React from 'react'
 
-const ReporteTable = ({ foundUsers, users, headers, children = null}) => {
+const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) => {
   return (
     <div className='table-container'>
       <div className='rp-table-header'>
@@ -11,31 +11,35 @@ const ReporteTable = ({ foundUsers, users, headers, children = null}) => {
           ))
         }
       </div>
-      <div className='table-content-container'>
-        {
-          foundUsers.length != 0 ?
-            foundUsers.map(({ datosPersonales, datosPlanilla }, index) => (
-              <div key={index} className='rp-table-content'>
-                <p>{datosPersonales.dni}</p>
-                <p>{datosPersonales.nombres}</p>
-                <p>{datosPersonales.apellidos}</p>
-                <p>{datosPlanilla.codModular}</p>
-                {children}
-              </div>
-            ))
-            :
-            users.map(({ datosPersonales, datosPlanilla }, index) => (
-              <div key={index} className='rp-table-content'>
-                <p>Enero</p>
-                <p>2023</p>
-                <p>{datosPersonales.dni}</p>
-                <p>{datosPersonales.nombres}</p>
-                <p>{datosPersonales.apellidos}</p>
-                {children}
-              </div>
-            ))
-        }
-      </div>
+      {
+        notData ? <p className='message'>No se encontraron resultados...</p> :
+          <div className='table-content-container'>
+            {
+              foundUsers.length != 0 ?
+                foundUsers.map(({ datosPersonales, datosPlanilla }, index) => (
+                  <div key={index} className='rp-table-content'>
+                    <p>{datosPersonales.dni}</p>
+                    <p>{datosPersonales.nombres}</p>
+                    <p>{datosPersonales.apellidos}</p>
+                    <p>{datosPlanilla.codModular}</p>
+                    {children}
+                  </div>
+                ))
+                :
+                users.map(({ datosPersonales, datosPlanilla }, index) => (
+                  <div key={index} className='rp-table-content'>
+                    <p>Enero</p>
+                    <p>2023</p>
+                    <p>{datosPersonales.dni}</p>
+                    <p>{datosPersonales.nombres}</p>
+                    <p>{datosPersonales.apellidos}</p>
+                    {children}
+                  </div>
+                ))
+            }
+          </div>
+      }
+
     </div>
   )
 }

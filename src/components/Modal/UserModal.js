@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './styles/styles.css'
 import axios from 'axios';
-import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL } from '../../constants/constants';
+import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL,MULTIPLICADOR } from '../../constants/constants';
 import { calcularAñoJubilacion, calcularEdad } from '../../utils/utils';
 
 
@@ -22,6 +22,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
   const [pagoBruto, setPagoBruto] = useState('');
   const [dsctoSalud, setDsctoSalud] = useState('');
   const [dsctoPension, setDsctoPension] = useState('');
+  const [supervisor, setSupervisor] = useState('');
   const [pagoNeto, setPagoNeto] = useState('');
   const [afp, setAfp] = useState('');
   const [edad, setEdad] = useState('');
@@ -35,7 +36,9 @@ const UserModal = ({ setShowModal, selectedId }) => {
     const getUser = async () => {
       const res = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/findById/${selectedId}`)
       if (res.data) {
-        const { datosPlanilla, datosPersonales } = res.data;
+        console.log(res.data)
+        const { datosPlanilla, datosPersonales, usuarioSupervisor } = res.data;
+        setSupervisor(usuarioSupervisor.datosPersonales.nombres + ' ' + usuarioSupervisor.datosPersonales.apellidos);
         const edad = calcularEdad(datosPersonales.fnacimiento);
         const añoJubilacion = edad > JUBILACION ? new Date().getFullYear() : (JUBILACION - edad) + new Date().getFullYear();
         setAñoJub(añoJubilacion)
@@ -51,10 +54,10 @@ const UserModal = ({ setShowModal, selectedId }) => {
         const tipoPension = resFondoP.data.find((e) => e.idDominio === pensionId);
         setFondoPensiones(tipoPension.valCadDominio);
 
-        const pagoB = cargaHoraria * datosPlanilla.pagoHora;
+        const pagoB = ((cargaHoraria * datosPlanilla.pagoHora)*MULTIPLICADOR) ;
         setPagoBruto(pagoB);
-        const desctoSalud = pagoB * PORCENTAJE;
-        setDsctoSalud(desctoSalud);
+        const desctoSalud = (pagoB * PORCENTAJE).toFixed(2);
+        setDsctoSalud(Number(desctoSalud));
 
         if (tipoPension.valCadDominio === 'AFP') {
           const afpId = datosPlanilla.idDomAfp;
@@ -67,7 +70,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
 
           setDsctoPension(desctoPension)
 
-          const pagoNeto = pagoB - (Number(desctoPension) + desctoSalud)
+          const pagoNeto = pagoB - (Number(desctoPension) + Number(desctoSalud))
           setPagoNeto(pagoNeto)
 
         } else {
@@ -75,7 +78,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
           const desctoPension = (pagoB * onpValue).toFixed(2);
           setDsctoPension(desctoPension)
 
-          const pagoNeto = pagoB - (Number(desctoPension) + desctoSalud)
+          const pagoNeto = pagoB - (Number(desctoPension) + Number(desctoSalud))
           setPagoNeto(pagoNeto)
 
         }
@@ -193,7 +196,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                 </div>
                 <div className='input-container'>
                   <label>Supervision:</label>
-                  <input name='supervision' type='text' readOnly defaultValue='Nombre del supervisor' />
+                  <input name='supervision' type='text' readOnly defaultValue={supervisor} />
                 </div>
               </div>
             </div>
@@ -216,7 +219,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                 </div>
                 <div className='input-container'>
                   <label htmlFor=""> Descuento de pensiones: </label>
-                  <input type='number' readOnly defaultValue={dsctoPension} />
+                  <input type='number' step="any" readOnly defaultValue={dsctoPension} />
                 </div>
               </div>
               <div className='form-block'>
@@ -261,7 +264,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
             </div>
           </div>
         </div>
-        <button className="main-button" onClick={toggleModal} style={{padding:'15px 20px 15px', }}>
+        <button className="main-button" onClick={toggleModal} style={{padding:'15px 20px'}}>
           Volver atrás
         </button>
       </div>

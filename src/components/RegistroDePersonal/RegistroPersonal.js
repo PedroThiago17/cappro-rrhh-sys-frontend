@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
+import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import NavBar from '../MenuPrincipal/NavBar';
 import PageLoader from '../Loading';
@@ -387,7 +387,7 @@ const RegistroPersonal = () => {
   }, [puesto]);
 
   useEffect(() => {
-    setPagoBruto(cargaHoraria * pagoHora)
+    setPagoBruto((cargaHoraria * pagoHora)*MULTIPLICADOR)
   }, [pagoHora, cargaHoraria])
 
   useEffect(() => {
@@ -606,7 +606,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Pago bruto: </label>
-                    <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                    <input type='number' readOnly required value={(cargaHoraria * pagoHora)*MULTIPLICADOR} onChange={(e) => setPagoBruto(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Descuento de pensiones: </label>

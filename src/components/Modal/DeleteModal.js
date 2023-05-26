@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import './styles/delete.css'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
 import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL } from '../../constants/constants';
 import { calcularAñoJubilacion, calcularEdad } from '../../utils/utils';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const DeleteModal = ({ setShowDeleteModal, userToDelete }) => {
 
-  const { idUsuario, datosPersonales } = userToDelete;
   const navigate = useNavigate();
-  const onSubmit = (url) => {
-    navigate(url);
-  }
+  const { idUsuario, datosPersonales } = userToDelete;
   const disableUser = async () => {
     const { data } = await axios.put(`https://cappro-rrhh-sys.azurewebsites.net/usuario/desactivacionUsuario/${idUsuario}`);
-    console.log('user ', userToDelete)
-    setShowDeleteModal(false);
-    window.location.reload();
+    if(data) {
+      setShowDeleteModal(false);
+      window.location.reload();
+    }
   }
   return (
     <div className="modal">

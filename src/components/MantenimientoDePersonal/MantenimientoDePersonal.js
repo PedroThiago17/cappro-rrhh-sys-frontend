@@ -133,7 +133,7 @@ const MantenimientoDePersonal = () => {
       if (userId) {
         try {
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
-          if (data) {
+          if (data.length != 0) {
             setUsers(data)
           } else {
             setNotData(true)
@@ -229,7 +229,7 @@ const MantenimientoDePersonal = () => {
               </div>
             </div>
             {
-              notData ? <p className='message'>No se encontraron resultados...</p> :
+              
                 isTablet ?
                   <UserList
                     foundUsers={foundUsers}
@@ -237,6 +237,7 @@ const MantenimientoDePersonal = () => {
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
                     view='Mantenimiento Personal'
+                    notData={notData}
                   />
                   :
                   <UserTable
@@ -245,7 +246,8 @@ const MantenimientoDePersonal = () => {
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
                     users={users}
-                    view='Mantenimiento Personal'>
+                    view='Mantenimiento Personal'
+                    notData={notData}>
                   </UserTable>
             }
           </div>

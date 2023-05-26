@@ -174,7 +174,7 @@ const Login = ({ setIsAuthenticated }) => {
     <div className='login-container'>
       <div className='banner-container'>
         <div className='banner-main'>
-          <img src='./images/Recurso1.png' />
+          <img  src='./images/Recurso1.png' />
           <div>
             <h2 className='banner-h2'>ESCUELA SUPERIOR DE ARTE DRAMÁTICO DE TRUJILLIO</h2>
             <h1 className='banner-h1'>VIRGILIO RODRIGUEZ NACHE</h1>
