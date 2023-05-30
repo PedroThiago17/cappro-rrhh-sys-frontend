@@ -161,7 +161,7 @@ const Login = ({ setIsAuthenticated }) => {
   
         const res = await axios.put(`https://cappro-rrhh-sys.azurewebsites.net/usuario/activacionUsuarioNuevo?correo=${correo}&contraB64=${contra}`)
         setLoading(false);
-        alert('La autenticación fue correcta.');
+        alert('La activación fue correcta.');
         navigate('/');
   
       } catch (error) {
@@ -184,7 +184,7 @@ const Login = ({ setIsAuthenticated }) => {
       </div>
       <form onSubmit={handleSubmit} className='login-form-container'>
         <div className='login-form-content'>
-          <h2 >Activa tu Cuenta</h2>
+          <h2 style={{padding:'50px'}}>Activa tu Cuenta</h2>
           <div className='controls'>
             <div className='control-container'>
               <p >Contraseña:</p>
@@ -242,13 +242,13 @@ const Login = ({ setIsAuthenticated }) => {
         </div>
         <div className={clsx(classes.contenedorboton)}>
           <Button
-            className={clsx(classes.boton, classes.tipoletra2)}
+            className={clsx(classes.boton, classes.tipoletra2)} style={{padding:'25px 40px', fontSize:'17px'}}
             color='primary'
             variant='contained'
             type='submit'
             disabled={loading}
           >
-            Autenticar
+            Activar
           </Button>
         </div>
         {loading ? <PageLoader /> : null}

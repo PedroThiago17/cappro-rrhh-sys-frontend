@@ -264,8 +264,8 @@ const UserModal = ({ setShowModal, selectedId }) => {
             </div>
           </div>
         </div>
-        <button className="main-button" onClick={toggleModal} style={{padding:'15px 20px'}}>
-          Volver atrás
+        <button className="main-button" onClick={toggleModal} style={{padding:'15px 20px', marginTop:'30px'}}>
+          CERRAR
         </button>
       </div>
     </div>
