@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText, Collapse, IconButton } from '@material-ui/core';
@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { FaUserPlus } from 'react-icons/fa'
 import './styles/modulos.css'
+import FotoPasos from '../FotoPasos/FotoPasos';
+import Modal from '../Modal/Modal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +68,9 @@ const useStyles = makeStyles((theme) => ({
 const ModulosResponsive = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const [dni, setDni] = useState('');
 
   const handleClick = () => {
     setOpen(!open);
@@ -74,9 +78,21 @@ const ModulosResponsive = () => {
   const onSubmit = (url) => {
     navigate(url);
   }
-
+  const onClickTomarFoto = () => {
+    const dni = window.localStorage.getItem('userDNI');
+    if (dni && dni.length === 8) {
+      setDni(dni)
+      setShowModal(true);
+    }
+  }
   return (
     <div className='modulos-container-responsive'>
+      {
+        showModal &&
+        <Modal setShowModal={setShowModal}>
+          <FotoPasos dni={dni} codigo={2}></FotoPasos>
+        </Modal>
+      }
       <div className='options-container'>
         <div title='Registro de personal'>
           <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/registropersonal')}>
@@ -95,6 +111,11 @@ const ModulosResponsive = () => {
         </div>
         <div title='Reporte de asistencia'>
           <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteasistencia')}>
+            <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+          </ListItem>
+        </div>
+        <div title='Asistencia'>
+          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={onClickTomarFoto}>
             <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
           </ListItem>
         </div>

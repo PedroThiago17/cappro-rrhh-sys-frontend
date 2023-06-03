@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './styles/styles.css'
 import axios from 'axios';
-import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL,MULTIPLICADOR } from '../../constants/constants';
+import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL } from '../../constants/constants';
 import { calcularAñoJubilacion, calcularEdad } from '../../utils/utils';
 
 
@@ -54,7 +54,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
         const tipoPension = resFondoP.data.find((e) => e.idDominio === pensionId);
         setFondoPensiones(tipoPension.valCadDominio);
 
-        const pagoB = ((cargaHoraria * datosPlanilla.pagoHora)*MULTIPLICADOR) ;
+        const pagoB = cargaHoraria * datosPlanilla.pagoHora;
         setPagoBruto(pagoB);
         const desctoSalud = (pagoB * PORCENTAJE).toFixed(2);
         setDsctoSalud(Number(desctoSalud));
@@ -98,7 +98,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
               <div className='line'></div>
             </div>
             <div className='form-content'>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor="">DNI</label>
                   <input name='dni' type='number' readOnly defaultValue={user.datosPersonales.dni} />
@@ -112,7 +112,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input name='direccion' type='text' readOnly defaultValue={user.datosPersonales.direccion} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label>Nombres:</label>
                   <input name='nombres' type='text' readOnly defaultValue={user.datosPersonales.nombres} />
@@ -126,7 +126,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input name='telefono' type='text' readOnly defaultValue={user.datosPersonales.telefono} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label>Apellidos:</label>
                   <input name='apellidos' type='text' readOnly defaultValue={user.datosPersonales.apellidos} />
@@ -140,7 +140,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input title={user.correo} type='email' name='email' readOnly defaultValue={user.correo} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Fecha de nacimiento: </label>
                   <input type='date' id='fechaNacimiento' readOnly defaultValue={user.datosPersonales.fnacimiento} />
@@ -159,7 +159,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
               <div className='line'></div>
             </div>
             <div className='form-content'>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Fecha de Ingreso: </label>
                   <input type='date' readOnly defaultValue={user.datosLaborales.fingreso} />
@@ -169,7 +169,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input name='universidad' type='text' readOnly defaultValue={user.datosLaborales.universidad} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor="">Años de experiencia:</label>
                   <input name='experiencia' type='number' readOnly defaultValue={user.datosLaborales.aniosExpe} />
@@ -179,7 +179,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input name='especialidad' type='text' readOnly defaultValue={user.datosLaborales.especialidad} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Año de jubilación: </label>
                   <input type='number' readOnly defaultValue={añoJub} />
@@ -189,7 +189,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input name='puesto' type='text' readOnly defaultValue={user.rol} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label>Formación profesional:</label>
                   <input name='formacion' type='text' readOnly defaultValue={user.datosLaborales.formacion} />
@@ -208,7 +208,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
               <div className='line'></div>
             </div>
             <div className='form-content'>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor="">Código modular:</label>
                   <input name='codigoModular' type='text' readOnly defaultValue={user.datosPlanilla.codModular} />
@@ -222,7 +222,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input type='number' step="any" readOnly defaultValue={dsctoPension} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Modalidad horaria: </label>
                   <input name='modalidadHoraria' type='text' readOnly defaultValue={modalidadHoraria} />
@@ -237,7 +237,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <input type='number' id='pagoNeto' readOnly step="any" defaultValue={pagoNeto} />
                 </div>
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Carga horaria: </label>
                   <input type='text' id='cargaHoraria' readOnly defaultValue={cargaHoraria} />
@@ -248,7 +248,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
                 </div>
 
               </div>
-              <div className='form-block'>
+              <div className='form-block-modal'>
                 <div className='input-container'>
                   <label htmlFor=""> Pago por hora: </label>
                   <input type='number' id='pagoPorHora' step="any" min={0} readOnly defaultValue={user.datosPlanilla.pagoHora} />
@@ -264,8 +264,8 @@ const UserModal = ({ setShowModal, selectedId }) => {
             </div>
           </div>
         </div>
-        <button className="main-button" onClick={toggleModal} style={{padding:'15px 20px', marginTop:'30px'}}>
-          CERRAR
+        <button className="main-button" onClick={toggleModal}>
+          Cerrar
         </button>
       </div>
     </div>

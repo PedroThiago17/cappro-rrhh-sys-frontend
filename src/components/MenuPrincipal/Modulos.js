@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash'
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText, Collapse, IconButton } from '@material-ui/core';
@@ -6,6 +6,8 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import './styles/modulos.css'
+import Modal from '../Modal/Modal';
+import FotoPasos from '../FotoPasos/FotoPasos';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
 const Modulos = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [dni, setDni] = useState('');
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -74,9 +78,21 @@ const Modulos = () => {
   const onSubmit = (url) => {
     navigate(url);
   }
-
+  const onClickTomarFoto = () => {
+    const dni = window.localStorage.getItem('userDNI');
+    if (dni && dni.length === 8) {
+      setDni(dni)
+      setShowModal(true);
+    }
+  }
   return (
     <div className='modulos-container'>
+      {
+        showModal &&
+        <Modal setShowModal={setShowModal}>
+          <FotoPasos dni={dni} codigo={2}></FotoPasos>
+        </Modal>
+      }
       <div>
         <ListItem style={{ padding: 20 }} button onClick={handleClick}>
           <ListItemIcon>
@@ -112,6 +128,12 @@ const Modulos = () => {
             <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
           </ListItemIcon>
           <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
+        </ListItem>
+        <ListItem style={{ padding: 20 }} button onClick={onClickTomarFoto}>
+          <ListItemIcon>
+            <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso9.png' />
+          </ListItemIcon>
+          <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Asistencia" />
         </ListItem>
       </div>
     </div>

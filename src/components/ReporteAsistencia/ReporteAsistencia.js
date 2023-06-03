@@ -168,7 +168,7 @@ const ReporteAsistencia = (props) => {
           <div className='mp-form-content'>
             <div className='form-inputs'>
               <div className='input-container'>
-                <label>DNI</label>
+                <label>DNI:</label>
                 <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
               </div>
               <RegistroInput label={'Nombres:'}></RegistroInput>

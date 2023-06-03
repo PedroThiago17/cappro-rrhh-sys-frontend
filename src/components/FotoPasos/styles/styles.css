@@ -1,0 +1,29 @@
+.fp-container{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.fp-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.fp-pasos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fp-clipboard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fp-command {
+  display: flex;
+  justify-content: space-around;
+  background-color: #c4c4c4;
+  padding: 10px;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+}

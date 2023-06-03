@@ -14,7 +14,6 @@ const DeleteModal = ({ setShowDeleteModal, userToDelete }) => {
   const disableUser = async () => {
     const { data } = await axios.put(`https://cappro-rrhh-sys.azurewebsites.net/usuario/desactivacionUsuario/${idUsuario}`);
     if(data) {
-      setShowDeleteModal(false);
       window.location.reload();
     }
   }

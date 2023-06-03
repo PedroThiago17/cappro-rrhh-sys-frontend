@@ -7,11 +7,14 @@ import clsx from 'clsx';
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR } from '../../constants/constants';
+import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import NavBar from '../MenuPrincipal/NavBar';
 import PageLoader from '../Loading';
-import UserModal from '../Modal/UserModal';
+import InfoModal from '../Modal/Modal';
+import Modal from '../Modal/Modal';
+import { AiOutlineCopy } from 'react-icons/ai';
+import FotoPasos from '../FotoPasos/FotoPasos';
 
 const INITIAL_FONDO_PENSIONES = [
   {
@@ -102,41 +105,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const test = {
-  "correo": "test1@hotmail.com",
-  "datosLaborales": {
-    "aniosExpe": 5,
-    "especialidad": "Arquitectura de software",
-    "fingreso": "2023-05-10T00:58:54.513Z",
-    "formacion": "Ing. de Sistemas",
-    "universidad": "UPN"
-  },
-  "datosPersonales": {
-    "apellidos": "Vergara",
-    "direccion": "Urb. Mochica",
-    "dni": "9939333",
-    "estadoCivil": "S",
-    "fnacimiento": "1997-03-17T00:58:54.513Z",
-    "lnacimiento": "Trujillo",
-    "nombres": "Karen",
-    "sexo": "M",
-    "telefono": "965050336"
-  },
-  "datosPlanilla": {
-    "cargaHoraria": 45,
-    "codModular": "109339333",
-    "idDomAfp": 10,
-    "idDomFondpPen": 7,
-    "idDomModalidad": 5,
-    "pagoHora": 40
-  },
-  "idRol": 2,
-  "idUsuarioSup": null
-}
-
 
 const RegistroPersonal = () => {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [age, setAge] = React.useState(0);
   const [jubilacion, setJubilacion] = useState(0);
@@ -170,6 +140,7 @@ const RegistroPersonal = () => {
   const [codigoModular, setCodigoModular] = useState('');
   const [supervision, setSupervision] = useState({ idUsuario: 0, nombreCompleto: '' });
   const [showSupervision, setShowSupervision] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [puestoOptions, setPuestoOptions] = useState([]);
   const [afpOptions, setAfpOptions] = useState([]);
@@ -177,6 +148,7 @@ const RegistroPersonal = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [dniMssg, setDniMssg] = useState(false);
 
 
   const onRegistrarPersonal = async (e) => {
@@ -387,7 +359,7 @@ const RegistroPersonal = () => {
   }, [puesto]);
 
   useEffect(() => {
-    setPagoBruto((cargaHoraria * pagoHora)*MULTIPLICADOR)
+    setPagoBruto(cargaHoraria * pagoHora)
   }, [pagoHora, cargaHoraria])
 
   useEffect(() => {
@@ -449,14 +421,33 @@ const RegistroPersonal = () => {
     }
   }, [successMsg]);
 
+  const onClickTomarFoto = () => {
+    if (dni.length === 8) {
+      setShowModal(true);
+    }
+    else {
+      setDniMssg(true)
+      const timeoutId = setTimeout(() => {
+        setDniMssg(false)
+      }, 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }
+
   return (
 
     <div className='registro-personal'>
+      {
+        showModal &&
+        <Modal setShowModal={setShowModal}>
+          <FotoPasos dni={dni} codigo={1}></FotoPasos>
+        </Modal>
+      }
       <form className='registro-form' onSubmit={onRegistrarPersonal}>
         <div className='mp-form-container'>
           <h2 className='h2-title'>REGISTRAR NUEVO PERSONAL</h2>
           <div className='blocks-container'>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <div className='block-title-container'>
                 <p className='block-title'>Datos personales</p>
                 <div className='line'></div>
@@ -464,36 +455,32 @@ const RegistroPersonal = () => {
               <div className='form-content'>
                 <div className='form-block'>
                   <div className='input-container'>
-                    <label htmlFor="">DNI</label>
+                    <label htmlFor="">DNI: </label>
+{/*                     <div style={{width:'60%', position:'relative'}}>
+                      <input name='dni' type='number' style={{width:'100%'}} required value={dni} onChange={(e) => handleNumberChange(e, 8)} />
+                      <p style={{position:'absolute'}}>hola</p>
+                    </div> */}
                     <input name='dni' type='number' required value={dni} onChange={(e) => handleNumberChange(e, 8)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Nombres:</label>
+                    <input name='nombres' type='text' required value={nombres} maxLength={60} onChange={(e) => setNombres(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Apellidos:</label>
+                    <input name='apellidos' type='text' required value={apellidos} maxLength={60} onChange={(e) => setApellidos(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Fecha de nacimiento: </label>
+                    <input type='date' id='fechaNacimiento' value={birthday} min="1948-01-01" onChange={handleBirthday} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor="">Lugar de nacimiento:</label>
                     <input name='lnacimiento' type='text' required value={lnacimiento} maxLength={50} onChange={(e) => setlNacimiento(e.target.value)} />
                   </div>
                   <div className='input-container'>
-                    <label>Dirección:</label>
-                    <input name='direccion' type='text' required value={direccion} maxLength={100} onChange={(e) => setDireccion(e.target.value)} />
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
-                    <label>Nombres:</label>
-                    <input name='nombres' type='text' required value={nombres} maxLength={60} onChange={(e) => setNombres(e.target.value)} />
-                  </div>
-                  <div className='input-container'>
                     <label htmlFor=""> Edad: </label>
                     <input type='number' id='edad' readOnly value={age} onChange={(e) => setAge(e.target.value)} />
-                  </div>
-                  <div className='input-container'>
-                    <label htmlFor="">Teléfono / Celular:</label>
-                    <input name='telefono' type='text' required value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
-                    <label>Apellidos:</label>
-                    <input name='apellidos' type='text' required value={apellidos} maxLength={60} onChange={(e) => setApellidos(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Sexo: </label>
@@ -506,16 +493,6 @@ const RegistroPersonal = () => {
                     </select>
                   </div>
                   <div className='input-container'>
-                    <label htmlFor=""> Correo personal: </label>
-                    <input type='email' name='email' maxLength={60} value={email} onChange={handleEmailChange} />
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
-                    <label htmlFor=""> Fecha de nacimiento: </label>
-                    <input type='date' id='fechaNacimiento' value={birthday} min="1948-01-01" onChange={handleBirthday} />
-                  </div>
-                  <div className='input-container'>
                     <label htmlFor=""> Estado civil: </label>
                     <select className='select-input' required onChange={(e) => setEstadoCivil(e.target.value)}>
                       {
@@ -525,11 +502,24 @@ const RegistroPersonal = () => {
                       }
                     </select>
                   </div>
+                  <div className='input-container'>
+                    <label>Dirección:</label>
+                    <input name='direccion' type='text' required value={direccion} maxLength={100} onChange={(e) => setDireccion(e.target.value)} />
+                  </div>
+
+                  <div className='input-container'>
+                    <label htmlFor="">Teléfono / Celular:</label>
+                    <input name='telefono' type='text' required value={telefono} onChange={(e) => handleNumberChange(e, 9)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Correo personal: </label>
+                    <input type='email' name='email' maxLength={60} value={email} onChange={handleEmailChange} />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <div className='block-title-container'>
                 <p className='block-title'>Datos laborales</p>
                 <div className='line'></div>
@@ -541,24 +531,24 @@ const RegistroPersonal = () => {
                     <input type='date' readOnly defaultValue={new Date().toISOString().substring(0, 10)} />
                   </div>
                   <div className='input-container'>
-                    <label>Universidad/ Institución:</label>
-                    <input name='universidad' type='text' required value={universidad} maxLength={60} onChange={(e) => setUniversidad(e.target.value)} />
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
                     <label htmlFor="">Años de experiencia:</label>
                     <input name='experiencia' type='number' required value={experiencia} max={30} onChange={(e) => setExperiencia(e.target.value > 30 ? 30 : e.target.value)} />
                   </div>
                   <div className='input-container'>
-                    <label>Especialidad:</label>
-                    <input name='especialidad' type='text' required value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
                     <label htmlFor=""> Año de jubilación: </label>
                     <input type='number' readOnly required value={age === 0 ? 0 : calcularJubilacion()} onChange={(e) => setJubilacion(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Formación profesional:</label>
+                    <input name='formacion' type='text' required value={formacion} maxLength={60} onChange={(e) => setFormacion(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Universidad/ Institución:</label>
+                    <input name='universidad' type='text' required value={universidad} maxLength={60} onChange={(e) => setUniversidad(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label>Especialidad:</label>
+                    <input name='especialidad' type='text' required value={especialidad} maxLength={50} onChange={(e) => setEspecialidad(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Puesto: </label>
@@ -569,12 +559,6 @@ const RegistroPersonal = () => {
                         ))
                       }
                     </select>
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
-                    <label>Formación profesional:</label>
-                    <input name='formacion' type='text' required value={formacion} maxLength={60} onChange={(e) => setFormacion(e.target.value)} />
                   </div>
                   {
                     showSupervision &&
@@ -593,7 +577,7 @@ const RegistroPersonal = () => {
               </div>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               <div className='block-title-container'>
                 <p className='block-title'>Datos de planilla</p>
                 <div className='line'></div>
@@ -604,16 +588,6 @@ const RegistroPersonal = () => {
                     <label htmlFor="">Código modular:</label>
                     <input name='codigoModular' type='text' required value={codigoModular} onChange={(e) => handleNumberChange(e, 20)} />
                   </div>
-                  <div className='input-container'>
-                    <label htmlFor=""> Pago bruto: </label>
-                    <input type='number' readOnly required value={(cargaHoraria * pagoHora)*MULTIPLICADOR} onChange={(e) => setPagoBruto(e.target.value)} />
-                  </div>
-                  <div className='input-container'>
-                    <label htmlFor=""> Descuento de pensiones: </label>
-                    <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
-                  </div>
-                </div>
-                <div className='form-block'>
                   <div className='input-container'>
                     <label htmlFor=""> Modalidad horaria: </label>
                     {
@@ -635,22 +609,23 @@ const RegistroPersonal = () => {
                         </select>
                     }
                   </div>
-
-                  <div className='input-container'>
-                    <label htmlFor=""> Descuento seguro de salud: </label>
-                    <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
-                  </div>
-                  <div className='input-container'>
-                    <label htmlFor=""> Pago neto: </label>
-                    <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
-                      setPagoNeto(e.target.value)
-                    }} />
-                  </div>
-                </div>
-                <div className='form-block'>
                   <div className='input-container'>
                     <label htmlFor=""> Carga horaria: </label>
                     <input type='number' id='cargaHoraria' readOnly value={cargaHoraria} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago por hora: </label>
+                    <input type='number' id='pagoPorHora' step="any" min={0} max={60} value={pagoHora} onChange={(e) => {
+                      setPagoHora(e.target.value > 60 ? 60 : e.target.value)
+                    }} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago bruto: </label>
+                    <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Descuento seguro de salud: </label>
+                    <input type='number' readOnly required value={seguroSalud} onChange={(e) => setSeguroSalud(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Fondo de pensiones: </label>
@@ -661,14 +636,6 @@ const RegistroPersonal = () => {
                         ))
                       }
                     </select>
-                  </div>
-                </div>
-                <div className='form-block'>
-                  <div className='input-container'>
-                    <label htmlFor=""> Pago por hora: </label>
-                    <input type='number' id='pagoPorHora' step="any" min={0} max={60} value={pagoHora} onChange={(e) => {
-                      setPagoHora(e.target.value > 60 ? 60 : e.target.value)
-                    }} />
                   </div>
                   {
                     fondoPension.valCadDominio === 'AFP' &&
@@ -683,18 +650,29 @@ const RegistroPersonal = () => {
                       </select>
                     </div>
                   }
+                  <div className='input-container'>
+                    <label htmlFor=""> Descuento de pensiones: </label>
+                    <input type='number' readOnly required value={descuentoPension} onChange={(e) => setDescuentoPension(e.target.value)} />
+                  </div>
+                  <div className='input-container'>
+                    <label htmlFor=""> Pago neto: </label>
+                    <input type='number' id='pagoNeto' readOnly step="any" value={pagoNeto} min={0} onChange={(e) => {
+                      setPagoNeto(e.target.value)
+                    }} />
+                  </div>
                   {loading ? <PageLoader /> : null}
                 </div>
               </div>
             </div>
           </div>
           <div className='buttons-container'>
-            <button className='main-button' disabled={loading}>Tomar fotos</button>
-            <div style={{display: 'flex', gap: '10px'}}>
+            <button className='main-button' type='button' disabled={loading} onClick={onClickTomarFoto}>Tomar fotos</button>
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button className='main-button' disabled={loading}>Limpiar</button>
               <button className='main-button' disabled={loading}>Guardar</button>
             </div>
           </div>
+          { dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p> }
         </div>
       </form>
     </div>
