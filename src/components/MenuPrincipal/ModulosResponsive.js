@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ModulosResponsive = () => {
+const ModulosResponsive = ({ userRol }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -86,41 +86,53 @@ const ModulosResponsive = () => {
     }
   }
   return (
-    <div className='modulos-container-responsive'>
+    <>
       {
         showModal &&
         <Modal setShowModal={setShowModal}>
           <FotoPasos dni={dni} codigo={2}></FotoPasos>
         </Modal>
       }
-      <div className='options-container'>
-        <div title='Registro de personal'>
-          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/registropersonal')}>
-            <FaUserPlus style={{ fontSize: '30px' }} ></FaUserPlus>
-          </ListItem>
-        </div>
-        <div title='Mantenimiento de personal'>
-          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/mantenimientopersonal')}>
-            <img style={{ width: '35px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso4.png' />
-          </ListItem>
-        </div>
-        <div title='Reporte de plantilla'>
-          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteplanilla')}>
-            <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
-          </ListItem>
-        </div>
-        <div title='Reporte de asistencia'>
-          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteasistencia')}>
-            <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-          </ListItem>
-        </div>
-        <div title='Asistencia'>
-          <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={onClickTomarFoto}>
-            <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-          </ListItem>
+      <div className='modulos-container-responsive' style={{ pointerEvents: showModal ? 'none' : 'auto' }}>
+
+        <div className='options-container'>
+          {
+            (userRol === 'Administrador' || userRol === 'Supervisor') &&
+            <>
+              {
+                userRol === 'Administrador' &&
+                <div title='Registro de personal'>
+                  <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/registropersonal')}>
+                    <FaUserPlus style={{ fontSize: '30px' }} ></FaUserPlus>
+                  </ListItem>
+                </div>
+              }
+              <div title='Mantenimiento de personal'>
+                <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/mantenimientopersonal')}>
+                  <img style={{ width: '35px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso4.png' />
+                </ListItem>
+              </div>
+            </>
+          }
+          <div title='Reporte de plantilla'>
+            <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteplanilla')}>
+              <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+            </ListItem>
+          </div>
+          <div title='Reporte de asistencia'>
+            <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteasistencia')}>
+              <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItem>
+          </div>
+          <div title='Asistencia'>
+            <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={onClickTomarFoto}>
+              <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItem>
+          </div>
         </div>
       </div>
-    </div>
+    </>
+
   )
 }
 

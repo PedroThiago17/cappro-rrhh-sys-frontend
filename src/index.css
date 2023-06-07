@@ -13,6 +13,7 @@ code {
 
 * {
   --page-color: #0066CC;
+  --disable-color: #0052A3;
   --secondary-color: #FFFFFF;
   --modulos-width: 250px;
   --modulos-responsive-width: 60px;

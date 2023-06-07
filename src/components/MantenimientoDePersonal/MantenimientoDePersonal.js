@@ -18,87 +18,8 @@ import UserList from '../Comunes/UserList';
 import { useMediaQuery } from 'react-responsive';
 import UserModal from '../Modal/UserModal';
 import DeleteModal from '../Modal/DeleteModal';
+import PageLoader from '../Loading';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "98vh",
-    margin: 0,
-    fontFamily: "Montserrat, sans-serif"
-  },
-  contenedorLogo: {
-    display: 'flex',
-    paddingTop: 26,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-  titulo: {
-    margin: 0,
-    textTransform: 'uppercase',
-    color: theme.palette.secondary.main,
-    fontWeight: 500
-  },
-  appBar: {
-    height: '100%',
-  },
-  drawer: {
-    marginTop: 50,
-    color: theme.palette.primary.main,
-  },
-  contenedorMenu: {
-    position: 'absolute',
-    width: '18%',
-    height: '87%',
-    boxShadow: theme.shadows[6],
-  },
-  letraMenu: {
-    fontWeight: 700,
-    color: theme.palette.primary.main,
-  },
-  iconoPrincipal: {
-    width: '40%',
-    height: '40%',
-    marginLeft: 15
-  },
-  tipoletra1: {
-    fontWeight: 500
-  },
-  tipoletra2: {
-    fontWeight: 700
-  },
-  color1Primario: {
-    color: theme.palette.primary.main,
-  },
-  colorSecundario: {
-    color: theme.palette.primary.main,
-  },
-  contenedorFormulario: {
-    width: "130vh",
-    height: "80%",
-    marginLeft: '18%',
-    position: 'absolute',
-    textAlign: 'center',
-    marginTop: 50,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  formulario: {
-    marginLeft: '6%',
-    boxShadow: theme.shadows[6],
-    width: "150vh",
-    height: '90%',
-  },
-  formControl: {
-    minWidth: 120,
-    height: '50px', // Altura deseada
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#0066CC'
-      },
-    },
-  },
-}));
 
 const data = [
   { dni: '99999999', nombres: 'Juan', apellidos: 'Pérez', codigo: '123', id: '1' },
@@ -108,11 +29,12 @@ const data = [
 
 
 const MantenimientoDePersonal = () => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [users, setUsers] = useState([]);
+  const [userRol, setUserRol] = useState('');
   const [selectedId, setSelectedId] = useState(0);
   const [userToDelete, setUserToDelete] = useState(0);
   const [notData, setNotData] = useState(false);
@@ -129,10 +51,17 @@ const MantenimientoDePersonal = () => {
 
   useEffect(() => {
     const getUsers = async () => {
+      const userData = window.localStorage.getItem('userInfo').toString();
+      if(userData) {
+        const userInfo = JSON.parse(userData);
+        setUserRol(userInfo.rol);
+      }
       const userId = window.localStorage.getItem('userId').toString();
       if (userId) {
         try {
+          setLoading(true);
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
+          setLoading(false);
           if (data.length != 0) {
             setUsers(data)
           } else {
@@ -204,10 +133,10 @@ const MantenimientoDePersonal = () => {
   return (
     <>
       {
-        showModal && <UserModal setShowModal={setShowModal} selectedId={selectedId}/>
+        showModal && <UserModal setShowModal={setShowModal} selectedId={selectedId} />
       }
       {
-        showDeleteModal && <DeleteModal setShowDeleteModal={setShowDeleteModal} userToDelete={userToDelete}/>
+        showDeleteModal && <DeleteModal setShowDeleteModal={setShowDeleteModal} userToDelete={userToDelete} />
       }
       <div className={`module-container `}>
         <form className='module-form'>
@@ -229,11 +158,16 @@ const MantenimientoDePersonal = () => {
               </div>
             </div>
             {
-              
+              loading ?
+                <div style={{height:'55vh', display:'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <PageLoader />
+                </div>
+                :
                 isTablet ?
                   <UserList
                     foundUsers={foundUsers}
                     users={users}
+                    userRol = {userRol}
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
                     view='Mantenimiento Personal'
@@ -245,11 +179,13 @@ const MantenimientoDePersonal = () => {
                     foundUsers={foundUsers}
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
+                    userRol = {userRol}
                     users={users}
                     view='Mantenimiento Personal'
                     notData={notData}>
                   </UserTable>
             }
+
           </div>
         </form>
       </div>

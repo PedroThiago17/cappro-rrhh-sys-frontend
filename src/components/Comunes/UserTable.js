@@ -1,7 +1,7 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons'
 import React, { useEffect } from 'react'
 
-const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDelete, view = null, notData}) => {
+const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDelete, view = null, notData, userRol }) => {
 
   return (
     <div className='table-container'>
@@ -14,45 +14,56 @@ const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDe
       </div>
       {
         notData ? <p className='message'>No se encontraron resultados...</p> :
-        <div className='table-content-container'>
-          {
-            foundUsers.length != 0 ?
-              foundUsers.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
-                <div key={index} className='table-content'>
-                  <p>{datosPersonales.dni}</p>
-                  <p>{datosPersonales.nombres}</p>
-                  <p>{datosPersonales.apellidos}</p>
-                  <p>{datosPlanilla.codModular}</p>
-                  {
-                    view === 'Mantenimiento Personal' &&
-                    <div className='mp-buttons-container'>
-                      <Visibility style={{ cursor: 'pointer' }} onClick={() => handleViewUser(idUsuario)} />
-                      <Edit style={{ cursor: 'pointer' }} />
-                      <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
-                    </div>
-                  }
-                </div>
-              ))
-              :
-              users.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
-                <div key={index} className='table-content'>
-                  <p>{datosPersonales.dni}</p>
-                  <p>{datosPersonales.nombres}</p>
-                  <p>{datosPersonales.apellidos}</p>
-                  <p>{datosPlanilla.codModular}</p>
-                  {
-                    view === 'Mantenimiento Personal' &&
-                    <div className='mp-buttons-container'>
-                      <Visibility style={{ cursor: 'pointer' }} onClick={() => handleViewUser(idUsuario)} />
-                      <Edit style={{ cursor: 'pointer' }} />
-                      <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
-                    </div>
-                  }
+          <div className='table-content-container'>
+            {
+              foundUsers.length != 0 ?
+                foundUsers.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
+                  <div key={index} className='table-content'>
+                    <p>{datosPersonales.dni}</p>
+                    <p>{datosPersonales.nombres}</p>
+                    <p>{datosPersonales.apellidos}</p>
+                    <p>{datosPlanilla.codModular}</p>
+                    {
+                      view === 'Mantenimiento Personal' &&
+                      <div className='mp-buttons-container'>
+                        <Visibility style={{ cursor: 'pointer' }} onClick={() => handleViewUser(idUsuario)} />
+                        {
+                          userRol !== 'Supervisor' &&
+                          <>
+                            <Edit style={{ cursor: 'pointer' }} />
+                            <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
+                          </>
+                        }
 
-                </div>
-              ))
-          }
-        </div>
+                      </div>
+                    }
+                  </div>
+                ))
+                :
+                users.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
+                  <div key={index} className='table-content'>
+                    <p>{datosPersonales.dni}</p>
+                    <p>{datosPersonales.nombres}</p>
+                    <p>{datosPersonales.apellidos}</p>
+                    <p>{datosPlanilla.codModular}</p>
+                    {
+                      view === 'Mantenimiento Personal' &&
+                      <div className='mp-buttons-container'>
+                        <Visibility style={{ cursor: 'pointer' }} onClick={() => handleViewUser(idUsuario)} />
+                        {
+                          userRol !== 'Supervisor' &&
+                          <>
+                            <Edit style={{ cursor: 'pointer' }} />
+                            <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
+                          </>
+                        }
+                      </div>
+                    }
+
+                  </div>
+                ))
+            }
+          </div>
       }
     </div>
   )

@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className='navbar-logout'>
           <div className='navbar-user'>
             <p>BIENVENIDO</p>
-            <p>{USUARIOLOGEADO.nombre} {USUARIOLOGEADO.apellidos}</p>
+            <p className='navbar-user-name'>{USUARIOLOGEADO.nombre} {USUARIOLOGEADO.apellidos}</p>
           </div>
           <IconButton onClick={() => onSubmit('/')}>
             <img src='./images/Recurso10.png' />

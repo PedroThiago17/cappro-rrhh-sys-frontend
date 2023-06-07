@@ -1,4 +1,5 @@
 export const JUBILACION = 65;
+export const MULTIPLICADOR = 4;
 export const VALOR_TIEMPO_COMPLETO = 45;
 export const VALOR_TIEMPO_PARCIAL = 24;
 export const PORCENTAJE = 0.09;
@@ -7,7 +8,7 @@ export const estadoCivilOptions = ['Seleccionar', 'S', 'C', 'V', 'D'];
 
 
 export const mpTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Codigo Modular', 'Acciones'];
-export const raTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Fecha', 'Tipo'];
+export const raTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Fecha', 'Hora Entrada', 'Hora Salida'];
 export const raKeys = ['dni', 'nombres', 'apellidos', 'fnacimiento', 'estadoCivil'];
 export const mpKeys = ['dni', 'nombres', 'apellidos', 'codModular'];
 export const rpKeys = ['mes', 'año', 'dni', 'nombres', 'apellidos'];

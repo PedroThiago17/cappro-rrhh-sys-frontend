@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions } from '../../constants/constants';
+import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import NavBar from '../MenuPrincipal/NavBar';
 import PageLoader from '../Loading';
@@ -187,6 +187,7 @@ const RegistroPersonal = () => {
 
     try {
       setLoading(true);
+      console.log('funciona')
       const res = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/saveUsuario', body);
       if (res.data) {
         alert('El usuario ha sido agregado correctamente')
@@ -359,7 +360,7 @@ const RegistroPersonal = () => {
   }, [puesto]);
 
   useEffect(() => {
-    setPagoBruto(cargaHoraria * pagoHora)
+    setPagoBruto((cargaHoraria * pagoHora) * MULTIPLICADOR)
   }, [pagoHora, cargaHoraria])
 
   useEffect(() => {
@@ -455,11 +456,7 @@ const RegistroPersonal = () => {
               <div className='form-content'>
                 <div className='form-block'>
                   <div className='input-container'>
-                    <label htmlFor="">DNI: </label>
-{/*                     <div style={{width:'60%', position:'relative'}}>
-                      <input name='dni' type='number' style={{width:'100%'}} required value={dni} onChange={(e) => handleNumberChange(e, 8)} />
-                      <p style={{position:'absolute'}}>hola</p>
-                    </div> */}
+                    <label htmlFor="">DNI:</label>
                     <input name='dni' type='number' required value={dni} onChange={(e) => handleNumberChange(e, 8)} />
                   </div>
                   <div className='input-container'>
@@ -621,7 +618,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Pago bruto: </label>
-                    <input type='number' readOnly required value={cargaHoraria * pagoHora} onChange={(e) => setPagoBruto(e.target.value)} />
+                    <input type='number' readOnly required value={(cargaHoraria * pagoHora)*MULTIPLICADOR} onChange={(e) => setPagoBruto(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Descuento seguro de salud: </label>
@@ -666,10 +663,10 @@ const RegistroPersonal = () => {
             </div>
           </div>
           <div className='buttons-container'>
-            <button className='main-button' type='button' disabled={loading} onClick={onClickTomarFoto}>Tomar fotos</button>
+            <button className='main-button' type='button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false} onClick={onClickTomarFoto}>Tomar fotos</button>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button className='main-button' disabled={loading}>Limpiar</button>
-              <button className='main-button' disabled={loading}>Guardar</button>
+              <button className='main-button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false } >Limpiar</button>
+              <button className='main-button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false}>Guardar</button>
             </div>
           </div>
           { dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p> }

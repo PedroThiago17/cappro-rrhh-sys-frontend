@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Modulos = () => {
+const Modulos = ({ userRol }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -86,57 +86,68 @@ const Modulos = () => {
     }
   }
   return (
-    <div className='modulos-container'>
+    <>
       {
         showModal &&
         <Modal setShowModal={setShowModal}>
           <FotoPasos dni={dni} codigo={2}></FotoPasos>
         </Modal>
       }
-      <div>
-        <ListItem style={{ padding: 20 }} button onClick={handleClick}>
-          <ListItemIcon>
-            <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
-          </ListItemIcon>
-          <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component='div' disablePadding>
-            <ListItem button onClick={() => onSubmit('/registropersonal')}>
-              <ListItemIcon>
-                <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
-              </ListItemIcon>
-              <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
-            </ListItem>
-            <ListItem button onClick={() => onSubmit('/mantenimientopersonal')}>
-              <ListItemIcon>
-                <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
-              </ListItemIcon>
-              <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
-            </ListItem>
-          </List>
-        </Collapse>
-        <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
-          <ListItemIcon>
-            <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
-          </ListItemIcon>
-          <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
-        </ListItem>
-        <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
-          <ListItemIcon>
-            <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-          </ListItemIcon>
-          <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
-        </ListItem>
-        <ListItem style={{ padding: 20 }} button onClick={onClickTomarFoto}>
-          <ListItemIcon>
-            <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso9.png' />
-          </ListItemIcon>
-          <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Asistencia" />
-        </ListItem>
+      <div className='modulos-container' style={{ pointerEvents: showModal ? 'none' : 'auto' }}>
+
+        <div>
+          {
+            (userRol === 'Administrador' || userRol === 'Supervisor') &&
+            <>
+              <ListItem style={{ padding: 20 }} button onClick={handleClick}>
+                <ListItemIcon>
+                  <img style={{ marginLeft: 10, width: '56%', height: '56%' }} src='./images/Recurso4.png' />
+                </ListItemIcon>
+                <ListItemText disableTypography primary="Gestión de Personal" className={clsx(classes.tipoletra2)} />
+                {open ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component='div' disablePadding>
+                  {userRol === 'Administrador' &&
+                    <ListItem button onClick={() => onSubmit('/registropersonal')}>
+                      <ListItemIcon>
+                        <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                      </ListItemIcon>
+                      <ListItemText disableTypography className={clsx(classes.tipoletra1)} primary='Registro de Personal' />
+                    </ListItem>
+                  }
+                  <ListItem button onClick={() => onSubmit('/mantenimientopersonal')}>
+                    <ListItemIcon>
+                      <img style={{ marginLeft: 40 }} src='./images/Recurso7.png' />
+                    </ListItemIcon>
+                    <ListItemText disableTypography component='div' className={clsx(classes.tipoletra1)} primary='Mantenimiento de personal' />
+                  </ListItem>
+                </List>
+              </Collapse>
+            </>
+          }
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
+          </ListItem>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
+          </ListItem>
+          <ListItem style={{ padding: 20 }} button onClick={onClickTomarFoto}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Asistencia" />
+          </ListItem>
+        </div>
       </div>
-    </div>
+    </>
+
   )
 }
 

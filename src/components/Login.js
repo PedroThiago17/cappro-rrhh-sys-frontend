@@ -157,6 +157,7 @@ const Login = ({ setIsAuthenticated }) => {
         .then((response) => {
           window.localStorage.setItem('userId', response.data.idUsuario);
           window.localStorage.setItem('userDNI', response.data.datosPersonales.dni);
+          window.localStorage.setItem('userInfo', JSON.stringify(response.data));
           USUARIOLOGEADO.nombre = response.data.datosPersonales.nombres;
           USUARIOLOGEADO.apellidos = response.data.datosPersonales.apellidos;
         });

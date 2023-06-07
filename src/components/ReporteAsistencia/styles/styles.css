@@ -1,0 +1,27 @@
+.ra-table-content {
+  color: var(--page-color);
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-bottom: 1px solid var(--page-color);
+}
+.ra-table-content p {
+  text-align: center;
+  padding: 10px;
+}
+.ra-table-header {
+  height: 8%;
+  background-color: var(--page-color);
+  color: white;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+@media (max-width:1280px) {
+  .ra-table-content p {
+    font-size: 12px;
+  }
+  .ra-table-header p {
+    font-size: 12px;
+  }
+}

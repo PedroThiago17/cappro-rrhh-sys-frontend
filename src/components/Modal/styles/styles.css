@@ -15,7 +15,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 70%;
+  width: 90%;
   height: 80%;
   padding: 20px;
   transform: translate(-50%, -50%); 
@@ -26,6 +26,11 @@
   align-items: center;
   flex-direction: column;
   border-radius: 10px;
+}
+.form-block-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 15;
 }
 
 .modal-close {

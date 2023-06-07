@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './styles/styles.css'
 import axios from 'axios';
-import { JUBILACION, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL } from '../../constants/constants';
+import { JUBILACION, MULTIPLICADOR, PORCENTAJE, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL } from '../../constants/constants';
 import { calcularAñoJubilacion, calcularEdad } from '../../utils/utils';
-
-
 
 const UserModal = ({ setShowModal, selectedId }) => {
 
@@ -27,7 +25,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
   const [afp, setAfp] = useState('');
   const [edad, setEdad] = useState('');
   const [añoJub, setAñoJub] = useState('');
-  
+
 
   const toggleModal = () => {
     setShowModal(false);
@@ -38,7 +36,9 @@ const UserModal = ({ setShowModal, selectedId }) => {
       if (res.data) {
         console.log(res.data)
         const { datosPlanilla, datosPersonales, usuarioSupervisor } = res.data;
-        setSupervisor(usuarioSupervisor.datosPersonales.nombres + ' ' + usuarioSupervisor.datosPersonales.apellidos);
+        if (usuarioSupervisor !== null) {
+          setSupervisor(usuarioSupervisor.datosPersonales.nombres + ' ' + usuarioSupervisor.datosPersonales.apellidos);
+        }
         const edad = calcularEdad(datosPersonales.fnacimiento);
         const añoJubilacion = edad > JUBILACION ? new Date().getFullYear() : (JUBILACION - edad) + new Date().getFullYear();
         setAñoJub(añoJubilacion)
@@ -54,7 +54,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
         const tipoPension = resFondoP.data.find((e) => e.idDominio === pensionId);
         setFondoPensiones(tipoPension.valCadDominio);
 
-        const pagoB = cargaHoraria * datosPlanilla.pagoHora;
+        const pagoB = ((cargaHoraria * datosPlanilla.pagoHora) * MULTIPLICADOR);
         setPagoBruto(pagoB);
         const desctoSalud = (pagoB * PORCENTAJE).toFixed(2);
         setDsctoSalud(Number(desctoSalud));
@@ -100,7 +100,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
             <div className='form-content'>
               <div className='form-block-modal'>
                 <div className='input-container'>
-                  <label htmlFor="">DNI</label>
+                  <label htmlFor="">DNI:</label>
                   <input name='dni' type='number' readOnly defaultValue={user.datosPersonales.dni} />
                 </div>
                 <div className='input-container'>
@@ -194,10 +194,13 @@ const UserModal = ({ setShowModal, selectedId }) => {
                   <label>Formación profesional:</label>
                   <input name='formacion' type='text' readOnly defaultValue={user.datosLaborales.formacion} />
                 </div>
-                <div className='input-container'>
-                  <label>Supervision:</label>
-                  <input name='supervision' type='text' readOnly defaultValue={supervisor} />
-                </div>
+                {
+                  supervisor &&
+                  <div className='input-container'>
+                    <label>Supervision:</label>
+                    <input name='supervision' type='text' readOnly defaultValue={supervisor} />
+                  </div>
+                }
               </div>
             </div>
           </div>
@@ -264,7 +267,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
             </div>
           </div>
         </div>
-        <button className="main-button" onClick={toggleModal}>
+        <button className="main-button" onClick={toggleModal} style={{padding:'12px 12px',fontSize:'17px',margin:'20px'}}>
           Cerrar
         </button>
       </div>

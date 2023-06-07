@@ -13,6 +13,7 @@ import { usuariosPlanillas } from '../../constants/constants';
 import ReporteTable from './ReporteTable';
 import './styles/styles.css'
 import ReporteUserList from './ReporteUserList';
+import PageLoader from '../Loading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,11 +117,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ReportePlanillas = (props) => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
   const isTablet = useMediaQuery({ query: '(max-width: 640px)' })
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [notData, setNotData] = useState(false);
+  const [userRol, setUserRol] = useState('');
   const [search, setSearch] = useState(
     {
       dni: 0,
@@ -131,9 +132,16 @@ const ReportePlanillas = (props) => {
   );
   useEffect(() => {
     const getUsers = async () => {
+      const userData = window.localStorage.getItem('userInfo');
+      if (userData) {
+        const user = JSON.parse(userData);
+        console.log('ROL: ', user.rol)
+        setUserRol(user.rol);
+      }
       const userId = window.localStorage.getItem('userId').toString();
       if (userId) {
         try {
+          setLoading(true);
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
           if (data.length != 0) {
             setUsers(data)
@@ -142,6 +150,8 @@ const ReportePlanillas = (props) => {
           }
         } catch (error) {
           console.log('error: ', error)
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -168,7 +178,9 @@ const ReportePlanillas = (props) => {
       <form className='module-form'>
         <div className='mp-form-container'>
           <h2 className='h2-title'>REPORTE DE PLANILLAS</h2>
-          <div className='mp-form-content'>
+          {
+            userRol !== 'Personal' &&
+            <div className='mp-form-content'>
             <div className='form-inputs'>
               <div className='input-container'>
                 <label htmlFor="">DNI</label>
@@ -183,25 +195,30 @@ const ReportePlanillas = (props) => {
               <button type='button' className='main-button' >Limpiar</button>
             </div>
           </div>
+          }
           {
-            
-            isTablet ?
-              <ReporteUserList
-                foundUsers={[]}
-                users={users}
-                view={'Reporte Planillas'}
-                notData = {notData}
-              />
+            loading ?
+              <div style={{ height: '55vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <PageLoader />
+              </div>
               :
-              <ReporteTable
-                headers={rpTableHeaders}
-                foundUsers={[]}
-                users={users} 
-                notData ={notData}>
-                <div className='mp-buttons-container'>
-                  <img src='./images/Recurso8.png' />
-                </div>
-              </ReporteTable>
+              isTablet ?
+                <ReporteUserList
+                  foundUsers={[]}
+                  users={users}
+                  view={'Reporte Planillas'}
+                  notData={notData}
+                />
+                :
+                <ReporteTable
+                  headers={rpTableHeaders}
+                  foundUsers={[]}
+                  users={users}
+                  notData={notData}>
+                  <div className='mp-buttons-container'>
+                    <img src='./images/Recurso8.png' />
+                  </div>
+                </ReporteTable>
           }
         </div>
       </form>

@@ -1,7 +1,7 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons';
 import React, { useEffect } from 'react'
 
-const UserItem = ({ user, handleViewUser, handleDelete, view = null }) => {
+const UserItem = ({ user, handleViewUser, handleDelete, view = null, userRol }) => {
 
 
   const { datosPersonales, datosPlanilla, idUsuario } = user;
@@ -33,8 +33,13 @@ const UserItem = ({ user, handleViewUser, handleDelete, view = null }) => {
             :
             <div className='mp-buttons-container'>
               <Visibility style={{ cursor: 'pointer' }} onClick={handleViewUser} />
-              <Edit style={{ cursor: 'pointer' }} />
-              <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={()=> handleDelete(user)} />
+              {
+                userRol !== 'Supervisor' &&
+                <>
+                  <Edit style={{ cursor: 'pointer' }} />
+                  <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete(user)} />
+                </>
+              }
             </div>
       }
 
