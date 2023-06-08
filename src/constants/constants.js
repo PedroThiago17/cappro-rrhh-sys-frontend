@@ -8,7 +8,7 @@ export const estadoCivilOptions = ['Seleccionar', 'S', 'C', 'V', 'D'];
 
 
 export const mpTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Codigo Modular', 'Acciones'];
-export const raTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Fecha', 'Hora Entrada', 'Hora Salida'];
+export const raTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Fecha Registro', 'Hora Entrada', 'Hora Salida'];
 export const raKeys = ['dni', 'nombres', 'apellidos', 'fnacimiento', 'estadoCivil'];
 export const mpKeys = ['dni', 'nombres', 'apellidos', 'codModular'];
 export const rpKeys = ['mes', 'año', 'dni', 'nombres', 'apellidos'];

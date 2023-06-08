@@ -42,7 +42,7 @@ const MantenimientoDePersonal = () => {
   const isTablet = useMediaQuery({ query: '(max-width: 640px)' })
   const [search, setSearch] = useState(
     {
-      dni: 0,
+      dni: '',
       nombres: '',
       apellidos: '',
       codModular: 0
@@ -101,14 +101,18 @@ const MantenimientoDePersonal = () => {
       const foundUser = users.find(e => e.datosPersonales.dni === search.dni);
       if (foundUser) {
         setFoundUsers([foundUser]);
+      }else{
+        alert('El DNI ingresado no existe.')
       }
+    }else if (search.dni === ''){
+      alert('No ingreso ninguna información.')
     }
   }
 
   const onCleanSearcher = () => {
     setFoundUsers([]);
     setSearch({
-      dni: 0,
+      dni: '',
       nombres: '',
       apellidos: '',
       codModular: 0
@@ -145,8 +149,8 @@ const MantenimientoDePersonal = () => {
             <div className='mp-form-content'>
               <div className='form-inputs'>
                 <div className='input-container'>
-                  <label htmlFor="">DNI</label>
-                  <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
+                  <label htmlFor="">DNI:</label>
+                  <input name='dni' type='number' value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
                 </div>
                 <RegistroInput label={'Nombres:'}></RegistroInput>
                 <RegistroInput label={'Apellidos:'}></RegistroInput>

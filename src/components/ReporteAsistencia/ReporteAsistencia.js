@@ -15,11 +15,12 @@ const ReporteAsistencia = (props) => {
   const [notData, setNotData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [asistenciaData, setAsistenciaData] = useState([]);
+  const [foundUsers, setFoundUsers] = useState([]);
   const [user, setUser] = useState({});
   const [userRol, setUserRol] = useState('');
   const [search, setSearch] = useState(
     {
-      dni: 0,
+      dni: '',
       nombres: '',
       apellidos: '',
       codModular: 0
@@ -57,11 +58,6 @@ const ReporteAsistencia = (props) => {
 
           if (data.length !== 0) {
             setAsistenciaData(data);
-            setUser({
-              dni: user.datosPersonales.dni,
-              nombres: user.datosPersonales.nombres,
-              apellidos: user.datosPersonales.apellidos,
-            })
           }
         }
       } catch (error) {
@@ -90,6 +86,28 @@ const ReporteAsistencia = (props) => {
     }
   }
 
+  const onClickFindUser = () => {
+    if (search.dni != '') {
+      const foundUser = asistenciaData.find(e => e.dni === search.dni);
+      if (foundUser) {
+        setFoundUsers([foundUser]);
+        console.log(foundUser)
+      }else{
+        alert('El DNI ingresado no existe.')
+      }
+    }
+  }
+
+  const onCleanSearcher = () => {
+    setFoundUsers([]);
+    setSearch({
+      dni: '',
+      nombres: '',
+      apellidos: '',
+      codModular: 0
+    });
+  }
+
   return (
     <div className='module-container'>
       <form className='module-form'>
@@ -108,8 +126,8 @@ const ReporteAsistencia = (props) => {
                 <RegistroInput label={'Código Modular:'}></RegistroInput>
               </div>
               <div className='main-button-container'>
-                <button type='button' className='main-button' >Buscar</button>
-                <button type='button' className='main-button' >Limpiar</button>
+                <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>
+                <button type='button' className='main-button' onClick={onCleanSearcher}>Limpiar</button>
               </div>
             </div>
           }
@@ -121,7 +139,7 @@ const ReporteAsistencia = (props) => {
               :
               isTablet ?
                 <AsistenciaList
-                  foundUsers={[]}
+                  foundUsers={foundUsers}
                   asistenciaData={asistenciaData}
                   user={user}
                   view='Reporte Asistencia'
@@ -131,9 +149,10 @@ const ReporteAsistencia = (props) => {
                 :
                 <AsistenciaTable
                   headers={raTableHeaders}
-                  foundUsers={[]}
+                  foundUsers={foundUsers}
                   asistenciaData={asistenciaData}
                   user={user}
+                  view='Reporte Asistencia'
                   notData={notData}>
                 </AsistenciaTable>
           }

@@ -124,7 +124,7 @@ const ReportePlanillas = (props) => {
   const [userRol, setUserRol] = useState('');
   const [search, setSearch] = useState(
     {
-      dni: 0,
+      dni: '',
       nombres: '',
       apellidos: '',
       codModular: 0
