@@ -160,6 +160,8 @@ const Login = ({ setIsAuthenticated }) => {
           window.localStorage.setItem('userInfo', JSON.stringify(response.data));
           USUARIOLOGEADO.nombre = response.data.datosPersonales.nombres;
           USUARIOLOGEADO.apellidos = response.data.datosPersonales.apellidos;
+          USUARIOLOGEADO.rol = response.data.rol
+          console.log('Usuarioooo: '+response.data.rol)
         });
       //setIsAuthenticated(true);
       navigate('/menu');
