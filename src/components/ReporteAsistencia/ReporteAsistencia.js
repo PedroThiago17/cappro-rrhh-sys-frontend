@@ -95,6 +95,8 @@ const ReporteAsistencia = (props) => {
       }else{
         alert('El DNI ingresado no existe.')
       }
+    }else {
+      alert('No ingreso el DNI a buscar.')
     }
   }
 
@@ -116,14 +118,13 @@ const ReporteAsistencia = (props) => {
           {
             userRol !== 'Personal'&&
             <div className='mp-form-content'>
-              <div className='form-inputs'>
+              <div className='form-inputs' style={{marginLeft:'20%', }}>
                 <div className='input-container'>
-                  <label>DNI</label>
+                  <label>DNI:</label>
                   <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
                 </div>
                 <RegistroInput label={'Nombres:'}></RegistroInput>
                 <RegistroInput label={'Apellidos:'}></RegistroInput>
-                <RegistroInput label={'Código Modular:'}></RegistroInput>
               </div>
               <div className='main-button-container'>
                 <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>

@@ -138,16 +138,14 @@ const Modulos = ({ userRol }) => {
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
           </ListItem>
-          <ListItem style={{ padding: 20 }} button onClick={onClickTomarFoto}>
-            <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Asistencia" />
-          </ListItem>
+          <div onClick={onClickTomarFoto} style={{height: '50px', marginTop: '300px', display:'flex', justifyContent: 'center', marginLeft:'0%'}}>
+            <button className='main-button' style={{fontSize:'20px'}}>
+              Asistencia
+            </button>
+          </div>
         </div>
       </div>
     </>
-
   )
 }
 

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const calcularEdad = (fechaNacimiento) => {
   const hoy = new Date();
   const nacimiento = new Date(fechaNacimiento);
@@ -25,4 +27,15 @@ export function calcularAñoJubilacion(fechaNacimiento) {
   const añoJubilacion = añoNacimiento + 65;
   
   return añoJubilacion;
+}
+
+export const downloadPdf = async (planillaId, dni)=> {
+  const res = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/boletas/generarBoletaPdf/${planillaId}`, { responseType: 'blob' });
+  const blob = new Blob([res.data], { type: 'application/pdf' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `Boleta - ${dni}.pdf`;
+  link.click();
+  window.URL.revokeObjectURL(url);
 }

@@ -15,106 +15,6 @@ import './styles/styles.css'
 import ReporteUserList from './ReporteUserList';
 import PageLoader from '../Loading';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "98vh",
-    margin: 0,
-    fontFamily: "Montserrat, sans-serif"
-  },
-  contenedorLogo: {
-    display: 'flex',
-    paddingTop: 26,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-  titulo: {
-    margin: 0,
-    textTransform: 'uppercase',
-    color: theme.palette.secondary.main,
-    fontWeight: 500
-  },
-  appBar: {
-    height: '100%',
-  },
-  drawer: {
-    marginTop: 50,
-    color: theme.palette.primary.main,
-  },
-  contenedorMenu: {
-    position: 'absolute',
-    width: '18%',
-    height: '87%',
-    boxShadow: theme.shadows[6],
-  },
-  letraMenu: {
-    fontWeight: 700,
-    color: theme.palette.primary.main,
-  },
-  iconoPrincipal: {
-    width: '40%',
-    height: '40%',
-    marginLeft: 15
-  },
-  tipoletra1: {
-    fontWeight: 500
-  },
-  tipoletra2: {
-    fontWeight: 700
-  },
-  contenedorFormulario: {
-    width: "150vh",
-    height: '80%',
-    marginLeft: '18%',
-    position: 'absolute',
-    textAlign: 'center',
-  },
-  formulario: {
-    marginTop: 50,
-    marginLeft: '4%',
-    boxShadow: theme.shadows[6],
-    width: "152vh",
-    height: '95%',
-  },
-  filtro: {
-    paddingTop: 30,
-    display: 'flex',
-    height: '8%',
-    marginLeft: 30
-  },
-  textField: {
-    height: '50%'
-  },
-  boton: {
-    borderRadius: 10,
-    height: 30,
-    width: 100,
-    fontFamily: "Montserrat, sans-serif",
-  },
-  contenedorTabla: {
-    paddingTop: 80,
-    paddingLeft: 15,
-    width: '99%',
-  },
-  tabla: {
-    minWidth: 650,
-
-  },
-  iconoAcciones: {
-    width: '70%',
-    height: '70%'
-  },
-  headerTabla: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  colorTextoPrimario: {
-    color: theme.palette.primary.main,
-  },
-  colorTextoSecundario: {
-    color: theme.palette.secondary.main,
-  },
-}));
 
 const ReportePlanillas = (props) => {
   const isTablet = useMediaQuery({ query: '(max-width: 640px)' })
@@ -122,6 +22,7 @@ const ReportePlanillas = (props) => {
   const [loading, setLoading] = useState(false);
   const [notData, setNotData] = useState(false);
   const [userRol, setUserRol] = useState('');
+  const [foundUsers, setFoundUsers] = useState([]);
   const [search, setSearch] = useState(
     {
       dni: '',
@@ -142,8 +43,10 @@ const ReportePlanillas = (props) => {
       if (userId) {
         try {
           setLoading(true);
-          const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
+          
+          const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/boletas/obtenerBoletasUsuario/${userId}`)
           if (data.length != 0) {
+            console.log(data)
             setUsers(data)
           } else {
             setNotData(true)
@@ -173,6 +76,30 @@ const ReportePlanillas = (props) => {
     }
   }
 
+  const onClickFindUser = () => {
+    if (search.dni != '') {
+      const foundUser = users.find(e => e.dni === search.dni);
+      if (foundUser) {
+        setFoundUsers([foundUser]);
+        console.log(foundUser)
+      }else{
+        alert('El DNI ingresado no existe.')
+      }
+    }else {
+      alert('No ingreso el DNI a buscar.')
+    }
+  }
+
+  const onCleanSearcher = () => {
+    setFoundUsers([]);
+    setSearch({
+      dni: '',
+      nombres: '',
+      apellidos: '',
+      codModular: 0
+    });
+  }
+
   return (
     <div className='module-container'>
       <form className='module-form'>
@@ -181,20 +108,20 @@ const ReportePlanillas = (props) => {
           {
             userRol !== 'Personal' &&
             <div className='mp-form-content'>
-            <div className='form-inputs'>
-              <div className='input-container'>
-                <label htmlFor="">DNI</label>
-                <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
+              <div className='form-inputs' style={{marginLeft:'20%', }}>
+                <div className='input-container'>
+                  <label htmlFor="">DNI:</label>
+                  <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
+                </div>
+                <RegistroInput label={'Nombres:'}></RegistroInput>
+                <RegistroInput label={'Apellidos:'}></RegistroInput>
+                
               </div>
-              <RegistroInput label={'Nombres:'}></RegistroInput>
-              <RegistroInput label={'Apellidos:'}></RegistroInput>
-              <RegistroInput label={'Código Modular:'}></RegistroInput>
+              <div className='main-button-container'>
+                <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>
+                <button type='button' className='main-button' onClick={onCleanSearcher}>Limpiar</button>
+              </div>
             </div>
-            <div className='main-button-container'>
-              <button type='button' className='main-button' >Buscar</button>
-              <button type='button' className='main-button' >Limpiar</button>
-            </div>
-          </div>
           }
           {
             loading ?
@@ -204,7 +131,7 @@ const ReportePlanillas = (props) => {
               :
               isTablet ?
                 <ReporteUserList
-                  foundUsers={[]}
+                  foundUsers={foundUsers}
                   users={users}
                   view={'Reporte Planillas'}
                   notData={notData}
@@ -212,12 +139,9 @@ const ReportePlanillas = (props) => {
                 :
                 <ReporteTable
                   headers={rpTableHeaders}
-                  foundUsers={[]}
+                  foundUsers={foundUsers}
                   users={users}
                   notData={notData}>
-                  <div className='mp-buttons-container'>
-                    <img src='./images/Recurso8.png' />
-                  </div>
                 </ReporteTable>
           }
         </div>
