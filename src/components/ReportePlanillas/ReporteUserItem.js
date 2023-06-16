@@ -1,14 +1,18 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { downloadPdf } from '../../utils/utils';
+import PageLoader from '../Loading';
 
 const ReporteUserItem = ({ user, handleViewUser, view = null }) => {
 
   const { anioVigencia, mesVigencia, nombres, apellidos, dni, idPlanilla } = user;
+  const [loading, setLoading] = useState(false);
 
   const download = async () => {
     try {
+      setLoading(true)
       await downloadPdf(idPlanilla, dni);
+      setLoading(false)
     } catch (error) {
       console.error('Error al descargar el archivo:', error);
     }
@@ -35,9 +39,11 @@ const ReporteUserItem = ({ user, handleViewUser, view = null }) => {
       </div>
       {
         view === 'Reporte Planillas' ?
-          <div className='mp-buttons-container' style={{cursor:'pointer'}} onClick={download}>
-            <img src='./images/Recurso8.png' />
-          </div>
+          loading ?
+            <PageLoader></PageLoader> :
+            <div className='mp-buttons-container' style={{ cursor: 'pointer' }} onClick={download}>
+              <img src='./images/Recurso8.png' />
+            </div>
           :
           view === 'Reporte Asistencia' ? null
             :

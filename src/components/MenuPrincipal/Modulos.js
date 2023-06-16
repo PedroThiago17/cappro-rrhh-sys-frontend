@@ -93,7 +93,7 @@ const Modulos = ({ userRol }) => {
           <FotoPasos dni={dni} codigo={2}></FotoPasos>
         </Modal>
       }
-      <div className='modulos-container' style={{ pointerEvents: showModal ? 'none' : 'auto' }}>
+      <div className='modulos-container' style={{ pointerEvents: showModal ? 'none' : 'auto', position: 'relative'}}>
 
         <div>
           {
@@ -126,20 +126,20 @@ const Modulos = ({ userRol }) => {
               </Collapse>
             </>
           }
-          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
-            <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
-          </ListItem>
           <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
-          <div onClick={onClickTomarFoto} style={{height: '50px', marginTop: '300px', display:'flex', justifyContent: 'center', marginLeft:'0%'}}>
-            <button className='main-button' style={{fontSize:'20px'}}>
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
+          </ListItem>
+          <div onClick={onClickTomarFoto} className='assistance-button'>
+            <button className='main-button' style={{fontSize:'21px'}}>
               Asistencia
             </button>
           </div>

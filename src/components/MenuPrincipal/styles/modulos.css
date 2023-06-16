@@ -32,3 +32,11 @@
 .option-responsive img {
   width: 100%;
 }
+.assistance-button {
+  position: absolute;
+  display:flex;
+  width: 100%;
+  justify-content: center;
+  bottom: 15%;
+  
+}

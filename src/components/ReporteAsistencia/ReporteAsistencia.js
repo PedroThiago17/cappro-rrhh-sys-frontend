@@ -8,6 +8,7 @@ import axios from 'axios';
 import AsistenciaTable from './AsistenciaTable';
 import AsistenciaList from './AsistenciaList';
 import PageLoader from '../Loading';
+import { searchUserPlanillas, searchUsersPlanillas } from '../../utils/utils';
 
 
 const ReporteAsistencia = (props) => {
@@ -16,34 +17,16 @@ const ReporteAsistencia = (props) => {
   const [loading, setLoading] = useState(false);
   const [asistenciaData, setAsistenciaData] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
-  const [user, setUser] = useState({});
-  const [userRol, setUserRol] = useState('');
+  /* const [user, setUser] = useState({}); */
   const [search, setSearch] = useState(
     {
       dni: '',
       nombres: '',
       apellidos: '',
-      codModular: 0
     }
   );
+
   useEffect(() => {
-    /*     const getUsers = async () => {
-          const userId = window.localStorage.getItem('userId').toString();
-          if (userId) {
-            try {
-              setLoading(true)
-              const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/usuario/getAllUsuariosPorSupervisor/${userId}`)
-              if (data.length != 0) {
-                setLoading(false)
-                setUsers(data)
-              } else {
-                setNotData(true)
-              }
-            } catch (error) {
-              console.log('error: ', error)
-            }
-          }
-        } */
     const getData = async () => {
       try {
         setLoading(true)
@@ -51,13 +34,16 @@ const ReporteAsistencia = (props) => {
         if (userData) {
           const user = JSON.parse(userData);
           const userId = user.idUsuario;
-          setUserRol(user.rol);
 
           const { data } = await axios.get(`https://cappro-rrhh-sys.azurewebsites.net/asistencia/obtenerAsistenciasUsuario/${userId}`);
-          console.log('asistencia: ', data)
 
           if (data.length !== 0) {
             setAsistenciaData(data);
+/*             setUser({
+              dni: user.datosPersonales.dni,
+              nombres: user.datosPersonales.nombres,
+              apellidos: user.datosPersonales.apellidos,
+            }) */
           }
         }
       } catch (error) {
@@ -69,7 +55,6 @@ const ReporteAsistencia = (props) => {
     }
     getData();
   }, [])
-
   const handleNumberChange = (e, limit) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -81,57 +66,54 @@ const ReporteAsistencia = (props) => {
         return;
       }
       else {
-        setSearch({ dni: newValue })
+        setSearch({ ...search, dni: newValue })
       }
     }
   }
-
   const onClickFindUser = () => {
-    if (search.dni != '') {
-      const foundUser = asistenciaData.find(e => e.dni === search.dni);
-      if (foundUser) {
-        setFoundUsers([foundUser]);
-        console.log(foundUser)
-      }else{
-        alert('El DNI ingresado no existe.')
-      }
-    }else {
-      alert('No ingreso el DNI a buscar.')
-    }
+    const user = searchUsersPlanillas(search, asistenciaData)
+    if (user) setFoundUsers(user);
   }
-
+  const handleChange = (e) => {
+    setSearch({
+      ...search,
+      [e.target.name]: e.target.value
+    })
+  }
   const onCleanSearcher = () => {
     setFoundUsers([]);
     setSearch({
       dni: '',
       nombres: '',
       apellidos: '',
-      codModular: 0
     });
   }
-
   return (
     <div className='module-container'>
       <form className='module-form'>
         <div className='mp-form-container'>
           <h2 className='h2-title'>REPORTE DE ASISTENCIA</h2>
-          {
-            userRol !== 'Personal'&&
-            <div className='mp-form-content'>
-              <div className='form-inputs' style={{marginLeft:'20%', }}>
-                <div className='input-container'>
-                  <label>DNI:</label>
-                  <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
-                </div>
-                <RegistroInput label={'Nombres:'}></RegistroInput>
-                <RegistroInput label={'Apellidos:'}></RegistroInput>
+          <div className='mp-form-content'>
+            <div className='form-inputs'>
+              <div className='input-container'>
+                <label>DNI:</label>
+                <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
               </div>
-              <div className='main-button-container'>
-                <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>
-                <button type='button' className='main-button' onClick={onCleanSearcher}>Limpiar</button>
+              <div className='input-container'>
+                <label>Nombres:</label>
+                <input name='nombres' type='text' required value={search.nombres} maxLength={60} onChange={(e) => handleChange(e)} />
               </div>
+              <div className='input-container'>
+                <label>Apellidos:</label>
+                <input name='apellidos' type='text' required value={search.apellidos} maxLength={60} onChange={(e) => handleChange(e)} />
+              </div>
+
             </div>
-          }
+            <div className='main-button-container'>
+              <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>
+              <button type='button' className='main-button' onClick={onCleanSearcher}>Limpiar</button>
+            </div>
+          </div>
           {
             loading ?
               <div style={{ height: '55vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -142,8 +124,6 @@ const ReporteAsistencia = (props) => {
                 <AsistenciaList
                   foundUsers={foundUsers}
                   asistenciaData={asistenciaData}
-                  user={user}
-                  view='Reporte Asistencia'
                   notData={notData}
                 >
                 </AsistenciaList>
@@ -152,8 +132,6 @@ const ReporteAsistencia = (props) => {
                   headers={raTableHeaders}
                   foundUsers={foundUsers}
                   asistenciaData={asistenciaData}
-                  user={user}
-                  view='Reporte Asistencia'
                   notData={notData}>
                 </AsistenciaTable>
           }

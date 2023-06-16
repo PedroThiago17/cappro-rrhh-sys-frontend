@@ -2,7 +2,7 @@ import { Delete, Edit, Visibility } from '@material-ui/icons'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import './styles/styles.css'
-const AsistenciaTable = ({ foundUsers, user, asistenciaData , headers, handleViewUser = null, view = null, notData }) => {
+const AsistenciaTable = ({ foundUsers, asistenciaData, headers, notData }) => {
 
 
   return (
@@ -18,8 +18,8 @@ const AsistenciaTable = ({ foundUsers, user, asistenciaData , headers, handleVie
         notData ? <p className='message'>No se encontraron resultados...</p> :
           <div className='table-content-container'>
             {
-               foundUsers.length != 0 ?
-                foundUsers.map(({ dni, nombres, apellidos, fechaRegistro,horaEntrada, horaSalida }, index) => (
+              foundUsers.length != 0 ?
+                foundUsers.map(({ dni, nombres, apellidos, fechaRegistro, horaEntrada, horaSalida }, index) => (
                   <div key={index} className='ra-table-content'>
                     <p>{dni}</p>
                     <p>{nombres}</p>
@@ -29,8 +29,8 @@ const AsistenciaTable = ({ foundUsers, user, asistenciaData , headers, handleVie
                     <p>{horaSalida}</p>
                   </div>
                 ))
-                : 
-                asistenciaData.map(({dni, nombres, apellidos, fechaRegistro,horaEntrada, horaSalida }, index) => (
+                :
+                asistenciaData.map(({ dni, nombres, apellidos, fechaRegistro, horaEntrada, horaSalida }, index) => (
                   <div key={index} className='ra-table-content'>
                     <p>{dni}</p>
                     <p>{nombres}</p>

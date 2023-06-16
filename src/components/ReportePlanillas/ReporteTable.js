@@ -1,13 +1,19 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons'
 import axios from 'axios';
-import React from 'react'
+import React, { useState } from 'react'
 import { downloadPdf } from '../../utils/utils';
+import PageLoader from '../Loading';
 
 const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) => {
-  
+
+  const [loading, setLoading] = useState(false);
+
   const download = async (planillaId, dni) => {
     try {
+      setLoading(true)
       await downloadPdf(planillaId, dni);
+      setLoading(false)
+
     } catch (error) {
       console.error('Error al descargar el archivo:', error);
     }
@@ -34,10 +40,13 @@ const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) 
                     <p>{fu.dni}</p>
                     <p>{fu.nombres}</p>
                     <p>{fu.apellidos}</p>
-                    {children}
-                    <div className='mp-buttons-container' style={{cursor:'pointer'}} onClick={()=>download(fu.idPlanilla, fu.dni)}>
-                      <img src='./images/Recurso8.png' />
-                    </div>
+                    {
+                      loading ?
+                        <PageLoader /> :
+                        <div className='mp-buttons-container' style={{ cursor: 'pointer' }} onClick={() => download(fu.idPlanilla, fu.dni)}>
+                          <img src='./images/Recurso8.png' />
+                        </div>
+                    }
                   </div>
                 ))
                 :
@@ -48,10 +57,13 @@ const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) 
                     <p>{user.dni}</p>
                     <p>{user.nombres}</p>
                     <p>{user.apellidos}</p>
-                    {children}
-                    <div className='mp-buttons-container' style={{cursor:'pointer'}} onClick={()=>download(user.idPlanilla, user.dni)}>
-                      <img src='./images/Recurso8.png' />
-                    </div>
+                    {
+                      loading ?
+                        <PageLoader /> :
+                        <div className='mp-buttons-container' style={{ cursor: 'pointer' }} onClick={() => download(user.idPlanilla, user.dni)}>
+                          <img src='./images/Recurso8.png' />
+                        </div>
+                    }
                   </div>
                 ))
             }

@@ -124,9 +124,9 @@ const ModulosResponsive = ({ userRol }) => {
               <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
             </ListItem>
           </div>
-          <div title='Asistencia' style={{marginBottom:'250px'}}>
+          <div title='Asistencia'>
             <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={onClickTomarFoto}>
-              <img style={{ width: '25px'}} className={clsx(classes.iconoPrincipal)} src='./images/Recurso9.png' />
+              <img style={{ width: '35px', position: 'absolute', display:'flex', width: '100%', justify:'center', bottom: '450%'  }} src='./images/Recurso9.png' />
             </ListItem>
           </div>
         </div>

@@ -1,16 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import './styles/navbar.css'
 import { IconButton } from '@material-ui/core'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import USUARIOLOGEADO  from '../../Global/Globals';
-const Navbar = (selectedId) => {
+const Navbar = () => {
+
+  const [loggedUser, setLoggedUser] = useState({});
+
+  useEffect(()=> {
+    const userData = window.localStorage.getItem('userInfo');
+    if(userData) {
+      const info = JSON.parse(userData);
+      setLoggedUser({
+        nombres: info.datosPersonales.nombres,
+        apellidos: info.datosPersonales.apellidos,
+        rol: info.rol
+      });
+    }
+  },[])
   const navigate = useNavigate();
+
   const onSubmit = (url) => {
     window.localStorage.clear('userId')    
     navigate(url);
   }
-  
+
   return (
     <nav className='navbar'>
       <div className='navbar-content'>
@@ -19,7 +33,7 @@ const Navbar = (selectedId) => {
             <img src='./images/Recurso1.png' />
           </div>
           <div className='navbar-text'>
-            <h3>Escuela Superior de Arte Dramático de Trujillo</h3>
+            <h3>Escuela superior de arte dramático de trujillo</h3>
             <h2>VIRGILIO RODRIGUEZ NACHE</h2>
             <p>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
           </div>
@@ -27,8 +41,8 @@ const Navbar = (selectedId) => {
         <div className='navbar-logout'>
           <div className='navbar-user'>
             <p>BIENVENIDO</p>
-            <p className='navbar-user-name'>{USUARIOLOGEADO.nombre} {USUARIOLOGEADO.apellidos}</p>
-            <p className='navbar-user-name'>Rol: {USUARIOLOGEADO.rol}</p>
+            <p className='navbar-user-name'>{loggedUser.nombres} {loggedUser.apellidos}</p>
+            <p className='navbar-user-name'>Rol: {loggedUser.rol}</p>
           </div>
           <IconButton onClick={() => onSubmit('/')}>
             <img src='./images/Recurso10.png' />

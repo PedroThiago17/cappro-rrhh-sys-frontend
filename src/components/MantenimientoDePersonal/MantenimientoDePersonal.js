@@ -19,14 +19,7 @@ import { useMediaQuery } from 'react-responsive';
 import UserModal from '../Modal/UserModal';
 import DeleteModal from '../Modal/DeleteModal';
 import PageLoader from '../Loading';
-
-
-const data = [
-  { dni: '99999999', nombres: 'Juan', apellidos: 'Pérez', codigo: '123', id: '1' },
-  { dni: '99999999', nombres: 'María', apellidos: 'Gómez', codigo: '456', id: '2' },
-  { dni: '99999999', nombres: 'Pedro', apellidos: 'Rodríguez', codigo: '789', id: '3' },
-];
-
+import { searchUser } from '../../utils/utils';
 
 const MantenimientoDePersonal = () => {
   const [loading, setLoading] = useState(true);
@@ -45,14 +38,14 @@ const MantenimientoDePersonal = () => {
       dni: '',
       nombres: '',
       apellidos: '',
-      codModular: 0
+      codigoModular: ''
     }
   );
 
   useEffect(() => {
     const getUsers = async () => {
       const userData = window.localStorage.getItem('userInfo').toString();
-      if(userData) {
+      if (userData) {
         const userInfo = JSON.parse(userData);
         setUserRol(userInfo.rol);
       }
@@ -75,11 +68,6 @@ const MantenimientoDePersonal = () => {
     getUsers();
   }, [])
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-
   const handleNumberChange = (e, limit) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -91,41 +79,42 @@ const MantenimientoDePersonal = () => {
         return;
       }
       else {
-        setSearch({ dni: newValue })
+        setSearch({...search, dni: newValue })
       }
     }
+    else if (name === 'codigoModular') {
+      setSearch({ ...search, codigoModular: newValue })
+    }
+  }
+  const handleChange = (e) => {
+    setSearch({
+      ...search,
+      [e.target.name]: e.target.value
+    })
   }
 
   const onClickFindUser = () => {
-    if (search.dni != '') {
-      const foundUser = users.find(e => e.datosPersonales.dni === search.dni);
-      if (foundUser) {
-        setFoundUsers([foundUser]);
-      }else{
-        alert('El DNI ingresado no existe.')
-      }
-    }else if (search.dni === ''){
-      alert('No ingreso ninguna información.')
-    }
+
+    const user = searchUser(search, users)
+
+    if (user) setFoundUsers([user]);
+
   }
 
   const onCleanSearcher = () => {
     setFoundUsers([]);
     setSearch({
       dni: '',
+      codigoModular: '',
       nombres: '',
       apellidos: '',
-      codModular: 0
+      codModular: ''
     });
   }
 
   const navigate = useNavigate();
-  const onSubmit = (url) => {
-    navigate(url);
-    console.log(url);
-  }
+
   const handleViewUser = (userId) => {
-    console.log('ID: ', userId)
     setSelectedId(userId)
     setShowModal(true);
   }
@@ -150,11 +139,23 @@ const MantenimientoDePersonal = () => {
               <div className='form-inputs'>
                 <div className='input-container'>
                   <label htmlFor="">DNI:</label>
-                  <input name='dni' type='number' value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
+                  <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
                 </div>
-                <RegistroInput label={'Nombres:'}></RegistroInput>
+                <div className='input-container'>
+                  <label>Nombres:</label>
+                  <input name='nombres' type='text' required value={search.nombres} maxLength={60} onChange={(e) => handleChange(e)} />
+                </div>
+                <div className='input-container'>
+                  <label>Apellidos:</label>
+                  <input name='apellidos' type='text' required value={search.apellidos} maxLength={60} onChange={(e) => handleChange(e)} />
+                </div>
+                <div className='input-container'>
+                  <label htmlFor="">Código modular:</label>
+                  <input name='codigoModular' type='text' required value={search.codigoModular} onChange={(e) => handleNumberChange(e, 20)} />
+                </div>
+                {/* <RegistroInput label={'Nombres:'}></RegistroInput>
                 <RegistroInput label={'Apellidos:'}></RegistroInput>
-                <RegistroInput label={'Código Modular:'}></RegistroInput>
+                <RegistroInput label={'Código Modular:'}></RegistroInput> */}
               </div>
               <div className='main-button-container'>
                 <button type='button' className='main-button' onClick={onClickFindUser}>Buscar</button>
@@ -163,7 +164,7 @@ const MantenimientoDePersonal = () => {
             </div>
             {
               loading ?
-                <div style={{height:'55vh', display:'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <div style={{ height: '55vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <PageLoader />
                 </div>
                 :
@@ -171,7 +172,7 @@ const MantenimientoDePersonal = () => {
                   <UserList
                     foundUsers={foundUsers}
                     users={users}
-                    userRol = {userRol}
+                    userRol={userRol}
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
                     view='Mantenimiento Personal'
@@ -183,7 +184,7 @@ const MantenimientoDePersonal = () => {
                     foundUsers={foundUsers}
                     handleViewUser={handleViewUser}
                     handleDelete={handleDelete}
-                    userRol = {userRol}
+                    userRol={userRol}
                     users={users}
                     view='Mantenimiento Personal'
                     notData={notData}>

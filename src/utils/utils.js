@@ -35,7 +35,82 @@ export const downloadPdf = async (planillaId, dni)=> {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `Boleta - ${dni}.pdf`;
+  link.download = `${dni}.pdf`;
   link.click();
   window.URL.revokeObjectURL(url);
+}
+
+export const searchUser = (search, users) => {
+  const { dni, nombres, apellidos, codigoModular} = search;
+
+  if (dni && dni !== 0) {
+    const foundUserByDNI = users.find(user => user.datosPersonales.dni === dni);
+    if (foundUserByDNI) {
+      return foundUserByDNI;
+    }
+  }
+  else if (nombres && nombres !== '') {
+    const foundUserByName = users.find(user => user.datosPersonales.nombres === nombres);
+    if (foundUserByName) {
+      return foundUserByName;
+    }
+  }
+  else if (apellidos && apellidos !== '') {
+    const foundUserByLastName = users.find(user => user.datosPersonales.apellidos === apellidos);
+    if (foundUserByLastName) {
+      return foundUserByLastName;
+    }
+  }
+  else if (codigoModular && codigoModular !== '') {
+    const foundUserByCode = users.find(user => user.datosPlanilla.codModular === codigoModular);
+    if (foundUserByCode) {
+      return foundUserByCode;
+    }
+  }
+}
+export const searchUserPlanillas = (search, users) => {
+  const { dni, nombres, apellidos} = search;
+
+  if (dni && dni !== 0) {
+    const foundUserByDNI = users.find(user => user.dni === dni);
+    if (foundUserByDNI) {
+      return foundUserByDNI;
+    }
+  }
+  else if (nombres && nombres !== '') {
+    const foundUserByName = users.find(user => user.nombres === nombres);
+
+    if (foundUserByName) {
+      return foundUserByName;
+    }
+  }
+  else if (apellidos && apellidos !== '') {
+    const foundUserByLastName = users.find(user => user.apellidos === apellidos);
+    if (foundUserByLastName) {
+      return foundUserByLastName;
+    }
+  }
+}
+export const searchUsersPlanillas = (search, users) => {
+  const { dni, nombres, apellidos} = search;
+
+  if (dni && dni !== 0) {
+    const foundUserByDNI = users.filter(user => user.dni === dni);
+    if (foundUserByDNI) {
+      return foundUserByDNI;
+    }
+  }
+  else if (nombres && nombres !== '') {
+    const foundUserByName = users.filter(user => user.nombres === nombres);
+
+    if (foundUserByName) {
+      return foundUserByName;
+    }
+  }
+  else if (apellidos && apellidos !== '') {
+    const foundUserByLastName = users.filter(user => user.apellidos === apellidos);
+    if (foundUserByLastName) {
+      return foundUserByLastName;
+    }
+  }
 }

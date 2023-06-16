@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import _ from 'lodash'
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import clsx from 'clsx';
+
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR } from '../../constants/constants';
+import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR} from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
-import NavBar from '../MenuPrincipal/NavBar';
 import PageLoader from '../Loading';
-import InfoModal from '../Modal/Modal';
 import Modal from '../Modal/Modal';
-import { AiOutlineCopy } from 'react-icons/ai';
 import FotoPasos from '../FotoPasos/FotoPasos';
 
 const INITIAL_FONDO_PENSIONES = [
@@ -23,88 +17,6 @@ const INITIAL_FONDO_PENSIONES = [
     idDominio: 0
   }
 ]
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "98vh",
-    margin: 0,
-    fontFamily: "Montserrat, sans-serif"
-  },
-  contenedorLogo: {
-    display: 'flex',
-    paddingTop: 26,
-  },
-  logo: {
-    width: '100%',
-    height: '100%',
-  },
-  titulo: {
-    margin: 0,
-    textTransform: 'uppercase',
-    color: theme.palette.secondary.main,
-    fontWeight: 500
-  },
-  appBar: {
-    height: '100%',
-  },
-  drawer: {
-    marginTop: 50,
-    color: theme.palette.primary.main,
-  },
-  contenedorMenu: {
-    position: 'absolute',
-    width: '18%',
-    height: '87%',
-    boxShadow: theme.shadows[6],
-  },
-  letraMenu: {
-    fontWeight: 700,
-    color: theme.palette.primary.main,
-  },
-  iconoPrincipal: {
-    width: '40%',
-    height: '40%',
-    marginLeft: 15
-  },
-  tipoletra1: {
-    fontWeight: 500
-  },
-  tipoletra2: {
-    fontWeight: 700
-  },
-  color1Primario: {
-    color: theme.palette.primary.main,
-  },
-  colorSecundario: {
-    color: theme.palette.primary.main,
-  },
-  contenedorFormulario: {
-    width: "130vh",
-    height: "80%",
-    marginLeft: '18%',
-    position: 'absolute',
-    textAlign: 'center',
-    marginTop: 50,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  formulario: {
-    marginLeft: '6%',
-    boxShadow: theme.shadows[6],
-    width: "150vh",
-    height: '90%',
-  },
-  formControl: {
-    minWidth: 120,
-    height: '50px', // Altura deseada
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#0066CC'
-      },
-    },
-  },
-}));
-
 
 const RegistroPersonal = () => {
   const [open, setOpen] = React.useState(true);
@@ -141,6 +53,7 @@ const RegistroPersonal = () => {
   const [supervision, setSupervision] = useState({ idUsuario: 0, nombreCompleto: '' });
   const [showSupervision, setShowSupervision] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showClearModal, setShowClearModal] = useState(false);
 
   const [puestoOptions, setPuestoOptions] = useState([]);
   const [afpOptions, setAfpOptions] = useState([]);
@@ -149,7 +62,10 @@ const RegistroPersonal = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [dniMssg, setDniMssg] = useState(false);
-
+  const [reset, setReset] = useState(false);
+  const refPuesto = useRef(null)
+  const refSexo = useRef(null)
+  const refEstadoCivil = useRef(null)
 
   const onRegistrarPersonal = async (e) => {
     e.preventDefault();
@@ -187,7 +103,6 @@ const RegistroPersonal = () => {
 
     try {
       setLoading(true);
-      console.log('funciona')
       const res = await axios.post('https://cappro-rrhh-sys.azurewebsites.net/usuario/saveUsuario', body);
       if (res.data) {
         alert('El usuario ha sido agregado correctamente')
@@ -228,6 +143,45 @@ const RegistroPersonal = () => {
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
+  }
+
+  const onClickClear = () => {
+    setShowClearModal(true);
+  }
+
+   const confirmClear = () => {
+    if (refPuesto.current) {
+      refPuesto.current.selectedIndex = 0;
+    }
+    if (refSexo.current) {
+      refSexo.current.selectedIndex = 0;
+    }
+    if (refEstadoCivil.current) {
+      refEstadoCivil.current.selectedIndex = 0;
+    }
+    setPuesto({ nombreRol: 'Administrador', idRol: 1 })
+    setShowSupervision(false)
+    setReset(true);
+    setDni('');
+    setNombres('');
+    setApellidos('');
+    setBirthday('');
+    setlNacimiento('');
+    setSexo('');
+    setEstadoCivil('');
+    setDireccion('');
+    setTelefono('');
+    setEmail('');
+    setExperiencia('');
+    setFormacion('');
+    setUniversidad('');
+    setEspecialidad('');
+    setCodigoModular('');
+    setPagoBruto(0);
+    setPagoNeto(0);
+    setPagoHora(0);
+    setAge(0);
+    setShowClearModal(false)
   }
 
   useEffect(() => {
@@ -346,6 +300,7 @@ const RegistroPersonal = () => {
             setModalidadHoraria({ valCadDominio: res.data[0].valCadDominio, idDominio: res.data[0].idDominio })
           } else {
             const currentModalidad = res.data.find(e => e.valCadDominio === 'Tiempo Completo')
+
             setCargaHoraria(VALOR_TIEMPO_COMPLETO);
             setModalidadHoraria({ valCadDominio: currentModalidad.valCadDominio, idDominio: currentModalidad.idDominio })
             setSupervision({ idUsuario: null, nombreCompleto: null })
@@ -444,6 +399,17 @@ const RegistroPersonal = () => {
           <FotoPasos dni={dni} codigo={1}></FotoPasos>
         </Modal>
       }
+      {
+        showClearModal &&
+        <Modal setShowModal={setShowClearModal}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+            <p>¿Seguro que desea limpiar los campos?</p>
+            <div style={{ display: 'flex' }}>
+              <button type='button' className='main-button' style={{padding:'15px 6px 12px',fontSize:'17x'}} onClick={confirmClear}>Aceptar</button>
+            </div>
+          </div>
+        </Modal>
+      }
       <form className='registro-form' onSubmit={onRegistrarPersonal}>
         <div className='mp-form-container'>
           <h2 className='h2-title'>REGISTRAR NUEVO PERSONAL</h2>
@@ -481,7 +447,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Sexo: </label>
-                    <select className='select-input' required onChange={(e) => setSexo(e.target.value)}>
+                    <select ref={refSexo} className='select-input' required onChange={(e) => setSexo(e.target.value)}>
                       {
                         sexoOptions.map((op, index) => (
                           <option id={index} key={index} value={op}> {op} </option>
@@ -491,7 +457,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Estado civil: </label>
-                    <select className='select-input' required onChange={(e) => setEstadoCivil(e.target.value)}>
+                    <select ref={refEstadoCivil} className='select-input' required onChange={(e) => setEstadoCivil(e.target.value)}>
                       {
                         estadoCivilOptions.map((op, index) => (
                           <option id={index} key={index} value={op}> {op} </option>
@@ -549,7 +515,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Puesto: </label>
-                    <select className='select-input' name="" id="" required onChange={(e) => onPuestoSelect(e.target.options[e.target.selectedIndex].id, e.target.value)}>
+                    <select ref={refPuesto} className='select-input' name="" id="" required onChange={(e) => onPuestoSelect(e.target.options[e.target.selectedIndex].id, e.target.value)}>
                       {
                         puestoOptions.map((op) => (
                           <option id={op.idRol} key={op.idRol} value={op.nombreRol}> {op.nombreRol} </option>
@@ -663,13 +629,13 @@ const RegistroPersonal = () => {
             </div>
           </div>
           <div className='buttons-container'>
-            <button className='main-button' type='button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false} onClick={onClickTomarFoto}>Tomar fotos</button>
+            <button className='main-button' type='button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false} onClick={onClickTomarFoto}>Tomar fotos</button>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button className='main-button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false } >Limpiar</button>
-              <button className='main-button' style={{backgroundColor: loading && '#04294F'}} disabled={loading? true : false}>Guardar</button>
+              <button type='button' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false} onClick={onClickClear}>Limpiar</button>
+              <button type='button' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false}>Guardar</button>
             </div>
           </div>
-          { dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p> }
+          {dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p>}
         </div>
       </form>
     </div>
