@@ -114,16 +114,18 @@ const ModulosResponsive = ({ userRol }) => {
               </div>
             </>
           }
-          <div title='Reporte de plantilla'>
-            <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteplanilla')}>
-              <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
-            </ListItem>
-          </div>
           <div title='Reporte de asistencia'>
             <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteasistencia')}>
               <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
             </ListItem>
           </div>
+
+          <div title='Reporte de plantilla'>
+            <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => onSubmit('/reporteplanilla')}>
+              <img style={{ width: '25px' }} className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+            </ListItem>
+          </div>
+          
           <div title='Asistencia'>
             <ListItem button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={onClickTomarFoto}>
               <img style={{ width: '35px', position: 'absolute', display:'flex', width: '100%', justify:'center', bottom: '450%'  }} src='./images/Recurso9.png' />

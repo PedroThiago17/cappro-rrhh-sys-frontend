@@ -1,7 +1,7 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons'
 import React, { useEffect } from 'react'
 
-const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDelete, view = null, notData, userRol }) => {
+const UserTable = ({ foundUsers, users, headers, handleViewUser = null,handleVEditUser = null, handleDelete, view = null, notData, userRol }) => {
 
   return (
     <div className='table-container'>
@@ -30,7 +30,7 @@ const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDe
                         {
                           userRol !== 'Supervisor' &&
                           <>
-                            <Edit style={{ cursor: 'pointer' }} />
+                            <Edit style={{ cursor: 'pointer' }} onClick={() => handleVEditUser(idUsuario)} />
                             <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
                           </>
                         }
@@ -53,7 +53,7 @@ const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleDe
                         {
                           userRol !== 'Supervisor' &&
                           <>
-                            <Edit style={{ cursor: 'pointer' }} />
+                            <Edit style={{ cursor: 'pointer' }} onClick={() => handleVEditUser(idUsuario)} />
                             <Delete style={{ cursor: 'pointer', color: 'red' }} onClick={() => handleDelete({ idUsuario, datosPersonales })} />
                           </>
                         }

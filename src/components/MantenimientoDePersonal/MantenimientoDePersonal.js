@@ -20,11 +20,13 @@ import UserModal from '../Modal/UserModal';
 import DeleteModal from '../Modal/DeleteModal';
 import PageLoader from '../Loading';
 import { searchUser } from '../../utils/utils';
+import UserEditModal from '../Modal/UserEditModal';
 
 const MantenimientoDePersonal = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [userRol, setUserRol] = useState('');
@@ -118,6 +120,12 @@ const MantenimientoDePersonal = () => {
     setSelectedId(userId)
     setShowModal(true);
   }
+
+  const handleVEditUser = (userId) => {
+    setSelectedId(userId)
+    setShowEditModal(true);
+  }
+
   const handleDelete = async (user) => {
     setShowDeleteModal(true);
     setUserToDelete(user)
@@ -127,6 +135,9 @@ const MantenimientoDePersonal = () => {
     <>
       {
         showModal && <UserModal setShowModal={setShowModal} selectedId={selectedId} />
+      }
+      {
+        showEditModal && <UserEditModal setShowEditModal={setShowEditModal} selectedId={selectedId} />
       }
       {
         showDeleteModal && <DeleteModal setShowDeleteModal={setShowDeleteModal} userToDelete={userToDelete} />
@@ -174,6 +185,7 @@ const MantenimientoDePersonal = () => {
                     users={users}
                     userRol={userRol}
                     handleViewUser={handleViewUser}
+                    handleVEditUser={handleVEditUser}
                     handleDelete={handleDelete}
                     view='Mantenimiento Personal'
                     notData={notData}
@@ -183,6 +195,7 @@ const MantenimientoDePersonal = () => {
                     headers={mpTableHeaders}
                     foundUsers={foundUsers}
                     handleViewUser={handleViewUser}
+                    handleVEditUser={handleVEditUser}
                     handleDelete={handleDelete}
                     userRol={userRol}
                     users={users}

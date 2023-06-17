@@ -42,7 +42,7 @@ const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) 
                     <p>{fu.apellidos}</p>
                     {
                       loading ?
-                        <PageLoader /> :
+                      <PageLoader /> :
                         <div className='mp-buttons-container' style={{ cursor: 'pointer' }} onClick={() => download(fu.idPlanilla, fu.dni)}>
                           <img src='./images/Recurso8.png' />
                         </div>

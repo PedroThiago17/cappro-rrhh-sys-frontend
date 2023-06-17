@@ -126,17 +126,18 @@ const Modulos = ({ userRol }) => {
               </Collapse>
             </>
           }
-          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
-            <ListItemIcon>
-              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
-            </ListItemIcon>
-            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
-          </ListItem>
           <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteasistencia')}>
             <ListItemIcon>
               <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso6.png' />
             </ListItemIcon>
             <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Asistencia" />
+          </ListItem>
+          
+          <ListItem style={{ padding: 20 }} button onClick={() => onSubmit('/reporteplanilla')}>
+            <ListItemIcon>
+              <img className={clsx(classes.iconoPrincipal)} src='./images/Recurso5.png' />
+            </ListItemIcon>
+            <ListItemText disableTypography className={clsx(classes.tipoletra2)} primary="Reporte de Planillas" />
           </ListItem>
           <div onClick={onClickTomarFoto} className='assistance-button'>
             <button className='main-button' style={{fontSize:'21px'}}>
