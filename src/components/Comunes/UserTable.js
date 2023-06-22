@@ -17,12 +17,13 @@ const UserTable = ({ foundUsers, users, headers, handleViewUser = null,handleVEd
           <div className='table-content-container'>
             {
               foundUsers.length != 0 ?
-                foundUsers.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
+                foundUsers.map(({ idUsuario, datosPersonales, datosPlanilla, rol }, index) => (
                   <div key={index} className='table-content'>
                     <p>{datosPersonales.dni}</p>
                     <p>{datosPersonales.nombres}</p>
                     <p>{datosPersonales.apellidos}</p>
                     <p>{datosPlanilla.codModular}</p>
+                    <p>{rol}</p>
                     {
                       view === 'Mantenimiento Personal' &&
                       <div className='mp-buttons-container'>
@@ -40,12 +41,13 @@ const UserTable = ({ foundUsers, users, headers, handleViewUser = null,handleVEd
                   </div>
                 ))
                 :
-                users.map(({ idUsuario, datosPersonales, datosPlanilla }, index) => (
+                users.map(({ idUsuario, datosPersonales, datosPlanilla, rol }, index) => (
                   <div key={index} className='table-content'>
                     <p>{datosPersonales.dni}</p>
                     <p>{datosPersonales.nombres}</p>
                     <p>{datosPersonales.apellidos}</p>
                     <p>{datosPlanilla.codModular}</p>
+                    <p>{rol}</p>
                     {
                       view === 'Mantenimiento Personal' &&
                       <div className='mp-buttons-container'>
