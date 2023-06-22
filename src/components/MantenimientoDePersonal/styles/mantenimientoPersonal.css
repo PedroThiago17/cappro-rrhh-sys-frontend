@@ -34,7 +34,7 @@
   color: white;
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .table-content-container {
@@ -46,7 +46,7 @@
   color: var(--page-color);
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   border-bottom: 1px solid var(--page-color);
 }
 
