@@ -26,8 +26,8 @@ const MantenimientoDePersonal = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [userRol, setUserRol] = useState('');
   const [selectedId, setSelectedId] = useState(0);
@@ -81,7 +81,7 @@ const MantenimientoDePersonal = () => {
         return;
       }
       else {
-        setSearch({...search, dni: newValue })
+        setSearch({ ...search, dni: newValue })
       }
     }
     else if (name === 'codigoModular') {
@@ -106,7 +106,7 @@ const MantenimientoDePersonal = () => {
   const onCleanSearcher = () => {
     setFoundUsers([]);
     setSearch({
-      dni: '',
+      dni: 0,
       codigoModular: '',
       nombres: '',
       apellidos: '',
@@ -120,12 +120,10 @@ const MantenimientoDePersonal = () => {
     setSelectedId(userId)
     setShowModal(true);
   }
-
-  const handleVEditUser = (userId) => {
+    const handleVEditUser = (userId) => {
     setSelectedId(userId)
     setShowEditModal(true);
   }
-
   const handleDelete = async (user) => {
     setShowDeleteModal(true);
     setUserToDelete(user)
@@ -149,7 +147,7 @@ const MantenimientoDePersonal = () => {
             <div className='mp-form-content'>
               <div className='form-inputs'>
                 <div className='input-container'>
-                  <label htmlFor="">DNI:</label>
+                  <label htmlFor="">DNI</label>
                   <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
                 </div>
                 <div className='input-container'>
@@ -195,8 +193,8 @@ const MantenimientoDePersonal = () => {
                     headers={mpTableHeaders}
                     foundUsers={foundUsers}
                     handleViewUser={handleViewUser}
-                    handleVEditUser={handleVEditUser}
                     handleDelete={handleDelete}
+                    handleVEditUser={handleVEditUser}
                     userRol={userRol}
                     users={users}
                     view='Mantenimiento Personal'

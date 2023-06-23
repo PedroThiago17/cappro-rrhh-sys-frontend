@@ -1,7 +1,7 @@
 import { Delete, Edit, Visibility } from '@material-ui/icons'
 import React, { useEffect } from 'react'
 
-const UserTable = ({ foundUsers, users, headers, handleViewUser = null,handleVEditUser = null, handleDelete, view = null, notData, userRol }) => {
+const UserTable = ({ foundUsers, users, headers, handleViewUser = null, handleVEditUser, handleDelete, view = null, notData, userRol }) => {
 
   return (
     <div className='table-container'>
