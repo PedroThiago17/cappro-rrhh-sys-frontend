@@ -4,7 +4,7 @@ import _ from 'lodash'
 import './styles/registroPersonal.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR} from '../../constants/constants';
+import { JUBILACION, VALOR_TIEMPO_COMPLETO, VALOR_TIEMPO_PARCIAL, PORCENTAJE, estadoCivilOptions, sexoOptions, MULTIPLICADOR } from '../../constants/constants';
 import { calcularEdad } from '../../utils/utils';
 import PageLoader from '../Loading';
 import Modal from '../Modal/Modal';
@@ -149,7 +149,7 @@ const RegistroPersonal = () => {
     setShowClearModal(true);
   }
 
-   const confirmClear = () => {
+  const confirmClear = () => {
     if (refPuesto.current) {
       refPuesto.current.selectedIndex = 0;
     }
@@ -182,6 +182,7 @@ const RegistroPersonal = () => {
     setPagoHora(0);
     setAge(0);
     setShowClearModal(false)
+
   }
 
   useEffect(() => {
@@ -315,7 +316,7 @@ const RegistroPersonal = () => {
   }, [puesto]);
 
   useEffect(() => {
-    setPagoBruto((cargaHoraria * pagoHora) * MULTIPLICADOR)
+    setPagoBruto((cargaHoraria * pagoHora)*MULTIPLICADOR)
   }, [pagoHora, cargaHoraria])
 
   useEffect(() => {
@@ -405,7 +406,7 @@ const RegistroPersonal = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
             <p>¿Seguro que desea limpiar los campos?</p>
             <div style={{ display: 'flex' }}>
-              <button type='button' className='main-button' style={{padding:'15px 6px 12px',fontSize:'17x'}} onClick={confirmClear}>Aceptar</button>
+              <button type='button' className='main-button' onClick={confirmClear}>Aceptar</button>
             </div>
           </div>
         </Modal>
@@ -584,7 +585,7 @@ const RegistroPersonal = () => {
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Pago bruto: </label>
-                    <input type='number' readOnly required value={(cargaHoraria * pagoHora)*MULTIPLICADOR} onChange={(e) => setPagoBruto(e.target.value)} />
+                    <input type='number' readOnly required value={((cargaHoraria * pagoHora)*MULTIPLICADOR)} onChange={(e) => setPagoBruto(e.target.value)} />
                   </div>
                   <div className='input-container'>
                     <label htmlFor=""> Descuento seguro de salud: </label>
@@ -632,7 +633,7 @@ const RegistroPersonal = () => {
             <button className='main-button' type='button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false} onClick={onClickTomarFoto}>Tomar fotos</button>
             <div style={{ display: 'flex', gap: '10px' }}>
               <button type='button' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false} onClick={onClickClear}>Limpiar</button>
-              <button type='button' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false}>Guardar</button>
+              <button type='submit' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false}>Guardar</button>
             </div>
           </div>
           {dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p>}
