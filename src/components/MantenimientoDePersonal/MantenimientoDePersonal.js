@@ -123,9 +123,6 @@ const MantenimientoDePersonal = () => {
     const handleVEditUser = (userId) => {
     setSelectedId(userId)
     setShowEditModal(true);
-    if(setShowModal(false)){
-      alert("El usuario fue editado de manera correcta.")
-    }
   }
   const handleDelete = async (user) => {
     setShowDeleteModal(true);
