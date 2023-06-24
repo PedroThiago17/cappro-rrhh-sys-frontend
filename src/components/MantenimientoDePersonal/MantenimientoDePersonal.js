@@ -119,6 +119,9 @@ const MantenimientoDePersonal = () => {
   const handleViewUser = (userId) => {
     setSelectedId(userId)
     setShowModal(true);
+    if(setShowModal(false)){
+      alert("El usuario fue editado de manera correcta.")
+    }
   }
     const handleVEditUser = (userId) => {
     setSelectedId(userId)

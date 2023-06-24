@@ -10,9 +10,9 @@ const ReporteTable = ({ foundUsers, users, headers, children = null, notData }) 
 
   const download = async (planillaId, dni) => {
     try {
-      setLoading(true)
+      
       await downloadPdf(planillaId, dni);
-      setLoading(false)
+      window.location.reload();
 
     } catch (error) {
       console.error('Error al descargar el archivo:', error);
