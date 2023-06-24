@@ -49,7 +49,7 @@ export const raTableHeaders = ['DNI', 'Nombres', 'Apellidos', 'Fecha', 'Hora Ent
 export const raKeys = ['dni', 'nombres', 'apellidos', 'fnacimiento', 'estadoCivil'];
 export const mpKeys = ['dni', 'nombres', 'apellidos', 'codModular'];
 export const rpKeys = ['mes', 'año', 'dni', 'nombres', 'apellidos'];
-export const rpTableHeaders = ['Mes', 'Año', 'DNI', 'Nombres', 'Apellidos', 'Acciones'];
+export const rpTableHeaders = ['Año', 'Mes', 'DNI', 'Nombres', 'Apellidos', 'Acciones'];
 export const  usuariosPlanillas = [
   { mes: 'Diciembre', year: 2022, dni: 999999999, nombres: 'Cristian Omar', apellidos: 'Suclupe Llontop' },
   { mes: 'Diciembre', year: 2022, dni: 999999999, nombres: 'Cristian Omar', apellidos: 'Suclupe Llontop' },

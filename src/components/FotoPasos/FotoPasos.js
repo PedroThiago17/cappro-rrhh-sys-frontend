@@ -9,10 +9,11 @@ const FotoPasos = ({ dni, codigo }) => {
       const content = contentElement.innerText;
       await navigator.clipboard.writeText(content);
     }
+    alert("El comando fue copiado correctamente.")
   }
   return (
     <div className='fp-container'>
-      <h2 className='h2-title'>Pasos para tomar fotografia</h2>
+      <h2 className='h2-title'>Pasos a realizar:</h2>
       <div className='fp-content'>
         <p className=''> 1. Copiar el siguiente texto según el sistema operativo </p>
         <div className='fp-pasos'>
