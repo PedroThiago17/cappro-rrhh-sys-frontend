@@ -147,7 +147,7 @@ const MantenimientoDePersonal = () => {
             <div className='mp-form-content'>
               <div className='form-inputs'>
                 <div className='input-container'>
-                  <label htmlFor="">DNI</label>
+                  <label htmlFor="">DNI:</label>
                   <input name='dni' type='number' required value={search.dni} onChange={(e) => handleNumberChange(e, 8)} />
                 </div>
                 <div className='input-container'>
