@@ -70,7 +70,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
 
           setDsctoPension(desctoPension)
 
-          const pagoNeto = pagoB - (Number(desctoPension) + Number(desctoSalud))
+          const pagoNeto = (pagoB - (Number(desctoPension) + Number(desctoSalud))).toFixed(2)
           setPagoNeto(pagoNeto)
 
         } else {
@@ -78,7 +78,7 @@ const UserModal = ({ setShowModal, selectedId }) => {
           const desctoPension = (pagoB * onpValue).toFixed(2);
           setDsctoPension(desctoPension)
 
-          const pagoNeto = pagoB - (Number(desctoPension) + Number(desctoSalud))
+          const pagoNeto = (pagoB - (Number(desctoPension) + Number(desctoSalud))).toFixed(2)
           setPagoNeto(pagoNeto)
 
         }
