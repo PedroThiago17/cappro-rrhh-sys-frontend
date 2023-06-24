@@ -636,7 +636,7 @@ const RegistroPersonal = () => {
               <button type='submit' className='main-button' style={{ backgroundColor: loading && '#04294F' }} disabled={loading ? true : false}>Guardar</button>
             </div>
           </div>
-          {dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita el dni para esta acción </p>}
+          {dniMssg && dni.length !== 8 && <p className='rp-message'> Se necesita un número DNI para esta acción. </p>}
         </div>
       </form>
     </div>
