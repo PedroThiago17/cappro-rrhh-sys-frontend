@@ -33,7 +33,7 @@ const Navbar = () => {
             <img src='./images/Recurso1.png' />
           </div>
           <div className='navbar-text'>
-            <h3>Escuela superior de arte dramático de trujillo</h3>
+            <h3>Escuela Superior de Arte Dramático de Trujillo</h3>
             <h2>VIRGILIO RODRIGUEZ NACHE</h2>
             <p>Autorizado por D.S N 055-1985-ED / Resolución N1 0360-2011-ANR</p>
           </div>
